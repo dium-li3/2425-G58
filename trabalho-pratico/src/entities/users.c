@@ -6,12 +6,12 @@
 User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GSList *lmids){
     User u = malloc(sizeof (struct user));
     u->username = id;
-    u->email = email;
-    u->first_name = fn;
-    u->last_name = ln;
-    u->birth_date = bd;
+    u->email = strdup (email);
+    u->first_name =strdup (fn);
+    u->last_name = strdup (ln);
+    u->birth_date = strdup (bd);
     u->age = age;
-    u->country = c;
+    u->country = strdup (c);
     u->subscription_type = st;
     u->liked_music_ids = lmids;
     return u;

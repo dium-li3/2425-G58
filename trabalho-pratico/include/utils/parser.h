@@ -12,7 +12,7 @@ User store_user_line (char *line);
 User_Manager store_Users (FILE *fp_Users, User_Manager user_manager);
 
 
-void store_entities (FILE **fp_entities);
+void store_entities (FILE **fp_entities, User_Manager user_manager);
 
 /*
     Dado o path onde se encontram os 3 ficheiros .csv,

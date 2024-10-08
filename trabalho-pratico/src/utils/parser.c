@@ -71,34 +71,24 @@ User_Manager store_Users (FILE *fp_Users, User_Manager user_manager){
     nRead = getline (&line, &n, fp_Users);
     for (int i = 0; (nRead = getline (&line, &n, fp_Users)) != -1; i++){
         user = store_user_line (line);
-        if (user != NULL)
+        if (user != NULL){
 //            printf("%s;%s;%s;%d;%s\n",user->email, user->first_name, user->last_name, user->age, user->country);
             insert_user_by_id (user, user_manager);
+        }
+        else {
+            //mandar a linha com infos invalidas para o ficheiro de erro nº i.
+        }
     }
    free(line);
     return user_manager;
 }
 
-void store_entities (FILE **fp_entities){
-    User_Manager user_manager = create_user_manager ();  
+void store_entities (FILE **fp_entities, User_Manager user_manager){
     user_manager = store_Users (fp_entities[0], user_manager);
     //store_Musics (fp_entities[1]);
     //store_Artists (fp_entities[2]); 
     //prontos, dei store, e agora? lol
-    printf("boas pessoal\n");
-    GList *l = NULL;
-    l = g_hash_table_get_values (user_manager->users_by_id);
-    GList *temp = NULL;
-    int i = 0;
-    for (temp = l; temp != NULL; temp = temp->next){
-        User *u = (User *) temp;
-        printf("%s %d\n", (*u)->first_name, i++);
     }
-//    for (GSList temp = user_manager->users_id; temp->next != NULL;temp = temp->next){
-  //      printf("entrou 1 vez :D\n");
-    //    print_info (search_user_by_id (g_slist_nth_data(temp, 1) , user_manager->users_by_id));
-    //}
-}
 
 /*
     Dado o path onde se encontram os 3 ficheiros .csv,
@@ -151,7 +141,9 @@ int trabalho (int argc, char **argv){
     FILE **fp_entities = fopen3Entities (path);
     if (fp_entities == NULL)
         return -1;
-    store_entities(fp_entities);
+    User_Manager user_manager = create_user_manager ();  
+    store_entities(fp_entities, user_manager);
+    clean_user_manager (user_manager);
     fclose3Entities (fp_entities);
     return 0;
 }
