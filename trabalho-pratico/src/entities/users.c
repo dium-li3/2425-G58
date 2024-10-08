@@ -26,11 +26,13 @@ short get_age (char *bd){
         short year_month_day[3];
         char *y_m_d = NULL;
         char *strpt = NULL;
+
         y_m_d = strtok_r (bd, "/", &strpt);
         year_month_day[0] = (short)atoi (y_m_d);
         for (int i = 1;(y_m_d = strtok_r (NULL, "/\n", &strpt)) != NULL && i < 3; i++)
             year_month_day[i] = (short)atoi (y_m_d);
-        age = 2024 - year_month_day[0];
+
+        age = 2023 - year_month_day[0];
         if (year_month_day[1] < 9) age++;
         if (year_month_day[1] == 9){
             if (year_month_day[2] <= 9) age++;
@@ -49,9 +51,11 @@ char get_sub_type (char *sub_type){
     return c;
 }
 
-//Dá print do email, nomes, idade e pais do utilizador.
-void print_info (User u){
-    printf("%s;%s;%s;%d;%s\n",u->email, u->first_name, u->last_name, u->age, u->country);
+/*
+    Dá print do email, nomes, idade e pais do utilizador.
+    No futuro isto não será no stdout e sim no ficheiro de outputs assumo eu.
+*/void print_info (User u){
+    fprintf(stdout, "%s;%s;%s;%d;%s\n",u->email, u->first_name, u->last_name, u->age, u->country);
 }
 
 void free_user(User u)
