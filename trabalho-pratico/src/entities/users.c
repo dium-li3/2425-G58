@@ -53,3 +53,14 @@ char get_sub_type (char *sub_type){
 void print_info (User u){
     printf("%s;%s;%s;%d;%s\n",u->email, u->first_name, u->last_name, u->age, u->country);
 }
+
+void free_user(User u)
+{
+    free(u->email);
+    free(u->first_name);
+    free(u->last_name);
+    free(u->birth_date);
+    free(u->country);
+    g_slist_free(u->liked_music_ids);
+    free(u);
+}

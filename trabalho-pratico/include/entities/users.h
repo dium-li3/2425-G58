@@ -27,4 +27,7 @@ char get_sub_type (char *sub_type);
 //Dá print do email, nomes, idade e pais do utilizador.
 void print_info (User u);
 
+//Dá free do user
+void free_user (User u);
+
 #endif
