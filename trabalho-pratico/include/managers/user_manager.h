@@ -5,18 +5,18 @@
 
 #include "users.h"
 
-
-//g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
-typedef struct user_manager {
-    GHashTable *users_by_id;
-} *User_Manager;
+typedef struct user_manager *User_Manager;
 
 User_Manager create_user_manager();
 
-void insert_user_by_id(User u, User_Manager user_manager);  // o arg table é pointer ou não??
+void insert_user_by_id(User u, User_Manager user_manager);  
+
+void store_Users (FILE *fp_Users, User_Manager user_manager);
 
 User search_user_by_id(int id, User_Manager user_manager);
 
 void free_user_manager(User_Manager um);
+
+void responde_querie1 (FILE *fp_queries, User_Manager um);
 
 #endif

@@ -4,122 +4,62 @@
 #include <glib.h>
 
 #include "parser.h"
-#include "users.h"
 #include "user_manager.h"
-#include "sintatica.h"
 
-//int ABS = 0;
 
 /*
-    Passa a informação de uma string de artistas ou liked musics,
-    e passa-as para uma lista.
+    Guarda os ids de uma lista guardados 
+    numa linha para uma lista de verdade.
 */
 GSList *store_list (char *line){
     char *token = NULL;
     char *svptr = NULL;
 
     GSList *list = NULL;
-    token = strtok_r (line, "S\' ,]", &svptr);
+    token = strtok_r (line, "\' ,[]", &svptr);
 
-    int music_id = atoi (token);
-    list = g_slist_prepend (list, &music_id);
-    //list = g_slist_prepend (list, token);
-    for (;(token = strtok_r (NULL, "S\' ,]", &svptr)) != NULL;){
-        music_id = atoi (token);
-        list = g_slist_prepend (list, &music_id);
-        //list = g_slist_prepend (list, token);
-        //printf("%d\n", *(int *)list->data);
+    int *id1 = malloc(sizeof(int));
+    *id1 = atoi (token + 1);
+    list = g_slist_prepend (list, id1);
+    for (;(token = strtok_r (NULL, "\' ,]", &svptr)) != NULL;){
+        int *id = malloc(sizeof(int));
+        *id = atoi (token + 1);
+        list = g_slist_prepend (list, id);
     }
     return list;
 }
 
+//short *parse_time (char *line, short *time){}
+
 /*
-    Guarda a informação de um user,
-    retorna NULL se o user não for sintáticamente válido.
+    Separa uma linha nos seus tokens.
 */
-User store_user_line (char *line){
+char **parse_line (char *line, char **info){
     char *token = NULL;
     char *svptr = NULL;
-    char *info[9];
-    User u = NULL;
-    info [0] = strtok_r (line, ";\"", &svptr);
-    for (int j = 1; (token = strtok_r (NULL, ";\"", &svptr)) != NULL && j < 9; j++){
-        info [j] = token;
+    token = strtok_r (line+1, ";\"", &svptr);
+    info [0] = strdup (token);
+    for (int j = 1; (token = strtok_r (NULL, ";\"", &svptr)) != NULL && j < 8; j++){
+        info [j] = strdup(token);
     }
-    char sub_type = get_sub_type (info[6]);
-    int valid = valid_user_sintatic (info[1], info [4], sub_type);
-
-    int id;
-    int age;
-    GSList *liked_musics = NULL;
-    if (valid){ //store
-        id = atoi (info[0]+1);
-        age = get_age (info[4]);
-        liked_musics = store_list (info[7]);
-        u = create_user (id, info[1], info[2], info[3], info[4], age, info[5], sub_type, liked_musics);
-    }
-    // for (int i = 0; i < 9; i++)
-    //     free (info[i]);
-    return u;
+    return info;
 }
 
 /*
-    Atualiza o User_Manager com a informação de todos os users válidos,
-    devolve imediatamente o ficheiro de erro caso o utilizador não seja
-    válido e nem o guarda.
+    Guarda uma linha do file que lhe dão.
 */
-User_Manager store_Users (FILE *fp_Users, User_Manager user_manager){
+GSList *parse_file (FILE *fp_Users){
     ssize_t nRead;
     size_t n;
     char *line = NULL;
-    User user = NULL;
-    //char type = fp_entities [6];//'a' = users; 't' = musics; 'n' = artists
-    nRead = getline (&line, &n, fp_Users);
-    for (int i = 0; (nRead = getline (&line, &n, fp_Users)) != -1; i++){
-        user = store_user_line (line);
-        if (user != NULL){//adiciona à hash
-            insert_user_by_id (user, user_manager);
-        }
-        else {
-            //mandar a linha com infos invalidas para o ficheiro de erro nº i.
-        }
-    }
-    free(line);
-    return user_manager;
-}
-
-/*
-    Guarda os dados dos ficheiros nos managers de cada entidade,
-    dentro do manager de managers (futuramente).
-
-    Fáz também imediatamente a validação sintática dos dados
-    e os seus ficheiros de erro caso algum dado seja inválido.
-*/
-void store_entities (FILE **fp_entities, User_Manager user_manager){
-    user_manager = store_Users (fp_entities[0], user_manager);
-    //store_Musics (fp_entities[1]);
-    //store_Artists (fp_entities[2]); 
-    }
-
-
-void responde_querie1 (FILE *fp_queries, User_Manager um){
-    ssize_t nBytes;
-    size_t n;
-    char *line = NULL;
-    int i, id;
-    
-    for (i = 0; (nBytes = getline (&line, &n, fp_queries)) != -1; i++){
-        if (line[0] == '1'){
-            id = atoi (line + 3);
-            User u = search_user_by_id (id, um);
-            if (u != NULL) //aka existe nos dados guardados
-                print_info (u);
-            else fprintf(stdout, "\n");
-        }
-        else fprintf(stdout, "\n");
+    GSList *lista = NULL;
+    for (;(nRead = getline (&line, &n, fp_Users)) != -1;){
+        lista = g_slist_prepend (lista, strdup (line));
     }
     free (line);
+    return lista;
 }
+
 
 /*
     Dado o path onde se encontram os 3 ficheiros .csv,
@@ -173,7 +113,7 @@ int trabalho (int argc, char **argv){
     if (fp_entities == NULL)
         return -1;
     User_Manager user_manager = create_user_manager ();  
-    store_entities(fp_entities, user_manager);
+    store_Users(fp_entities[0], user_manager);
     responde_querie1 (fp_queries, user_manager);
     free_user_manager (user_manager);
     fclose3Entities (fp_entities);

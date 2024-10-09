@@ -5,14 +5,28 @@
 #include "users.h"
 #include "user_manager.h"
 
-GSList *store_list (char *list);
 
-User store_user_line (char *line);
+/*
+    Guarda os ids de uma lista guardados 
+    numa linha para uma lista de verdade.
+*/
+GSList *store_list (char *line);
 
-User_Manager store_Users (FILE *fp_Users, User_Manager user_manager);
+/*
+    Guarda os ids de uma lista guardados 
+    numa linha para uma lista de verdade.
+*/
+GSList *parse_list (char *line);
 
+/*
+    Separa uma linha nos seus tokens.
+*/
+char **parse_line (char *line, char **tokens);
 
-void store_entities (FILE **fp_entities, User_Manager user_manager);
+/*
+    Guarda as linhas lidas numa lista ligada ...
+*/
+GSList *parse_file (FILE *fp_Users);
 
 /*
     Dado o path onde se encontram os 3 ficheiros .csv,

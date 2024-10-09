@@ -53,7 +53,6 @@ int valid_email_string (char *email){
                 r = 0;
         }
     }
-    if (r == 0)
     return r;
 }
 
@@ -66,13 +65,15 @@ int valid_date (char *date){
     int r = 1;
     int mes = 0;
     int dia = 0;
+    int ano = 0;
     int i;
     if (strlen (date) != 10)
         r = 0;
     if (date[4] != '/' && date[7] != '/')
         r = 0;
     for (i = 0; r && isdigit(date[i]); i++);
-    if (i != 4)
+    ano = atoi (date);
+    if (i != 4 || ano > 2024)
         r = 0;
     for (i = 5; r && isdigit(date[i]); i++);
     mes = atoi (date + 5);
@@ -82,7 +83,13 @@ int valid_date (char *date){
     dia = atoi (date + 8);
     if (i != 10 || dia > 31 || dia < 0)
         r = 0;
-    if (r == 0)
+    if (ano == 2024){
+        if (mes > 9)
+            r = 0;
+        if (mes == 9)
+            if (dia > 9)
+                r = 0;
+    }
     return r;
 }
 

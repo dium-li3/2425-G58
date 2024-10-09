@@ -11,6 +11,7 @@ int main (int argc, char **argv){
         return 1;
     }
     int r = trabalho (argc, argv);
+    
     // Execute work
     struct rusage r_usage;
     getrusage(RUSAGE_SELF, &r_usage);
