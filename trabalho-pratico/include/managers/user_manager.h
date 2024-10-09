@@ -3,15 +3,20 @@
 
 #include <glib.h>
 
-typedef struct user_manager {
-    GHashTable users_by_id;
-}User_Manager;
+#include "users.h"
 
+typedef struct user_manager *User_Manager;
 
-// GHashTable createHash ???
+User_Manager create_user_manager();
 
-void insert_user_by_id(User *u, GHashTable table);  // o arg table é pointer ou não??
+void insert_user_by_id(User u, User_Manager user_manager);  
 
-User* search_user_by_id(int id, GHashTable table);
+void store_Users (FILE *fp_Users, User_Manager user_manager);
+
+User search_user_by_id(int id, User_Manager user_manager);
+
+void free_user_manager(User_Manager um);
+
+void responde_querie1 (FILE *fp_queries, User_Manager um);
 
 #endif
