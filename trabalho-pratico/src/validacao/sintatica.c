@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 
 #include "sintatica.h"
 
@@ -70,7 +69,7 @@ int valid_date (char *date){
     v = v ? date[4] == '/' && date[7] == '/' : 0;
     char *svptr;
     if (v){
-        char *s = strdup(date);
+        char *s = strdup(date); //já n se verifica se é td digitos entre 0-3, 5-6 e 8-9...
         ano = atoi (strtok_r (s, "/", &svptr));
         mes = atoi (strtok_r (NULL, "/", &svptr));
         dia = atoi (strtok_r (NULL, "/", &svptr));
