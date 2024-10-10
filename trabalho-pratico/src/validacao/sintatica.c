@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <stdbool.h>
 
 #include "sintatica.h"
 
@@ -62,35 +62,29 @@ int valid_email_string (char *email){
     meses entre 1 e 12 e dias entre 1 e 31
 */
 int valid_date (char *date){
-    int r = 1;
+    int v;
     int mes = 0;
     int dia = 0;
     int ano = 0;
-    int i;
-    if (strlen (date) != 10)
-        r = 0;
-    if (date[4] != '/' && date[7] != '/')
-        r = 0;
-    for (i = 0; r && isdigit(date[i]); i++);
-    ano = atoi (date);
-    if (i != 4 || ano > 2024)
-        r = 0;
-    for (i = 5; r && isdigit(date[i]); i++);
-    mes = atoi (date + 5);
-    if (i != 7 || mes > 12 || mes < 0)
-        r = 0;
-    for (i = 8; r && i < 10 && isdigit(date[i]); i++);
-    dia = atoi (date + 8);
-    if (i != 10 || dia > 31 || dia < 0)
-        r = 0;
-    if (ano == 2024){
-        if (mes > 9)
-            r = 0;
-        if (mes == 9)
-            if (dia > 9)
-                r = 0;
+    v = strlen(date) == 10 ? 1 : 0;
+    v = v ? date[4] == '/' && date[7] == '/' : 0;
+    char *svptr;
+    if (v){
+        char *s = strdup(date);
+        ano = atoi (strtok_r (s, "/", &svptr));
+        mes = atoi (strtok_r (NULL, "/", &svptr));
+        dia = atoi (strtok_r (NULL, "/", &svptr));
+        free(s);
+        if (ano > 2024 || mes > 12 || dia > 31) v = 0;
+        if (v && ano == 2024){
+            if (mes > 9)
+                v = 0;
+            if (mes == 9)
+                if (dia > 9)
+                    v = 0;
+        }
     }
-    return r;
+    return v;
 }
 
 /*
@@ -104,6 +98,7 @@ int valid_subscription (char *subs_type){
 
 //Verifica se os campos que têm de ser sintáticamente validados de um dado utilizador estão direito/válidos.
 int valid_user_sintatic (char *email, char *date, char sub_type){
+   // printf("CALL VALID DATE%s\n",date);
     return valid_email_string(email) && valid_date(date) && (sub_type != 'E');
 }
 

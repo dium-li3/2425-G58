@@ -9,6 +9,6 @@ typedef struct artist{
     int *id_constituent; //ou int e ignoramos o A de todos os artistas?
     char *country;
     char type; //solo = S grupo = G;
-} Artist;
+} *Artist;
 
 #endif

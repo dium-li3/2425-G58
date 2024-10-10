@@ -21,8 +21,8 @@ User_Manager create_user_manager(){
     Insere um User na posição id da hash table.
 */
 void insert_user_by_id(User u, User_Manager user_manager){
-    int id = get_user_id(u);
-    g_hash_table_insert (user_manager->users_by_id, &id, u);
+    int *id = get_user_id_pointer(u);
+    g_hash_table_insert (user_manager->users_by_id, id, u);
 }
 
 void store_Users (FILE *fp_Users, User_Manager user_manager){
@@ -73,8 +73,9 @@ void responde_querie1 (FILE *fp_queries, User_Manager um){
         if (line[0] == '1'){
             id = atoi (line + 3);
             User u = search_user_by_id (id, um);
-            if (u != NULL) //aka existe nos dados guardados
+            if (u != NULL){//aka existe nos dados guardados
                 print_user_info (u);
+            }
             else fprintf(stdout, "\n");
         }
       //  else fprintf(stdout, "\n");

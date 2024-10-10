@@ -16,6 +16,8 @@ User create_user_from_tokens (char **token);
 //Devolve o username de um utilizador.
 int get_user_id (User u);
 
+int *get_user_id_pointer (User u);
+
 //Devolva os anos passados de uma string que representa uma data.
 short get_age (char *bd);
 

@@ -36,7 +36,8 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
 */
 User create_user_from_tokens (char **tokens){
     char sub_type = get_sub_type (tokens[6]);
-    int valid = valid_user_sintatic (tokens[1], tokens [4], sub_type);
+    //printf("id : %s data : %s\n", tokens[0], tokens[4]);
+    int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type);
     int id;
     int age;
     GSList *liked_musics = NULL;
@@ -53,6 +54,10 @@ User create_user_from_tokens (char **tokens){
 //Devolve o username do utilizador.
 int get_user_id(User u){
     return u->id;
+}
+
+int *get_user_id_pointer (User u){
+    return &(u->id);
 }
 
 //Devolva os anos passados de uma string que representa uma data.

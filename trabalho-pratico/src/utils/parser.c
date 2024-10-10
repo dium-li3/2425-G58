@@ -53,6 +53,7 @@ GSList *parse_file (FILE *fp_Users){
     size_t n;
     char *line = NULL;
     GSList *lista = NULL;
+    nRead = getline (&line, &n, fp_Users);//ignorar a 1º linha
     for (;(nRead = getline (&line, &n, fp_Users)) != -1;){
         lista = g_slist_prepend (lista, strdup (line));
     }
