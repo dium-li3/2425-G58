@@ -25,24 +25,38 @@ void insert_user_by_id(User u, User_Manager user_manager){
     g_hash_table_insert (user_manager->users_by_id, id, u);
 }
 
+
+/*
+    Guarda o user de uma linha na hash table do manager.
+    Devolve 1 caso tenha corrido tudo bem, e
+    devolve 0 caso o user tenha falhado a validação
+    sintática, nesse caso não o guarda.
+*/
+int store_User (User_Manager user_manager, GSList *linhas){
+    int r = 1;
+    char **tokens = calloc (8 ,sizeof(char *));
+    char *linha = strdup (linhas->data);
+    tokens = parse_line(linha, tokens);
+    free (linha);
+    User user = create_user_from_tokens (tokens);
+    for (int i = 0; i < 8; i++){
+        free (tokens[i]);
+    }
+    free (tokens);
+    if (user != NULL){
+        insert_user_by_id (user, user_manager);
+    }
+    else r = 0;
+    return r;
+}
+
 void store_Users (FILE *fp_Users, User_Manager user_manager){
     GSList *linhas = parse_file (fp_Users);
     FILE *user_errors = fopen ("user_errors.csv", "w+");
     GSList *help = linhas;
     while (linhas != NULL){
-        char **tokens = calloc (8 ,sizeof(char *));
-        char *linha = strdup (linhas->data);
-        tokens = parse_line(linha, tokens);
-        free (linha);
-        User user = create_user_from_tokens (tokens);
-        for (int i = 0; i < 8; i++){
-            free (tokens[i]);
-        }
-        free (tokens);
-        if (user != NULL){
-            insert_user_by_id (user, user_manager);
-        }
-        else {
+        int user_valido = store_User (user_manager, linhas);
+        if (!user_valido) {
             //print da linha para o documento de erros de user.
             fprintf(user_errors, "%s", (char *)linhas->data);
         }
