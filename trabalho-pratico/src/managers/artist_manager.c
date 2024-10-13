@@ -46,7 +46,7 @@ Arr_art create_arr_art(Art_Manager art_manager, char *country)
 
     arr_art->tamanho = 0;
     arr_art->country = country;
-    arr_art->artists = g_array_new(FALSE, FALSE, sizeof(struct array_art));
+    arr_art->artists = g_array_new(FALSE, FALSE, sizeof(struct artist));
 }
 
 void add_arr_art(gpointer *key, gpointer *value, gpointer *art_data)
@@ -90,23 +90,20 @@ void responde_querie2(FILE *fp_queries, Art_Manager am)
     ssize_t nBytes;
     size_t n;
     char *line = NULL;
-    int N;
-    Arr_art arr_art;
 
     for (int i = 0; (nBytes = getline(&line, &n, fp_queries)) != -1; i++)
     {
         if (line[0] == '2')
         {
             char *n_str = strtok(line + 2, " ");
-            N = atoi(n_str);
+            int N = atoi(n_str);
 
             char *country_str = strtok(NULL, "\n");
-            arr_art = create_arr_art(am, country_str);
+            Arr_art arr_art = create_arr_art(am, country_str);
+            
             fill_arr_art(am, arr_art);
-
             for (int j = 0; j < N; i++)
                 print_art_info(g_array_index(arr_art->artists, Artist, j));
-
         }
     }
     free(line);
