@@ -60,8 +60,6 @@ void free_user_manager(User_Manager um){
     free (um);
 }
 
-
-
 void responde_querie1 (FILE *fp_queries, User_Manager um){
     ssize_t nBytes;
     size_t n;
