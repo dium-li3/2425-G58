@@ -42,6 +42,7 @@ void store_Entities (FILE **fp, Entity_Manager entity_M){
         }
     else 
         fprintf(fp, " ");
+    fclose (fp);
 }
 
 void answer1 (int id, Entity_Manager em, int n_querie){

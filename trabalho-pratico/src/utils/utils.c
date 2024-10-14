@@ -11,9 +11,3 @@ int make_dir (char *dir){
     int r = mkdir (dir, 0777);
     return r;
 }
-
-char *get_output_file(int N){
-    char file[22];
-    snprintf (file, 22, "command%d_output.txt", N);
-    return file;
-}

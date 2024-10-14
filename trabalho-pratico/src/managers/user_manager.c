@@ -89,7 +89,7 @@ int store_User (User_Manager user_manager, char *line){
 
 void store_Users (FILE *fp_Users, User_Manager user_manager){
     ssize_t nRead = 0;
-    mkdir ("dataset-errors", 0777);
+    char **line = calloc(1, sizeof (char *));
     FILE *user_errors = fopen ("dataset-errors/user_errors.csv", "w+");
     while (nRead != -1){
         User user = parse_line (fp_Users, create_user_from_tokens, &nRead);
@@ -98,13 +98,16 @@ void store_Users (FILE *fp_Users, User_Manager user_manager){
         }
         else{
             if (nRead != -1){
-                char **line = calloc(1, sizeof (char *));
+                *line = NULL;
                 fseek (fp_Users, -nRead, SEEK_CUR);
                 parse_1line (fp_Users, line);
-                fprintf(user_errors, "%s", *line); //tenho q mover para tras  
+                fprintf(user_errors, "%s", *line);
+                free (*line);
             }
         }
     }
+    fclose (user_errors);
+    free (line); 
 }
 
 

@@ -24,12 +24,13 @@ int trabalho (int argc, char **argv){
     Entity_Manager entity_manager = create_entity_manager (); 
     //Armazenamento e ordenação da informação (e validação sintática :3)
     store_Entities(fp_entities, entity_manager);
+    fclose3Entities (fp_entities);
     //validação lógica da informação
     //Resposta às queries
     answer_all_queries (fp_queries, entity_manager);
     //free moment
     free_entity_manager (entity_manager);
-    fclose3Entities (fp_entities);
+    fclose(fp_queries);
     return 0;
 }
 
