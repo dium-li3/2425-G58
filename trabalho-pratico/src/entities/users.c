@@ -1,9 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "users.h"
-#include "sintatica.h"
-#include "parser.h"
-
 typedef struct user{
     int id;
     char *email;
@@ -36,7 +31,6 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
 */
 User create_user_from_tokens (char **tokens){
     char sub_type = get_sub_type (tokens[6]);
-    //printf("id : %s data : %s\n", tokens[0], tokens[4]);
     int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type);
     int id;
     int age;
@@ -44,7 +38,7 @@ User create_user_from_tokens (char **tokens){
     User u = NULL;
     if (valid){ //store
         id = atoi (tokens[0]+1);
-        age = get_age (tokens[4]);
+        age = read_date_to_age (tokens[4]);
         liked_musics = store_list (tokens[7]);
         u = create_user (id, tokens[1], tokens[2], tokens[3], tokens[4], age, tokens[5], sub_type, liked_musics);
     }
@@ -60,25 +54,26 @@ int *get_user_id_pointer (User u){
     return &(u->id);
 }
 
-//Devolva os anos passados de uma string que representa uma data.
-short get_age (char *bd){
-    short age = 0;
-    short year_month_day[3];
-    char *y_m_d = NULL;
-    char *strpt = NULL;
-
-    y_m_d = strtok_r (bd, "/", &strpt);
-    year_month_day[0] = (short)atoi (y_m_d);
-    for (int i = 1;(y_m_d = strtok_r (NULL, "/:\n", &strpt)) != NULL && i < 3; i++)
-        year_month_day[i] = (short)atoi (y_m_d);
-
-    age = 2023 - year_month_day[0];
-    if (year_month_day[1] < 9) age++;
-    if (year_month_day[1] == 9){
-        if (year_month_day[2] <= 9) age++;
-    }
-    return age;
+char *get_user_email (User u){
+    return u->email;
 }
+
+char *get_user_first_name (User u){
+    return u->first_name;
+}
+
+char *get_user_last_name (User u){
+    return u->last_name;
+}
+
+char *get_user_country (User u){
+    return u->country;
+}
+
+short get_user_age (User u){
+    return u->age;
+}
+
 
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type){
@@ -88,13 +83,6 @@ char get_sub_type (char *sub_type){
     if (strcmp(sub_type, "premium") == 0)
         c = 'P';
     return c;
-}
-
-/*
-    Dá print do email, nomes, idade e pais do utilizador.
-    No futuro isto não será no stdout e sim no ficheiro de outputs assumo eu.
-*/void print_user_info (User u){
-    fprintf(stdout, "%s;%s;%s;%d;%s\n",u->email, u->first_name, u->last_name, u->age, u->country);
 }
 
 void free_user(User u)

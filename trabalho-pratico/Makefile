@@ -1,32 +1,40 @@
-CC=gcc
-CFLAGS=-Wall -O3 -Iinclude/utils -Iinclude/entities -Iinclude/managers -Iinclude//validacao $(shell pkg-config --cflags glib-2.0)
-LDFLAGS= $(shell pkg-config --libs glib-2.0)
-EXE1=programa_principal
-S=src/
-INC=include/
-SU=$(S)utils/
-SE=$(S)entities/
-SM=$(S)managers/
-SV=$(S)validacao/
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -O0 $(shell pkg-config --cflags glib-2.0) -g
+#CFLAGS = -Wall -O3 $(shell pkg-config --cflags glib-2.0)
+LDFLAGS = $(shell pkg-config --libs glib-2.0)
 
+# Directories
+SRC_DIR = src
+INC_DIR = include
 
-$(EXE1): $(S)main.o $(SU)parser.o $(SM)user_manager.o $(SE)users.o $(SE)musics.o $(SE)artists.o $(SV)sintatica.o
+# Find all subdirectories under src/ and include/
+SRC_SUBDIRS = $(shell find $(SRC_DIR) -type d)
+INC_SUBDIRS = $(shell find $(INC_DIR) -type d)
+
+# Add -I flags for each subdirectory inside include/
+CFLAGS += $(foreach dir, $(INC_SUBDIRS), -I$(dir))
+
+# Find all .c files in src and its subdirectories
+SRCS = $(foreach dir, $(SRC_SUBDIRS), $(wildcard $(dir)/*.c))
+
+# Object files
+OBJS = $(SRCS:.c=.o)
+
+# Executable
+EXE1 = programa-principal
+
+# Default target
+all: $(EXE1)
+
+# Link the executable
+$(EXE1): $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-$(S)main.o: $(S)main.c
+# Compile .c files into .o
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(SU)parser.o: $(SU)parser.c
-
-$(SM)user_manager.o: $(SM)user_manager.c
-
-$(SE)users.o : $(SE)users.c
-
-$(SE)musics.o : $(SE)musics.c
-
-$(SE)artists.o : $(SE)artists.c
-
-$(SV)sintatica.o : $(SV)sintatica.c
- 
-
+# Clean target
 clean:
-	rm $(S)*.o $(EXE1)
+	rm -f $(OBJS) $(EXE1)

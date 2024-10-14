@@ -1,5 +1,5 @@
-#ifndef _SINTATICA_
-#define _SINTATICA_
+#ifndef SINTATICA_H
+#define SINTATICA_H
 
 
 //Verifica se uma duração é válida e está escrita direito.

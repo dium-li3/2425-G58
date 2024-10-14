@@ -1,6 +1,12 @@
-#ifndef _USERS_
-#define _USERS_
+#ifndef USERS_H
+#define USERS_H
 #include <glib.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "users.h"
+#include "sintatica.h"
+#include "parser.h"
 
 typedef struct user *User;
 
@@ -19,14 +25,19 @@ int get_user_id (User u);
 //Devolve o pointer do id do user, só é usada por uma única funçção da User_Manager
 int *get_user_id_pointer (User u);
 
-//Devolva os anos passados de uma string que representa uma data.
-short get_age (char *bd);
+char *get_user_email (User u);
+
+char *get_user_first_name(User u);
+
+char *get_user_last_name(User u);
+
+char *get_user_country(User u);
+
+short get_user_age (User u);
 
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type);
 
-//Dá print do email, nomes, idade e pais do utilizador.
-void print_user_info (User u);
 
 //Dá free do user
 void free_user (User u);
