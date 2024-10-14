@@ -5,11 +5,11 @@
 
 typedef struct music *Music;
 
-Music create_music(int id, char *t, GSList arts_ids, char *d, int d_s, char g, short year, char *l);
+Music create_music_from_tokens (char **tokens);
 
 int get_music_id(Music m);
 
-char get_genre(Music m);
+char* get_genre(Music m);
 
 int get_duration(Music m);
 
