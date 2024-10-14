@@ -50,18 +50,15 @@ void *parse_line (FILE * fp, void *(*Func)(char **), ssize_t *nRead){
     char *token = NULL;
     char *svptr = NULL;
     *nRead = getline (&line, &n, fp);
-    if (*line != '\0'){
+    if (*nRead != -1){
         token = strtok_r (line, ";\"\n", &svptr);
         char **info = calloc (8, sizeof (char *));
-        if (*nRead != -1){
-            info [0] = strdup (token);
-            for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < 8; j++){
-                info [j] = strdup(token);
-            }
-            entity = Func (info);
-            free_tokens (info, 8);
-            free (token);
+        info [0] = strdup (token);
+        for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < 8; j++){
+            info [j] = strdup(token);
         }
+        entity = Func (info);
+        free_tokens(info, 8);
     }
     free (line);
     return entity;
