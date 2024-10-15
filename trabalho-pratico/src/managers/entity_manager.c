@@ -40,8 +40,6 @@ void store_Entities (FILE **fp, Entity_Manager entity_M){
         char *country = get_user_country(u);
         fprintf(fp, "%s;%s;%s;%d;%s\n",email , first_name, last_name, age, country);
         }
-    else 
-        fprintf(fp, " ");
     fclose (fp);
 }
 
