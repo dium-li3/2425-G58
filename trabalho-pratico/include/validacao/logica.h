@@ -1,5 +1,6 @@
-#ifndef _LOGICA_
-#define _LOGICA_
+#ifndef LOGICA_H
+#define LOGICA_H
+
 #include "users.h"
 #include "musics.h"
 #include "artists.h"
