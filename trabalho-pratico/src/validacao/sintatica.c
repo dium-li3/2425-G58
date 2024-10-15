@@ -9,17 +9,14 @@
 //Verifica se uma duração é válida e está escrita direito.
 int valid_duration (char *duration){
     int r = 1;
-    if (strlen (duration) != 8)
-        r = 0;
-    if (r && duration [2] != ':' && duration [5] != ':')
-        r = 0;
+    if (strlen (duration) != 8) r = 0;
+
     for (int i = 0; r && duration[i] != '\0'; i++){
-        if (i == 2 || i == 5){
-            i++;
-            r = isdigit(duration[i]) && (duration[i] < '6');
-        }
-        r = isdigit (duration[i]);
+        if (i == 2 || i == 5) r = duration[i] == ':';
+        else if (i == 3 || i == 6) r = isdigit (duration[i]) && duration[i] < '6';
+        else r = isdigit (duration[i]);
     }
+
     return r;
 }
 

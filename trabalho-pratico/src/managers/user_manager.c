@@ -120,6 +120,3 @@ void free_user_manager(User_Manager um){
     g_hash_table_destroy (um->users_by_id);
     free (um);
 }
-
-
-
