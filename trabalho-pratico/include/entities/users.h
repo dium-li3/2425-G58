@@ -17,7 +17,7 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-User create_user_from_tokens (char **token);
+void *create_user_from_tokens (char **token);
 
 //Devolve o username de um utilizador.
 int get_user_id (User u);

@@ -7,6 +7,8 @@
 #include "utils.h"
 
 typedef struct entity_manager{
+    //Art_Manager art_M;
+    //Music_Manager music_M;
     User_Manager user_M;
 } *Entity_Manager;
 
@@ -19,7 +21,7 @@ Entity_Manager create_entity_manager(){
 
 void store_Entities (FILE **fp, Entity_Manager entity_M){
     //store_Artists (fp[2], entity_M->artist_M);
-    //store_Artists (fp[1], entity_M->artist_M);
+    //store_Musics (fp[1], entity_M->music_M);
     store_Users (fp[0], entity_M->user_M);
 }
 
@@ -40,8 +42,6 @@ void store_Entities (FILE **fp, Entity_Manager entity_M){
         char *country = get_user_country(u);
         fprintf(fp, "%s;%s;%s;%d;%s\n",email , first_name, last_name, age, country);
         }
-    else 
-        fprintf(fp, " ");
     fclose (fp);
 }
 

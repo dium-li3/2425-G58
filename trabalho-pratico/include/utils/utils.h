@@ -1,3 +1,5 @@
+#ifndef UTILS
+#define UTILS
 
 
 /*
@@ -6,3 +8,4 @@
 */
 int make_dir (char *dir);
 
+#endif

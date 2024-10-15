@@ -92,7 +92,7 @@ void store_Users (FILE *fp_Users, User_Manager user_manager){
     char **line = calloc(1, sizeof (char *));
     FILE *user_errors = fopen ("dataset-errors/user_errors.csv", "w+");
     while (nRead != -1){
-        User user = parse_line (fp_Users, create_user_from_tokens, &nRead);
+        User user = (User)parse_line (fp_Users, create_user_from_tokens, &nRead);
         if (user != NULL){
             insert_user_by_id (user, user_manager);
         }

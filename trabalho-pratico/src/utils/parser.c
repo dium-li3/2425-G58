@@ -64,6 +64,7 @@ void *parse_line (FILE * fp, void *(*Func)(char **), ssize_t *nRead){
     return entity;
 }
 
+//Parse queries vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
 int parse_line_spaces (char *line, char **info){
     int n_token = 0;
     char *token = NULL;
@@ -111,7 +112,7 @@ int parse_1line_querie(FILE *fp, char **info){
     free(line);
     return n_token;
 }
-
+//Parse queries ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 /*
     Guarda uma linha do file que lhe dão.
 */

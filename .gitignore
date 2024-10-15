@@ -35,6 +35,8 @@
 *.i*86
 *.x86_64
 *.hex
+programa-principal
+programa-testes
 
 # Debug files
 *.dSYM/
@@ -53,3 +55,4 @@ dkms.conf
 
 # Ignore CSV files
 *.csv
+*.txt

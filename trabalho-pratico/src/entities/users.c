@@ -29,7 +29,7 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-User create_user_from_tokens (char **tokens){
+void *create_user_from_tokens (char **tokens){
     char sub_type = get_sub_type (tokens[6]);
     int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type);
     int id;
