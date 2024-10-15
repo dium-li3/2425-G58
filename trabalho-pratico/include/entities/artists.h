@@ -1,5 +1,6 @@
 #ifndef _ARTISTS_
 #define _ARTISTS_
+
 #include <glib.h>
 
 typedef struct artist *Artist;

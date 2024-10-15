@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include <stdio.h>
 #include "artists.h"
 // #include "sintatica.h"
@@ -53,3 +54,4 @@ void free_art(Artist a)
     free(a->country);
     free(a);
 }
+
