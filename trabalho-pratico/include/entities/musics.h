@@ -1,7 +1,7 @@
 #ifndef MUSICS_H
 #define MUSICS_H
 
-typedef struct musics{
-}Musics;
+typedef struct music{
+}Music;
 
 #endif
