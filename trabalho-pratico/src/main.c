@@ -19,7 +19,6 @@ int trabalho (int argc, char **argv){
     FILE **fp_entities = fopen3Entities (path);
     if (fp_entities == NULL)
         return -1;
-    make_dir ("dataset-errors");
     make_dir ("resultados");
     Entity_Manager entity_manager = create_entity_manager (); 
     //Armazenamento e ordenação da informação + validação
