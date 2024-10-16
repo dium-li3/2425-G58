@@ -67,6 +67,14 @@ int get_music_id(Music m) {
 }
 
 
+int *get_music_id_pointer (Music m){
+    int *copy = malloc(sizeof(int));
+    *copy = m->id;
+
+    return copy;
+}
+
+
 
 char* get_genre(Music m) {
     return (strdup(m->genre));

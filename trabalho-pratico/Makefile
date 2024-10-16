@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
-#CFLAGS = -Wall -O0 $(shell pkg-config --cflags glib-2.0) -g
-CFLAGS = -Wall -O3 $(shell pkg-config --cflags glib-2.0)
+CFLAGS = -Wall -O0 $(shell pkg-config --cflags glib-2.0) -g
+#CFLAGS = -Wall -O3 $(shell pkg-config --cflags glib-2.0)
 LDFLAGS = $(shell pkg-config --libs glib-2.0)
 
 # Directories
