@@ -175,11 +175,11 @@ FILE **fopen3Entities (char *path){
     }
 
     strcpy (help, path);
-    strcpy (help + length_path, "users.csv");
+    strcpy (help + length_path, "/users.csv");
     fp_entities[0] = fopen (help, "r");
-    strcpy (help + length_path, "musics.csv");
+    strcpy (help + length_path, "/musics.csv");
     fp_entities[1] = fopen (help, "r");
-    strcpy (help + length_path, "artists.csv");
+    strcpy (help + length_path, "/artists.csv");
     fp_entities[2] = fopen (help, "r");
     free (help);
 
