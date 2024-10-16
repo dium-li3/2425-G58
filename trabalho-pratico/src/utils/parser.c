@@ -166,7 +166,7 @@ short read_date_to_age (char *bd){
 */
 FILE **fopen3Entities (char *path){
     size_t length_path = strlen(path);
-    char *help = malloc (length_path+12);
+    char *help = malloc (length_path+13);
     FILE **fp_entities = malloc (sizeof (FILE*) * 3);
 
     if (fp_entities == NULL || help == NULL){
