@@ -36,9 +36,9 @@ Music create_music(int id, char *t, GSList *arts_ids, char *d, int d_s, char *g,
 /*
     Calcula a duração em segundos. Só pode ser usada depois de se validar a string.
 */
-int calc_duration(char *s) {
+int calc_duration(char *st) {
     int h = 0, m = 0, s = 0;
-    sscanf(s, "%d:%d:%d", &h, &m, &s);
+    sscanf(st, "%d:%d:%d", &h, &m, &s);
 
     return (h*3600 + m*60 + s);
 }
@@ -68,7 +68,7 @@ int get_music_id(Music m) {
 
 
 
-char get_genre(Music m) {
+char* get_genre(Music m) {
     return (strdup(m->genre));
 }
 

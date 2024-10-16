@@ -3,7 +3,7 @@
 
 #include <glib.h>
 
-#include "artist.h"
+#include "artists.h"
 
 typedef struct art_manager *Art_Manager;
 

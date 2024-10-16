@@ -7,7 +7,7 @@ typedef struct art_manager
 {
     GHashTable *art_by_id;
 } *Art_Manager;
-
+/*
 typedef struct array_art
 {
     GArray *artists;
@@ -107,4 +107,4 @@ void responde_querie2(FILE *fp_queries, Art_Manager am)
         }
     }
     free(line);
-}
+}*/

@@ -15,7 +15,7 @@ typedef struct artist{
     char type; //individual = I e grupo = G
     int disc_duration;
 } *Artist;
-
+/*
 Artist create_art (int id, char *name, char *desc, float rps, int *idc, char *coun, char type){
     Artist a = malloc(sizeof (struct artist));
     a->id = id;
@@ -53,5 +53,4 @@ void free_art(Artist a)
     free(a->idc);
     free(a->country);
     free(a);
-}
-
+}*/
