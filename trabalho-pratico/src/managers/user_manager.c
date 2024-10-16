@@ -14,7 +14,7 @@ typedef struct user_manager {
 
 User_Manager create_user_manager(){
     User_Manager um = malloc (sizeof(struct user_manager));
-    um->users_by_id = g_hash_table_new_full (g_int_hash, g_int_equal, NULL, (void *)free_user); //hash
+    um->users_by_id = g_hash_table_new_full (g_int_hash, g_int_equal, free, (void *)free_user); //hash
     return um;
 }
 

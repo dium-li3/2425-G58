@@ -9,6 +9,8 @@ Music create_music_from_tokens (char **tokens);
 
 int get_music_id(Music m);
 
+int *get_music_id_pointer (Music m);
+
 char* get_genre(Music m);
 
 int get_duration(Music m);

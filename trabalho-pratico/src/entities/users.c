@@ -51,7 +51,10 @@ int get_user_id(User u){
 }
 
 int *get_user_id_pointer (User u){
-    return &(u->id);
+    int *copy = malloc(sizeof(int));
+    *copy = u->id;
+
+    return copy;
 }
 
 char *get_user_email (User u){
