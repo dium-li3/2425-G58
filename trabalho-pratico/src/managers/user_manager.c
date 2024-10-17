@@ -90,7 +90,7 @@ int store_User (User_Manager user_manager, char *line){
 void store_Users (FILE *fp_Users, User_Manager user_manager){
     ssize_t nRead = 0;
     char **line = calloc(1, sizeof (char *));
-    FILE *user_errors = fopen ("resultados/user_errors.csv", "w+");
+    FILE *user_errors = fopen ("resultados/users_errors.csv", "w+");
     while (nRead != -1){
         User user = (User)parse_line (fp_Users, create_user_from_tokens, &nRead);
         if (user != NULL){
