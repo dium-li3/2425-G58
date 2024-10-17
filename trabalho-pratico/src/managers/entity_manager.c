@@ -33,7 +33,7 @@ void store_Entities (FILE **fp, Entity_Manager entity_M){
 */void print_user_info (User u, int n_querie){
     char output_file[34];//dá para numeros até 9999
     snprintf (output_file, 34, "resultados/command%d_output.txt", n_querie);
-    FILE *fp = fopen (output_file, "w+");
+    FILE *fp = fopen (output_file, "w");
     if (u != NULL){
         char *email = get_user_email(u);
         char *first_name = get_user_first_name(u);
@@ -42,6 +42,7 @@ void store_Entities (FILE **fp, Entity_Manager entity_M){
         char *country = get_user_country(u);
         fprintf(fp, "%s;%s;%s;%d;%s\n",email , first_name, last_name, age, country);
         }
+    else frpintf(fp, "\n");
     fclose (fp);
 }
 
