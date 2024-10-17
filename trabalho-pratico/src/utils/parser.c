@@ -27,13 +27,15 @@ GSList *store_list (char *line){
     GSList *list = NULL;
     token = strtok_r (line, "\' ,[]", &svptr);
 
-    int *id1 = malloc(sizeof(int));
-    *id1 = atoi (token + 1);
-    list = g_slist_prepend (list, id1);
-    for (;(token = strtok_r (NULL, "\' ,]", &svptr)) != NULL;){
-        int *id = malloc(sizeof(int));
-        *id = atoi (token + 1);
-        list = g_slist_prepend (list, id);
+    if (token != NULL) {
+        int *id1 = malloc(sizeof(int));
+        *id1 = atoi (token + 1);
+        list = g_slist_prepend (list, id1);
+        for (;(token = strtok_r (NULL, "\' ,]", &svptr)) != NULL;){
+            int *id = malloc(sizeof(int));
+            *id = atoi (token + 1);
+            list = g_slist_prepend (list, id);
+        }
     }
     return list;
 }
