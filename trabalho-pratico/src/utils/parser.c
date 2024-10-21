@@ -74,7 +74,7 @@ int parse_line_spaces (char *line, char **info){
     char *ajudante = strdup (line);
     token = strtok_r (ajudante, " ", &svptr);
     info [n_token++] = strdup (token);
-    while ((token = strtok_r (NULL, " \n", &svptr)) != NULL && n_token < 3){
+    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 3){
         info [n_token++] = strdup(token);
     }
     free (ajudante);
@@ -86,11 +86,14 @@ int parse_3_tokens (char *line, char **info){
     char *token = NULL;
     char *svptr = NULL;
     char *ajudante = strdup (line);
-    while ((token = strtok_r (ajudante, " \"\n", &svptr)) != NULL && n_token < 2)
-        info [n_token++] = strdup (token);
-    token = strtok_r (NULL, " ", &svptr);
+    token = strtok_r (ajudante, " ", &svptr);
+    info [n_token++] = strdup (token);
+    token = strtok_r (NULL, " \"", &svptr);
+    info [n_token++] = strdup (token);
+    token = strtok_r (NULL, "\"", &svptr);
     if (token != NULL)//pode ser vazio
         info [n_token++] = strdup(token);
+    free (ajudante);
     return n_token;
 }
 
@@ -101,11 +104,11 @@ int parse_1line_querie(FILE *fp, char **info){
     char *line = NULL;
     if ((nRead = getline (&line, &n, fp)) != -1){
         switch (line[0]){
-            case (2):
+            case ('2'):
                 n_token = parse_3_tokens (line, info);
                 break;
-            case (1):
-            case (3):
+            case ('1'):
+            case ('3'):
             default:
                 n_token = parse_line_spaces (line, info);
         }

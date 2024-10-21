@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+//#include <regex.h>
 #include "sintatica.h"
 
 
@@ -34,17 +34,17 @@ int valid_email_string (char *email){
     int rs = 0;
     int r = 1;
     //Valida o username do email
-    for (; (isdigit (email[us]) || islower (email[us])) && email[us] != '@' && email[us] != '\0'; us++);
+    for (; (isdigit (email[us]) || islower (email[us])) && email[us] != '\0'; us++);
     if (us == 0 || email[us] != '@')
         r = 0; //return 0;
     else {//Valida a lstring
         ls = us+1;
-        for (; islower(email[ls]) && email[ls] != '.' && email[ls] != '\0'; ls++);
+        for (; islower(email[ls]) && email[ls] != '\0'; ls++);
         if (ls == 0 || email[ls] != '.')
             r = 0;
         else {//valida a rstring
             rs = ls + 1;
-            for (;rs - ls < 4 && email[rs] != '\0' && islower(email[rs]); rs++);
+            for (;rs - ls < 4 && islower(email[rs]); rs++);
             if (rs - ls < 2 || email[rs] != '\0')
                 r = 0;
         }

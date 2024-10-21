@@ -1,11 +1,7 @@
-#ifndef UTILS
-#define UTILS
+#ifndef UTILS_H
+#define UTILS_H
+#include <stdio.h>
 
-
-/*
-    Cria uma diretoria, devolve -1 caso não tenha conseguido,
-    provavelmente porque ela já existe.
-*/
-int make_dir (char *dir);
+void error_output (FILE *fp_reading, FILE *fp_writing, char **line, int nRead);
 
 #endif

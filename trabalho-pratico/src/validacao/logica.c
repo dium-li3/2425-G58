@@ -1,23 +1,40 @@
 #include "logica.h"
+#include "artist_manager.h"
+#include "music_manager.h"
+#include "artists.h"
 
 /*
-typedef int ID;
-
-//Verifica se um artista existe através do seu id.
-int artistID_exists (int a);
-
-//Verifica se uma música existe através do seu id.
-int musicID_exists (int m);
-
-//apesar de não ser necessário para verificar se é válido, poderia ficar aqui tb a funçao q procura o id do utilizador?
-int userID_exists (int u);
+    Verifica que todos os artistas de uma dada lista existem.
+    Caso existam, adiciona a duration dada à discografia de todos os
+    artistas.
 */
-
-//Verifica se um artista é válido ou não.
-int valid_artist (Artist a);
-
-//Verifica se uma dada música é válida ou não.
-int valid_music (Music m);
+int valid_artists(GSList *artists, int duration, Art_Manager am){
+    int r = 1;
+    Artist a = NULL;
+    GSList *temp = NULL;
+    for (temp = artists; temp != NULL && r; temp = temp->next){
+        a = search_artist_by_id (get_art_id(temp->data), am); //hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        if (a == NULL) r = 0;
+    }
+    for (temp = artists; temp != NULL && r; temp = temp->next){
+        a = search_artist_by_id (get_art_id(temp->data),    am);
+        add_disc_duration (a, duration);
+    }
+    return r;
+}
 
 //Verifica se um dado utilizador é válido ou não.
-int valid_user (User u);
+int valid_musics (GSList *musics, Music_Manager mm, short age){
+    int r = 1;
+    Music m = NULL;
+    GSList *temp = NULL;
+    for (temp = musics; temp != NULL && r; temp = temp->next){
+        m = search_music_by_id (get_music_id(temp->data), mm); //hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        if (m == NULL) r = 0;
+    }
+    for (temp = musics; temp != NULL && r; temp = temp->next){
+        m = search_music_by_id (get_music_id(temp->data), mm);
+        add_like (m, age);
+    }
+    return r;
+}
