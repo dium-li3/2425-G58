@@ -1,4 +1,5 @@
 #include "users.h"
+
 typedef struct user{
     int id;
     char *email;
@@ -29,7 +30,7 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-void *create_user_from_tokens (char **tokens){
+User create_user_from_tokens (char **tokens){
     char sub_type = get_sub_type (tokens[6]);
     int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type);
     int id;
@@ -58,23 +59,27 @@ int *get_user_id_pointer (User u){
 }
 
 char *get_user_email (User u){
-    return u->email;
+    return (strdup(u->email));
 }
 
 char *get_user_first_name (User u){
-    return u->first_name;
+    return (strdup(u->first_name));
 }
 
 char *get_user_last_name (User u){
-    return u->last_name;
+    return (strdup(u->last_name));
 }
 
 char *get_user_country (User u){
-    return u->country;
+    return (strdup(u->country));
 }
 
 short get_user_age (User u){
     return u->age;
+}
+
+GSList *get_liked_musics(User u){
+    return u->liked_music_ids;
 }
 
 
@@ -88,8 +93,21 @@ char get_sub_type (char *sub_type){
     return c;
 }
 
-void free_user(User u)
-{
+/*
+    Dá print do email, nomes, idade e pais do utilizador.
+*/
+void print_user_info(User u, int n_querie){
+    char output_file[34]; // dá para numeros até 9999
+    snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+    FILE *fp = fopen(output_file, "w+");
+    if (u != NULL){
+        fprintf(fp, "%s;%s;%s;%d;%s\n", u->email, u->first_name, u->last_name, u->age, u->country);
+    }
+    else fprintf(fp, "\n");
+    fclose(fp);
+}
+
+void free_user(User u){
     free(u->email);
     free(u->first_name);
     free(u->last_name);

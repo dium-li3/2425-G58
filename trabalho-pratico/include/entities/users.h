@@ -1,5 +1,6 @@
 #ifndef USERS_H
 #define USERS_H
+
 #include <glib.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,7 +18,7 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-void *create_user_from_tokens (char **token);
+User create_user_from_tokens (char **token);
 
 //Devolve o username de um utilizador.
 int get_user_id (User u);
@@ -38,6 +39,12 @@ short get_user_age (User u);
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type);
 
+GSList *get_liked_musics(User u);
+
+/*
+    Dá print do email, nomes, idade e pais do utilizador.
+*/
+void print_user_info(User u, int n_querie);
 
 //Dá free do user
 void free_user (User u);

@@ -56,3 +56,6 @@ dkms.conf
 # Ignore CSV files
 *.csv
 *.txt
+
+#VSCode
+*.json

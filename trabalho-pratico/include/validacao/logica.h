@@ -5,27 +5,18 @@
 #include "musics.h"
 #include "artists.h"
 #include "sintatica.h"
+#include "artist_manager.h"
+#include "music_manager.h"
+
 
 /*
-typedef int ID;
-
-//Verifica se um artista existe através do seu id.
-int artistID_exists (int a);
-
-//Verifica se uma música existe através do seu id.
-int musicID_exists (int m);
-
-//apesar de não ser necessário para verificar se é válido, poderia ficar aqui tb a funçao q procura o id do utilizador?
-int userID_exists (int u);
+    Verifica que todos os artistas de uma dada lista existem.
+    Caso existam, adiciona a duration dada à discografia de todos os
+    artistas.
 */
-
-//Verifica se um artista é válido ou não.
-int valid_artist (Artist a);
-
-//Verifica se uma dada música é válida ou não.
-int valid_music (Music m);
+int valid_artists(GSList *artists, int duration, Art_Manager am);
 
 //Verifica se um dado utilizador é válido ou não.
-int valid_user (User u);
+int valid_musics (GSList *musicas, Music_Manager mm, short age);
 
 #endif

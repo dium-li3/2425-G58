@@ -5,6 +5,9 @@
 #include "sintatica.h"
 #include "parser.h"
 #include "utils.h"
+#include "users.h"
+#include "music_manager.h"
+#include "logica.h"
 
 //g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
@@ -22,7 +25,7 @@ User_Manager create_user_manager(){
     Insere um User na posição id da hash table.
 */
 void insert_user_by_id(User u, User_Manager user_manager){
-    int *id = get_user_id_pointer(u);//REVER
+    int *id = get_user_id_pointer(u);
     g_hash_table_insert (user_manager->users_by_id, id, u);
 }
 
@@ -87,22 +90,25 @@ int store_User (User_Manager user_manager, char *line){
     return r;
 }*/
 
-void store_Users (FILE *fp_Users, User_Manager user_manager){
+void store_Users (FILE *fp_Users, User_Manager user_manager, Music_Manager mm){
     ssize_t nRead = 0;
     char **line = calloc(1, sizeof (char *));
-    FILE *user_errors = fopen ("resultados/users_errors.csv", "w+");
+    FILE *user_errors = fopen ("resultados/users_errors.csv", "w");
+    User user = NULL;
     while (nRead != -1){
-        User user = (User)parse_line (fp_Users, create_user_from_tokens, &nRead);
+        user = (User)parse_line (fp_Users, (void *)create_user_from_tokens, &nRead);
         if (user != NULL){
-            insert_user_by_id (user, user_manager);
+            if (valid_musics(get_liked_musics (user), mm, get_user_age (user)))
+                insert_user_by_id (user, user_manager);
+            else {
+                free_user(user);
+                error_output (fp_Users, user_errors, line, nRead);
+                user = NULL;//pode-se apagar isto né?
+        }
         }
         else{
             if (nRead != -1){
-                *line = NULL;
-                fseek (fp_Users, -nRead, SEEK_CUR);
-                parse_1line (fp_Users, line);
-                fprintf(user_errors, "%s", *line);
-                free (*line);
+                error_output (fp_Users, user_errors, line, nRead);
             }
         }
     }

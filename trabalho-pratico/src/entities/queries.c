@@ -145,6 +145,3 @@ void free_querie (Querie q){
     free_querie3 (q->querie3);
     free (q);
 }
-
-
-
