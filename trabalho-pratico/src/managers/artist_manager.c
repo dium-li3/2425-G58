@@ -2,11 +2,16 @@
 #include <stdio.h>
 
 #include "artist_manager.h"
+#include "artists.h"
+#include "parser.h"
+#include "utils.h"
 
 typedef struct art_manager
 {
     GHashTable *art_by_id;
+    GArray *art_by_dur;
 } *Art_Manager;
+
 /*
 typedef struct array_art
 {
@@ -14,47 +19,99 @@ typedef struct array_art
     int tamanho;
     char *country;
 } *Arr_art;
+*/
 
 Art_Manager create_art_manager()
 {
     Art_Manager am = malloc(sizeof(struct art_manager));
-    am->art_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, (void *)free_art);
+    am->art_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, free, (void *)free_art);
+    am->art_by_dur = g_array_new(FALSE, TRUE, sizeof(Artist));
     return am;
 }
 
-void insert_art_by_id(Artist a, Art_Manager art_manager)
+void insert_artists_by_id(Artist a, Art_Manager art_manager)
 {
-    int id = get_art_id(a);
-    g_hash_table_insert(art_manager->art_by_id, &id, a);
+    int *id = get_art_id_pointer(a);
+    g_hash_table_insert(art_manager->art_by_id, id, a);
 }
 
-User search_art_by_id(int id, Art_Manager art_manager)
+void insert_artists_by_dur(Artist a, Art_Manager art_manager, int i){
+    art_manager->art_by_dur = g_array_insert_val(art_manager->art_by_dur,i , a);
+}
+
+
+Artist search_artist_by_id(int id, Art_Manager art_manager)
 {
     Artist a = g_hash_table_lookup(art_manager->art_by_id, &id);
     return a;
 }
 
+Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
+    Artist a = g_array_index(am->art_by_dur, Artist, i);
+    char *countri = get_art_country (a);
+    if (strcmp (countri, country))
+        a = NULL;
+    free (countri);
+    return a;
+}
+
+Artist search_artist_by_dur_indice(Art_Manager am, int i){
+    Artist a = g_array_index(am->art_by_dur, Artist, i);
+    return a;
+}
+
+void order_duration (Art_Manager artist_manager){
+    g_array_sort(artist_manager->art_by_dur, compare_dur);
+}
+
+void store_Artists (FILE *fp_artists, Art_Manager artists_manager){
+    ssize_t nRead = 0;
+    char **line = calloc(1, sizeof (char *));
+    FILE *artist_errors = fopen ("resultados/artists_errors.csv", "w");
+    Artist artist = NULL;
+    int i = 0;
+    while (nRead != -1){
+        artist = parse_line (fp_artists, (void *)create_artist_from_tokens, &nRead);
+        if (artist != NULL){
+            insert_artists_by_id (artist, artists_manager);
+            insert_artists_by_dur(artist, artists_manager, i++);
+        }
+        else{
+            if (nRead != -1)
+                error_output (fp_artists, artist_errors, line, nRead);
+        }
+    }
+    fclose (artist_errors);
+    free (line); 
+}
+
+int length_arr_disc (Art_Manager am){
+    return am->art_by_dur->len;
+}
+
 void free_art_manager(Art_Manager am)
 {
     g_hash_table_destroy(am->art_by_id);
+    g_array_free(am->art_by_dur, TRUE);
     free(am);
 }
 
+/*
 Arr_art create_arr_art(Art_Manager art_manager, char *country)
 {
     Arr_art arr_art = malloc(sizeof(struct array_art));
 
     arr_art->tamanho = 0;
     arr_art->country = country;
-    arr_art->artists = g_array_new(FALSE, FALSE, sizeof(struct artist));
+    arr_art->artists = g_array_new(FALSE, FALSE, sizeof(Artist));
 }
 
 void add_arr_art(gpointer *key, gpointer *value, gpointer *art_data)
 {
-    Arr_art *arr_art = (arr_art *)art_data;
+    Arr_art arr_art = art_data;
     Artist *artist = (Artist *)value;
 
-    if (strcmp(artist->country, arr_art->country) == 0 || strcmp(NULL, arr_art->country) == 0)
+    if (strcmp(get_art_country (artist), arr_art->country) == 0 || strcmp(NULL, arr_art->country) == 0)
     {
         g_array_insert_val(arr_art->artists, arr_art->tamanho, artist);
         arr_art->tamanho++;
@@ -63,15 +120,15 @@ void add_arr_art(gpointer *key, gpointer *value, gpointer *art_data)
 
 int cmp_art(gconstpointer a, gconstpointer b)
 {
-    Artist artist_a = (Artist *)a;
-    Artist artist_b = (Artist *)b;
+    Artist artist_a = (Artist)a;
+    Artist artist_b = (Artist)b;
 
     return (artist_b->disc_duration - artist_a->disc_duration);
 }
 
 void fill_arr_art(Art_Manager art_manager, Arr_art arr_art)
 {
-    g_hash_table_foreach(art_manager, add_arr_art, &arr_art);
+    g_hash_table_foreach(art_manager, &(add_arr_art), &arr_art);
     g_array_sort(arr_art->artists, cmp_art);
 }
 
@@ -107,4 +164,5 @@ void responde_querie2(FILE *fp_queries, Art_Manager am)
         }
     }
     free(line);
-}*/
+}
+*/
