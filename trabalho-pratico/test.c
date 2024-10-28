@@ -45,28 +45,28 @@ int main(int argc, char** argv) {
     }
 
     char *results_dir = strdup("resultados/");
-    char *expected_res_dir = strdup(argv[3]);
+    char *expected_dir = strdup(argv[3]);
 
     char results_file[40] = {'\0'};
-    char expected_res_file[50] = {'\0'};
+    char expected_file[50] = {'\0'};
 
     FILE *rfp = NULL, *efp = NULL;
     int i = 1, corrects = 0, temp = 0;
 
-    update_paths(results_file, expected_res_file, results_dir, expected_res_dir, i);
+    update_paths(results_file, expected_file, results_dir, expected_dir, i);
 
-    while((rfp = fopen(results_file, "r")) && (efp = fopen(expected_res_file, "r"))) {
+    while((rfp = fopen(results_file, "r")) && (efp = fopen(expected_file, "r"))) {
         temp = compare_files(rfp, efp);
 
         (temp==0)? printf("Erro na query %d.\n", i) : corrects++;
  
-        update_paths(results_file, expected_res_file, results_dir, expected_res_dir, ++i);
+        update_paths(results_file, expected_file, results_dir, expected_dir, ++i);
 
         close_files(rfp, efp);
     }
 
     free(results_dir);
-    free(expected_res_dir);
+    free(expected_dir);
 
     printf("Queries certas: %d/%d\n", corrects, i-1);
     

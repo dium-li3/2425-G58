@@ -17,18 +17,25 @@ CFLAGS += $(foreach dir, $(INC_SUBDIRS), -I$(dir))
 
 # Find all .c files in src and its subdirectories
 SRCS = $(foreach dir, $(SRC_SUBDIRS), $(wildcard $(dir)/*.c))
+SRCS_PRINCIPAL = $(filter-out src/main_test.c, $(SRCS))
+SRCS_TEST = $(filter-out src/main.c, $(SRCS))
 
 # Object files
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS_PRINCIPAL:.c=.o)
+OBJS_TEST = $(SRCS_TEST:.c=.o)
 
-# Executable
+# Executables
 EXE1 = programa-principal
+EXE2 = programa-testes
 
 # Default target
-all: $(EXE1)
+all: $(EXE1) $(EXE2)
 
-# Link the executable
+# Link the executables
 $(EXE1): $(OBJS)
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
+
+$(EXE2): $(OBJS_TEST)
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 # Compile .c files into .o
@@ -37,4 +44,7 @@ $(EXE1): $(OBJS)
 
 # Clean target
 clean:
-	rm -f $(OBJS) $(EXE1)
+	rm -f $(OBJS) $(EXE1) $(OBJS_TEST) $(EXE2)
+
+clean_res:
+	rm -f resultados/*
