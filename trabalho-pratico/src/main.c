@@ -4,7 +4,6 @@
 #include "entity_manager.h"
 #include "parser.h"
 #include "queries.h"
-#include <sys/resource.h>
 #include "utils.h"
 
 int trabalho (int argc, char **argv){
@@ -38,10 +37,5 @@ int main (int argc, char **argv){
     }
     int r = trabalho (argc, argv);
     
-    // Execute work
-    struct rusage r_usage;
-    getrusage(RUSAGE_SELF, &r_usage);
-    printf("Memory usage: %ld KB\n", r_usage.ru_maxrss);
-
     return r;
 }
