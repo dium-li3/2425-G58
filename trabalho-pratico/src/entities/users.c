@@ -86,9 +86,9 @@ GSList *get_liked_musics(User u){
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type){
     char c = 'E';
-    if  (strcmp (sub_type, "normal") == 0)
+    if (strcmp (sub_type, "normal") == 0)
         c = 'N';
-    if (strcmp(sub_type, "premium") == 0)
+    else if (strcmp(sub_type, "premium") == 0)
         c = 'P';
     return c;
 }
