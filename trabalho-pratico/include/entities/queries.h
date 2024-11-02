@@ -52,7 +52,7 @@ short get_querie3_info(Querie q, short *max);
 int store_querie_from_token (Querie q, char **tokens, int n_tokens);
 
 //Guarda a informação de uma linha de queries numa querie.
-int read_querie_line(FILE *fp, Querie q);
+int read_querie_line(Parser pq, Querie q);
 
 void free_querie (Querie q);
 

@@ -4,6 +4,7 @@
 
 #include "artists.h"
 #include "parser.h"
+#include "output.h"
 
 // #include "sintatica.h"
 // #include "parser.h"
@@ -112,12 +113,16 @@ char *calc_duration_hms(int segs){
     return hms;
 }
 
-void print_art_info(Artist a, FILE *fp){
+void print_art_info(Artist a, Output out){
     char *type = get_art_type_str (a);
     char *disc_duration = calc_duration_hms(a->disc_duration);
-    fprintf(fp, "%s;%s;%s;%s\n", a->name, type, disc_duration, a->country);
+    char *name = strdup (a->name);
+    char *country = strdup (a->country);
+    output_artist (name, type, disc_duration, country, out);
+    free (name);
     free (disc_duration);
     free(type);
+    free (country);
 }
 
 //só serve para test

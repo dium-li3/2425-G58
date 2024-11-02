@@ -3,8 +3,8 @@
 #include "parser.h"
 #include "music_manager.h"
 #include "artist_manager.h"
-#include "utils.h"
 #include "logica.h"
+#include "output.h"
 
 typedef struct music_manager {
     GHashTable *musics_by_id;
@@ -24,28 +24,29 @@ void insert_music_by_id(Music m, Music_Manager music_manager){
 }
 
 
-void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am){
-    ssize_t nRead = 0;
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     char **line = calloc(1, sizeof(char *));
-    FILE *music_errors = fopen("resultados/musics_errors.csv", "w");
+    Parser p = open_parser(music_path);
+    Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
-    while (nRead != -1){
-        music = parse_line(fp_musics, (void *)create_music_from_tokens, &nRead);
+    while (get_nRead(p) != -1){
+        music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
             if (valid_artists(get_music_artists(music), get_music_duration(music), am))
                 insert_music_by_id(music, mm);
             else{
                 free_music(music);
                 music = NULL;
-                error_output(fp_musics, music_errors, line, nRead);
+                error_output(p, out, line);
             }
         }
         else{
-            if (nRead != -1)
-                error_output(fp_musics, music_errors, line, nRead);
+            if (get_nRead(p) != -1)
+                error_output(p, out, line);
         }
     }
-    fclose(music_errors);
+    close_parser(p);
+    close_output(out);
     free(line);
 }
 

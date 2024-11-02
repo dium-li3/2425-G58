@@ -1,4 +1,5 @@
 #include "users.h"
+#include "output.h"
 
 typedef struct user{
     int id;
@@ -96,15 +97,19 @@ char get_sub_type (char *sub_type){
 /*
     Dá print do email, nomes, idade e pais do utilizador.
 */
-void print_user_info(User u, int n_querie){
-    char output_file[34]; // dá para numeros até 9999
-    snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
-    FILE *fp = fopen(output_file, "w+");
+void print_user_info(User u, Output out){
     if (u != NULL){
-        fprintf(fp, "%s;%s;%s;%d;%s\n", u->email, u->first_name, u->last_name, u->age, u->country);
+        char *email = strdup (u->email);
+        char *first_name = strdup (u->first_name);
+        char *last_name = strdup (u->last_name);
+        char *country = strdup (u->country);
+        output_user (email, first_name, last_name, u->age, country, out);
+        free (email);
+        free (first_name);
+        free (last_name);
+        free (country);
     }
-    else fprintf(fp, "\n");
-    fclose(fp);
+    else output_empty (out);
 }
 
 void free_user(User u){

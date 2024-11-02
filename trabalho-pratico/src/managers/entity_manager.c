@@ -4,11 +4,11 @@
 #include "user_manager.h"
 #include "queries.h"
 #include "users.h"
-#include "utils.h"
 #include "artist_manager.h"
 #include "music_manager.h"
 #include "artists.h"
 #include "musics.h"
+#include "output.h"
 
 typedef struct entity_manager{
     Art_Manager artist_M;
@@ -24,82 +24,82 @@ Entity_Manager create_entity_manager(){
     return e;
 }
 
-void store_Entities(FILE **fp, Entity_Manager entity_M){
-    store_Artists(fp[2], entity_M->artist_M);
-    store_Musics(fp[1], entity_M->music_M, entity_M->artist_M);
+void store_Entities(char **entity_paths, Entity_Manager entity_M){
+    store_Artists(entity_paths[2], entity_M->artist_M);
+    store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M);
     order_duration (entity_M->artist_M);
-    store_Users(fp[0], entity_M->user_M, entity_M->music_M);
+    store_Users(entity_paths[0], entity_M->user_M, entity_M->music_M);
 }
 
 // isto ficará no IO?
 
-void answer1(int id, Entity_Manager em, int n_querie){
+void answer1(int id, Entity_Manager em, Output out){
     User u = search_user_by_id(id, em->user_M);
-    print_user_info(u, n_querie);
+    print_user_info(u, out);
 }
 
-void slow_answer2(int N, char *country, Entity_Manager em, FILE *fp){
+void slow_answer2(int N, char *country, Entity_Manager em, Output out){
     int size = length_arr_disc(em->artist_M);
     Artist a = NULL;
     if (N == 0)
-        fprintf(fp, "\n");
+        output_empty (out);
     for (int i = 0; i < size && N > 0; i++){
         a = search_artist_by_dur_country(em->artist_M, country, i);
         if (a != NULL){
-            print_art_info(a, fp);
+            print_art_info(a, out);
             N--;
         }
     }
 }
 
-void fast_answer2(int N, Entity_Manager em, FILE *fp){
+void fast_answer2(int N, Entity_Manager em, Output out){
     Artist a = NULL;
     if (N == 0)
-        fprintf(fp, "\n");
+        output_empty (out);
     for (int i = 0; i < N; i++){
         a = search_artist_by_dur_indice(em->artist_M, i);
-        print_art_info(a, fp);
+        print_art_info(a, out);
     }
 }
 
-void answer3(int min, int max, Entity_Manager em){
+void answer3(int min, int max, Entity_Manager em, Output out){
 }
 
 void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
+    char output_file[34];
+    snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+    Output out = open_out (output_file);
     switch (type)
     {
     case (1):
         int id = get_querie1_info(q);
-        answer1(id, em, n_querie);
+        answer1(id, em, out);
         break;
     case (2):
         short *N = calloc(1, sizeof(int));
         char *country = get_querie2_info(q, N);
-        char output_file[34];
-        snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
-        FILE *fp = fopen(output_file, "w+");
         if (country == NULL)
-            fast_answer2(*N, em, fp);
+            fast_answer2(*N, em, out);
         else
-            slow_answer2(*N, country, em, fp);
-        fclose (fp);
+            slow_answer2(*N, country, em, out);
         free(N);
         break;
     case (3):
         short *max = calloc(1, sizeof(int));
         short min = get_querie3_info(q, max);
-        answer3(min, *max, em);
+        answer3(min, *max, em, out);
         free(max);
         break;
     }
+    close_output (out);
 }
 
-void answer_all_queries(FILE *fp_queries, Entity_Manager em){
+void answer_all_queries(Parser queries, Entity_Manager em){
     int i;
     Querie q = create_querie();
     for (i = 1; get_querie_type(q) != -1; i++)
     {
-        int type = read_querie_line(fp_queries, q);
+        int type = read_querie_line(queries, q);
         answer_querie(q, em, type, i);
     }
     free_querie(q);

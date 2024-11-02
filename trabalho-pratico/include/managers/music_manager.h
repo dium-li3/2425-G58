@@ -11,7 +11,7 @@ Music_Manager create_music_manager();
 
 void insert_music_by_id(Music m, Music_Manager music_manager);
 
-void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am);
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 
 Music search_music_by_id(int id, Music_Manager music_manager);
 

@@ -5,6 +5,31 @@
 
 #include "parser.h"
 
+typedef struct parser{
+    FILE *fp;
+    ssize_t nRead;
+} *Parser;
+
+Parser open_parser(char *path){
+    Parser p = calloc (1, sizeof (struct parser));
+    p->fp = fopen (path, "r");
+    p->nRead = 0;
+    return p;
+}
+
+void close_parser(Parser p){
+    fclose (p->fp);
+    free (p);
+}
+
+ssize_t get_nRead (Parser p){
+    return p->nRead;
+}
+
+void go_back_1line (Parser p){
+    fseek (p->fp, -(p->nRead), SEEK_CUR);
+}
+
 /*
     Dados n tokens, liberta a memoria usada por eles
     e pelo pointer que os guarda.
@@ -27,7 +52,7 @@ GSList *store_list (char *line){
     GSList *list = NULL;
     token = strtok_r (line, "\' ,[]", &svptr);
 
-    if (token != NULL) {
+    if (token != NULL){
         int *id1 = malloc(sizeof(int));
         *id1 = atoi (token + 1);
         list = g_slist_prepend (list, id1);
@@ -45,14 +70,14 @@ GSList *store_list (char *line){
 /*
     Separa uma linha nos seus tokens.
 */
-void *parse_line (FILE * fp, void *(*Func)(char **), ssize_t *nRead){
+void *parse_line (Parser p, void *(*Func)(char **)){
     void *entity = NULL;
     size_t n;
     char *line = NULL;
     char *token = NULL;
     char *svptr = NULL;
-    *nRead = getline (&line, &n, fp);
-    if (*nRead != -1){
+    p->nRead = getline (&line, &n, p->fp);
+    if (p->nRead != -1){
         token = strtok_r (line, ";\"\n", &svptr);
         char **info = calloc (8, sizeof (char *));
         info [0] = strdup (token);
@@ -97,12 +122,12 @@ int parse_3_tokens (char *line, char **info){
     return n_token;
 }
 
-int parse_1line_querie(FILE *fp, char **info){
+int parse_1line_querie(Parser p, char **info){
     int n_token = 0;
     ssize_t nRead;
     size_t n;
     char *line = NULL;
-    if ((nRead = getline (&line, &n, fp)) != -1){
+    if ((nRead = getline (&line, &n, p->fp)) != -1){
         switch (line[0]){
             case ('2'):
                 n_token = parse_3_tokens (line, info);
@@ -121,13 +146,13 @@ int parse_1line_querie(FILE *fp, char **info){
 /*
     Guarda uma linha do file que lhe dão.
 */
-GSList *parse_file (FILE *fp){
+GSList *parse_file (Parser p){
     ssize_t nRead;
     size_t n;
     char *line = NULL;
     GSList *lista = NULL;
     //nRead = getline (&line, &n, fp);//ignorar a 1º linha
-    while ((nRead = getline (&line, &n, fp)) != -1){
+    while ((nRead = getline (&line, &n, p->fp)) != -1){
         lista = g_slist_prepend (lista, strdup (line));
     }
     free (line);
@@ -138,10 +163,10 @@ GSList *parse_file (FILE *fp){
     Guarda a linha lida na string dada.
     Devolve -1 caso não tenha lido nada.
 */
-ssize_t parse_1line (FILE *fp, char **line){
+ssize_t parse_1line (Parser p, char **line){
     ssize_t nRead;
     size_t n;
-    nRead = getline (line, &n, fp);
+    nRead = getline (line, &n, p->fp);
     return nRead;
 }
 
@@ -169,36 +194,26 @@ short read_date_to_age (char *bd){
     Dado o path onde se encontram os 3 ficheiros .csv,
     devolve um pointer para os 3 file pointers dos ficheiros.
 */
-FILE **fopen3Entities (char *path){
+char **path3Entities (char *path){
     size_t length_path = strlen(path);
-    char *help = malloc (length_path+13);
-    FILE **fp_entities = malloc (sizeof (FILE*) * 3);
+    char *base_path = malloc (length_path+13);
+    char **path_entities = malloc (sizeof (char*) * 3);
 
-    if (fp_entities == NULL || help == NULL){
-        perror ("no space to save entities pointer :c :");
-        return NULL;
-    }
+    strcpy (base_path, path);
+    strcpy (base_path + length_path, "/users.csv");
+    path_entities[0] = strdup (base_path);
+    strcpy (base_path + length_path, "/musics.csv");
+    path_entities[1] = strdup (base_path);
+    strcpy (base_path + length_path, "/artists.csv");
+    path_entities[2] = strdup (base_path);
+    free (base_path);
 
-    strcpy (help, path);
-    strcpy (help + length_path, "/users.csv");
-    fp_entities[0] = fopen (help, "r");
-    strcpy (help + length_path, "/musics.csv");
-    fp_entities[1] = fopen (help, "r");
-    strcpy (help + length_path, "/artists.csv");
-    fp_entities[2] = fopen (help, "r");
-    free (help);
-
-    if (!fp_entities[0] || !fp_entities[1] || !fp_entities[2]){
-        perror("ERROR: "); //os dados ñ estão onde deviam!! ou n déste o path certo
-        return NULL;
-    }
-
-    return fp_entities;
+    return path_entities;
 }
 
-void fclose3Entities (FILE **fp_entities){
-    fclose (fp_entities[0]);
-    fclose (fp_entities[1]);
-    fclose (fp_entities[2]);
+void free3Entities (char **fp_entities){
+    free (fp_entities[0]);
+    free (fp_entities[1]);
+    free (fp_entities[2]);
     free (fp_entities);
 }

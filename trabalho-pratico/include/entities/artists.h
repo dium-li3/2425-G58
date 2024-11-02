@@ -4,6 +4,8 @@
 #include <glib.h>
 #include <stdio.h>
 
+#include "output.h"
+
 typedef struct artist *Artist;
 
 // Dada uma linha dos dados de artistas, cria um artista.
@@ -26,7 +28,7 @@ char get_art_type(char *art_type);
 
 char get_art_type_from_art(Artist a);
 
-void print_art_info(Artist a, FILE *fp);
+void print_art_info(Artist a, Output out);
 
 int compare_dur (gconstpointer a, gconstpointer b);
 

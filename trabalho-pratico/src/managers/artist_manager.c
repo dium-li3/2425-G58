@@ -4,7 +4,7 @@
 #include "artist_manager.h"
 #include "artists.h"
 #include "parser.h"
-#include "utils.h"
+#include "output.h"
 
 typedef struct art_manager
 {
@@ -64,24 +64,25 @@ void order_duration (Art_Manager artist_manager){
     g_array_sort(artist_manager->art_by_dur, compare_dur);
 }
 
-void store_Artists (FILE *fp_artists, Art_Manager artists_manager){
-    ssize_t nRead = 0;
+void store_Artists (char *art_path, Art_Manager artists_manager){
     char **line = calloc(1, sizeof (char *));
-    FILE *artist_errors = fopen ("resultados/artists_errors.csv", "w");
+    Parser p = open_parser(art_path);
+    Output out = open_out("resultados/artists_errors.csv");
     Artist artist = NULL;
     int i = 0;
-    while (nRead != -1){
-        artist = parse_line (fp_artists, (void *)create_artist_from_tokens, &nRead);
+    while (get_nRead(p) != -1){
+        artist = parse_line (p, (void *)create_artist_from_tokens);
         if (artist != NULL){
             insert_artists_by_id (artist, artists_manager);
             insert_artists_by_dur(artist, artists_manager, i++);
         }
         else{
-            if (nRead != -1)
-                error_output (fp_artists, artist_errors, line, nRead);
+            if (get_nRead(p) != -1)
+                error_output (p, out, line);
         }
     }
-    fclose (artist_errors);
+    close_parser (p);
+    close_output (out);
     free (line); 
 }
 
