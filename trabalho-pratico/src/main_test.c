@@ -86,6 +86,7 @@ int trabalho (int argc, char **argv){
     Entity_Manager entity_manager = create_entity_manager (); 
     //Armazenamento e ordenação da informação + validação
     store_Entities(entity_paths, entity_manager);
+    free3Entities(entity_paths);
     //Resposta às queries
     answer_all_queries (parser_queries, entity_manager);
     //free moment
