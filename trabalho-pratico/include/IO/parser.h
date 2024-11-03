@@ -45,6 +45,11 @@ GSList *parse_file (Parser p);
 */
 ssize_t parse_1line (Parser p, char **line);
 
+/*
+    Semelhante à parse_1line.
+*/
+char* parse_1line_alt(Parser p);
+
 //Devolva os anos passados de uma string que representa uma data.
 short read_date_to_age (char *bd);
 
