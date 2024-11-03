@@ -11,9 +11,15 @@ typedef struct parser{
 } *Parser;
 
 Parser open_parser(char *path){
-    Parser p = calloc (1, sizeof (struct parser));
-    p->fp = fopen (path, "r");
-    p->nRead = 0;
+    Parser p = NULL;
+    FILE *temp = NULL;
+
+    if ((temp = fopen(path, "r")) != NULL) {
+        p = calloc (1, sizeof (struct parser));
+        p->fp = temp;
+        p->nRead = 0;
+    }
+
     return p;
 }
 
@@ -163,12 +169,12 @@ GSList *parse_file (Parser p){
     Guarda a linha lida na string dada.
     Devolve -1 caso não tenha lido nada.
 */
-ssize_t parse_1line (Parser p, char **line){
-    ssize_t nRead;
+void parse_1line (Parser p, char **line){
     size_t n;
-    nRead = getline (line, &n, p->fp);
-    return nRead;
+    *line = NULL;
+    p->nRead = getline (line, &n, p->fp);
 }
+
 
 //Devolva os anos passados de uma string que representa uma data.
 short read_date_to_age (char *bd){
