@@ -13,7 +13,6 @@ typedef struct music {
     char *genre;
     short year;
     char *lyrics;
-    short likes[120];   //cada índice i vai acumulando o nº de likes para essa idade i e no fim do armazenamento das músicas tem os likes acumulados (da idade 0 até à i)
 } *Music;
 
 

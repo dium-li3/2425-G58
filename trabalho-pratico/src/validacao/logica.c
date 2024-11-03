@@ -1,7 +1,6 @@
 #include "logica.h"
 #include "artist_manager.h"
 #include "music_manager.h"
-#include "artists.h"
 
 /*
     Verifica que todos os artistas de uma dada lista existem.
@@ -34,7 +33,9 @@ int valid_musics (GSList *musics, Music_Manager mm, short age){
     }
     for (temp = musics; temp != NULL && r; temp = temp->next){
         m = search_music_by_id (get_music_id(temp->data), mm);
-        add_like (m, age);
+        char* gen = get_genre(m);
+        add_like_genre(gen,mm,age);
     }
     return r;
 }
+
