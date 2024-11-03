@@ -62,7 +62,15 @@ void fast_answer2(int N, Entity_Manager em, FILE *fp){
     }
 }
 
-void answer3(int min, int max, Entity_Manager em){
+void answer3(int min, int max, Entity_Manager em, FILE *fp){
+    Genre gen = NULL;
+    get_total_likes(em->music_M,min,max);
+    sort_gen(em->music_M,min,max);
+    int gen_arr_len = get_gen_arr_len(em->music_M);
+    for (int i = 0; i < gen_arr_len; i++){
+        gen = get_genre_by_index(em->music_M, i);
+        print_genre_info(gen, fp);
+    }
 }
 
 void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
@@ -88,7 +96,9 @@ void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
     case (3):
         short *max = calloc(1, sizeof(int));
         short min = get_querie3_info(q, max);
-        answer3(min, *max, em);
+        snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+        fp = fopen(output_file, "w+");
+        answer3(min, *max, em,fp);
         free(max);
         break;
     }

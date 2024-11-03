@@ -10,7 +10,7 @@ typedef struct genre
 {
     char *name;
     int likes[120];
-    int likes_acum;
+    int total_likes;
 } *Genre;
 
 typedef struct music_manager
@@ -19,14 +19,9 @@ typedef struct music_manager
     GArray *genre_array;
 } *Music_Manager;
 
-char *get_gen_name(Genre gen)
+int get_gen_arr_len(Music_Manager mm)
 {
-    return (strdup(gen->name));
-}
-
-char *get_gen_likes_ac(Genre gen)
-{
-    return gen->likes_acum;
+    return mm->genre_array->len;
 }
 
 Genre create_gen(char *gen_name)
@@ -40,7 +35,7 @@ Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, free, (void *)free_music);
-    mm->genre_array = g_array_new(FALSE, FALSE, sizeof(struct genre));
+    mm->genre_array = g_array_new(FALSE, FALSE, sizeof(Genre));
     return mm;
 }
 
@@ -63,30 +58,40 @@ void add_like_genre(Music_Manager mm, Genre gen, short age)
 {
     int r = 0;
     for (int i = 0; i < mm->genre_array->len && !r; i++)
-        if (strcmp(gen, g_array_index(mm->genre_array, Genre, i)->name) == 0)
+        if (strcmp(gen->name, g_array_index(mm->genre_array, Genre, i)->name) == 0)
         {
             g_array_index(mm->genre_array, Genre, i)->likes[age]++;
             r++;
         }
 }
 
-void gen_freq_acum(Music_Manager mm)
+void gen_freq_acum(Music_Manager mm,int min_age, int max_age)
 {
     for (int i = 0; i < mm->genre_array->len; i++)
         for (int j = 1; j < 120; j++)
             g_array_index(mm->genre_array, Genre, i)->likes[j] += g_array_index(mm->genre_array, Genre, i)->likes[j - 1];
 }
 
+void get_total_likes(Music_Manager mm,int min_age, int max_age)
+{
+    for (int i = 0; i < mm->genre_array->len; i++)
+    {
+        int tot_likes = g_array_index(mm->genre_array, Genre, i)->likes[max_age] - g_array_index(mm->genre_array, Genre, i)->likes[min_age];
+        g_array_index(mm->genre_array, Genre, i)->total_likes = tot_likes;
+    }
+    
+}
+
 int cmp_like_gen(gconstpointer g1, gconstpointer g2)
 {
     Genre *ga = (Genre *)g1;
     Genre *gb = (Genre *)g2;
-    return (*gb)->likes_acum - (*ga)->likes_acum;
+    return (*gb)->total_likes - (*ga)->total_likes;
 }
 
-void sort_gen(Music_Manager mm)
+void sort_gen(Music_Manager mm,int min_age, int max_age)
 {
-    gen_freq_acum(mm);
+    get_total_likes(mm,min_age,max_age);
     g_array_sort(mm->genre_array, cmp_like_gen);
 }
 
@@ -138,7 +143,7 @@ void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am)
 
 void print_genre_info(Genre gen, FILE *fp)
 {
-    fprintf(fp, "%s;%d\n", gen->name, gen->likes_acum);
+    fprintf(fp, "%s;%d\n", gen->name, gen->total_likes);
 }
 
 void free_music_manager(Music_Manager mm)
@@ -146,6 +151,12 @@ void free_music_manager(Music_Manager mm)
     g_hash_table_destroy(mm->musics_by_id);
     g_array_free(mm->genre_array, TRUE);
     free(mm);
+}
+
+Genre get_genre_by_index(Music_Manager mm,int index)
+{
+    Genre gen = g_array_index(mm->genre_array, Genre, index);
+    return gen;
 }
 
 // int cmp_like_gen(gconstpointer g1, gconstpointer g2)
