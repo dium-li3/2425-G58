@@ -65,7 +65,6 @@ void order_duration (Art_Manager artist_manager){
 }
 
 void store_Artists (char *art_path, Art_Manager artists_manager){
-    char **line = calloc(1, sizeof (char *));
     Parser p = open_parser(art_path);
     Output out = open_out("resultados/artists_errors.csv");
     Artist artist = NULL;
@@ -78,12 +77,11 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
         }
         else{
             if (get_nRead(p) != -1)
-                error_output (p, out, line);
+                error_output (p, out);
         }
     }
     close_parser (p);
     close_output (out);
-    free (line); 
 }
 
 int length_arr_disc (Art_Manager am){

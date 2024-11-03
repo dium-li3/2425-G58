@@ -31,7 +31,6 @@ void insert_user_by_id(User u, User_Manager user_manager){
 
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);
-    char **line = calloc(1, sizeof (char *));
     Output out = open_out("resultados/users_errors.csv");
     User user = NULL;
     while (get_nRead (p) != -1){
@@ -41,19 +40,18 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
                 insert_user_by_id (user, user_manager);
             else {
                 free_user(user);
-                error_output (p, out, line);
+                error_output (p, out);
                 user = NULL;//pode-se apagar isto né?
         }
         }
         else{
             if (get_nRead (p) != -1){
-                error_output (p, out, line);
+                error_output (p, out);
             }
         }
     }
     close_parser (p);
     close_output (out);
-    free (line); 
 }
 
 

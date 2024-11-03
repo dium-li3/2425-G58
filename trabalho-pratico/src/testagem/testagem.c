@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "parser.h"
+#include "output.h"
 
 
 void update_paths(char *rf, char *ef, char *rd, char *ed, int i) {
@@ -14,27 +15,29 @@ void update_paths(char *rf, char *ef, char *rd, char *ed, int i) {
 /*
     Retorna 0 se houver discrepâncias ou 1 se não houver.
 */
-int compare_files(Parser rp, Parser ep) {
+int compare_files(Parser rp, Parser ep, GSList **l) {
         char *line_r = NULL, *line_e = NULL;
-        int r = 1;
+        int i;
 
-        line_r = parse_1line_alt(rp);
-        line_e = parse_1line_alt(ep);
+        parse_1line(rp, &line_r);
+        parse_1line(ep, &line_e);
 
-        while((get_nRead(rp) != -1) && ((get_nRead(ep) != -1)) && r) {
-            r = !(strcmp(line_r, line_e));
+        for(i = 1; (get_nRead(rp) != -1) && ((get_nRead(ep) != -1)); i++) {
+            if((strcmp(line_r, line_e)) != 0){
+                *l = g_slist_prepend(*l, GINT_TO_POINTER(i));
+            }
 
             free(line_r);
             free(line_e);
 
-            line_r = parse_1line_alt(rp);
-            line_e = parse_1line_alt(ep);
+            parse_1line(rp, &line_r);
+            parse_1line(ep, &line_e);
         }
 
         free(line_r);
         free(line_e);
 
-        return r;
+        return ((i==1)? 0 : 1);
 }
 
 
@@ -48,14 +51,21 @@ void testagem(char *expected) {
     char expected_file[50] = {'\0'};
 
     Parser rp = NULL, ep = NULL;
-    int i = 1, corrects = 0, temp = 0;
+    int i = 1, corrects = 0;
+    GSList *error_lines = NULL;
 
     update_paths(results_file, expected_file, results_dir, expected_dir, i);
 
     while((rp = open_parser(results_file)) && (ep = open_parser(expected_file))) {
-        temp = compare_files(rp, ep);
-
-        (temp==0)? printf("Erro na query %d.\n", i) : corrects++;
+        corrects += compare_files(rp, ep, &error_lines);
+        
+        if(error_lines != NULL){
+            printf("\nErro na query %d:\n", i);
+            error_lines = g_slist_reverse(error_lines);
+            print_query_errors(error_lines);
+            g_slist_free(error_lines);
+            error_lines = NULL;
+        }
  
         update_paths(results_file, expected_file, results_dir, expected_dir, ++i);
 
@@ -69,5 +79,5 @@ void testagem(char *expected) {
     free(results_dir);
     free(expected_dir);
 
-    printf("Queries certas: %d/%d\n\n", corrects, i-1);
+    printf("\nQueries certas: %d/%d\n\n", corrects, i-1);
 }

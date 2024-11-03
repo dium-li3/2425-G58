@@ -25,7 +25,6 @@ void insert_music_by_id(Music m, Music_Manager music_manager){
 
 
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
-    char **line = calloc(1, sizeof(char *));
     Parser p = open_parser(music_path);
     Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
@@ -37,17 +36,16 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
             else{
                 free_music(music);
                 music = NULL;
-                error_output(p, out, line);
+                error_output(p, out);
             }
         }
         else{
             if (get_nRead(p) != -1)
-                error_output(p, out, line);
+                error_output(p, out);
         }
     }
     close_parser(p);
     close_output(out);
-    free(line);
 }
 
 

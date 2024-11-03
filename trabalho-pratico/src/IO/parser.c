@@ -169,23 +169,10 @@ GSList *parse_file (Parser p){
     Guarda a linha lida na string dada.
     Devolve -1 caso não tenha lido nada.
 */
-ssize_t parse_1line (Parser p, char **line){
-    ssize_t nRead;
+void parse_1line (Parser p, char **line){
     size_t n;
-    nRead = getline (line, &n, p->fp);
-    return nRead;
-}
-
-/*
-    Semelhante à parse_1line.
-*/
-char* parse_1line_alt(Parser p){
-    size_t n;
-    char *line = NULL;
-
-    p->nRead = getline (&line, &n, p->fp);
-
-    return line;
+    *line = NULL;
+    p->nRead = getline (line, &n, p->fp);
 }
 
 

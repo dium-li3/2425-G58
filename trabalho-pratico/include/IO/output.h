@@ -15,6 +15,8 @@ void output_user(char *email, char *first_name, char *last_name, int age, char *
 
 void output_artist (char *name, char *type, char *disc_duration, char *country, Output out);
 
-void error_output (Parser p, Output out, char **line);
+void error_output (Parser p, Output out);
+
+void print_query_errors(GSList *l);
 
 #endif

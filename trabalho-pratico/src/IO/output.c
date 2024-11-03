@@ -32,10 +32,20 @@ void output_artist (char *name, char *type, char *disc_duration, char *country, 
     fprintf(out->fp, "%s;%s;%s;%s\n", name, type, disc_duration, country);
 }
 
-void error_output (Parser p, Output out, char **line){
-    *line = NULL;
+void error_output (Parser p, Output out){
+    char *line = NULL;
     go_back_1line (p);
-    parse_1line (p, line);
-    fprintf(out->fp, "%s", *line);
-    free (*line);
+    parse_1line (p, &line);
+    fprintf(out->fp, "%s", line);
+    free (line);
+}
+
+/*
+    Percorre a lista para ir printando as linhas onde há erros (programa de testes).
+*/
+void print_query_errors(GSList *l) {
+    while (l != NULL) {
+        printf("\tDiscrepância na linha %d.\n", GPOINTER_TO_INT(l->data));
+        l = l->next;
+    }
 }

@@ -41,14 +41,10 @@ GSList *parse_file (Parser p);
 
 /*
     Guarda 1 linha do ficheiro na line dada.
-    Devolve caso não tenha lido nada do ficheiro.
+    Para verificações, ver o p->nRead.
 */
-ssize_t parse_1line (Parser p, char **line);
+void parse_1line (Parser p, char **line);
 
-/*
-    Semelhante à parse_1line.
-*/
-char* parse_1line_alt(Parser p);
 
 //Devolva os anos passados de uma string que representa uma data.
 short read_date_to_age (char *bd);
