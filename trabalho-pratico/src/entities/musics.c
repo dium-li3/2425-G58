@@ -86,21 +86,21 @@ GSList *get_music_artists(Music m){
 }
 
 
-short get_likes(Music m, int min, int max){
-    return (m->likes[max] - m->likes[min]);
-}
+// short get_likes(Music m, int min, int max){
+//     return (m->likes[max] - m->likes[min]);
+// }
 
 
-void add_like(Music m, int age){
-    m->likes[age]++;
-}
+// void add_like(Music m, int age){
+//     m->likes[age]++;
+// }
 
 
-void likes_added_frequency(Music m){
-    for (int i = 1; i < 120; i++){
-        m->likes[i] += m->likes[i-1];
-    }
-}
+// void likes_added_frequency(Music m){
+//     for (int i = 1; i < 120; i++){
+//         m->likes[i] += m->likes[i-1];
+//     }
+// }
 
 
 void free_music(Music m) {
