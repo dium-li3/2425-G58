@@ -4,6 +4,16 @@
 #include "parser.h"
 
 /*
+    Estrutura para armazenar o nº de execuções de uma dada query (n)
+    e o tempo total para essas execuções(time).
+    O índice para uma query do tipo q é q-1.
+*/
+typedef struct query_data {
+    int n[3];
+    double time[3];
+} *Query_data;
+
+/*
     O objetivo será criar uma única querie, que tem os seus dados
     atualizados ao ler cada linha.
 */
@@ -145,4 +155,25 @@ void free_querie (Querie q){
     free_querie2 (q->querie2);
     free_querie3 (q->querie3);
     free (q);
+}
+
+Query_data create_query_data() {
+    Query_data r = calloc(1, sizeof(struct query_data));
+    return r;
+}
+
+/*
+    Incrementa automaticamente o nº de execuções.
+*/
+void add_query_data(Query_data qd, double time, int type) {
+    qd->n[type-1]++;
+    qd->time[type-1] += time;
+}
+
+double get_query_data_time(Query_data qd, int i) {
+    return (qd->time[i]);
+}
+
+int get_query_data_n(Query_data qd, int i) {
+    return (qd->n[i]);
 }
