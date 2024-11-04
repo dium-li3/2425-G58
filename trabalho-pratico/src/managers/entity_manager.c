@@ -78,32 +78,34 @@ void answer3(int min, int max, Entity_Manager em, Output out){
 }
 
 void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
-    char output_file[34];
-    snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
-    Output out = open_out (output_file);
-    switch (type)
-    {
-    case (1):
-        int id = get_querie1_info(q);
-        answer1(id, em, out);
-        break;
-    case (2):
-        short *N = calloc(1, sizeof(int));
-        char *country = get_querie2_info(q, N);
-        if (country == NULL)
-            fast_answer2(*N, em, out);
-        else
-            slow_answer2(*N, country, em, out);
-        free(N);
-        break;
-    case (3):
-        short *max = calloc(1, sizeof(int));
-        short min = get_querie3_info(q, max);
-        answer3(min, *max, em,out);
-        free(max);
-        break;
+    if (type > 0 ){
+        char output_file[34];
+        snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+        Output out = open_out (output_file);
+        switch (type)
+        {
+        case (1):
+            int id = get_querie1_info(q);
+            answer1(id, em, out);
+            break;
+        case (2):
+            short *N = calloc(1, sizeof(int));
+            char *country = get_querie2_info(q, N);
+            if (country == NULL)
+                fast_answer2(*N, em, out);
+            else
+                slow_answer2(*N, country, em, out);
+            free(N);
+            break;
+        case (3):
+            short *max = calloc(1, sizeof(int));
+            short min = get_querie3_info(q, max);
+            answer3(min, *max, em,out);
+            free(max);
+            break;
+        }
+        close_output (out);
     }
-    close_output (out);
 }
 
 void answer_all_queries(Parser queries, Entity_Manager em){

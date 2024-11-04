@@ -100,7 +100,10 @@ int cmp_like_gen(gconstpointer g1, gconstpointer g2)
 {
     Genre *ga = (Genre *)g1;
     Genre *gb = (Genre *)g2;
-    return (*gb)->total_likes - (*ga)->total_likes;
+    int r = (*gb)->total_likes - (*ga)->total_likes;
+    if (r == 0)
+        r = strcmp ((*ga)->name, (*gb)->name);
+    return r;
 }
 
 void sort_gen(Music_Manager mm,int min_age, int max_age)

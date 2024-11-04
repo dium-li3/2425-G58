@@ -7,8 +7,8 @@
 
 
 void update_paths(char *rf, char *ef, char *rd, char *ed, int i) {
-    snprintf(rf, 40, "%scommand%d_output.txt", rd, i);
-    snprintf(ef, 50, "%scommand%d_output.txt", ed, i);
+    snprintf(rf, 100, "%scommand%d_output.txt", rd, i);
+    snprintf(ef, 55, "%scommand%d_output.txt", ed, i);
 }
 
 
@@ -37,7 +37,7 @@ int compare_files(Parser rp, Parser ep, GSList **l) {
         free(line_r);
         free(line_e);
 
-        return ((i==1)? 0 : 1);
+        return ((*l != NULL)? 0 : 1);
 }
 
 
@@ -47,8 +47,8 @@ void testagem(char *expected) {
     char *results_dir = strdup("resultados/");
     char *expected_dir = strdup(expected);
 
-    char results_file[40] = {'\0'};
-    char expected_file[50] = {'\0'};
+    char results_file[100] = {'\0'};
+    char expected_file[55] = {'\0'};
 
     Parser rp = NULL, ep = NULL;
     int i = 1, corrects = 0;
@@ -56,7 +56,7 @@ void testagem(char *expected) {
 
     update_paths(results_file, expected_file, results_dir, expected_dir, i);
 
-    while((rp = open_parser(results_file)) && (ep = open_parser(expected_file))) {
+    for (rp = open_parser(results_file), ep = open_parser(expected_file); (rp && ep); rp = open_parser(results_file), ep = open_parser(expected_file)){
         corrects += compare_files(rp, ep, &error_lines);
         
         if(error_lines != NULL){
