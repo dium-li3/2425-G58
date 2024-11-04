@@ -42,7 +42,7 @@ int compare_files(Parser rp, Parser ep, GSList **l) {
 
 
 void testagem(char *expected) {
-    printf("\n\n===TESTAGEM===\n\n\n");
+    printf("\n\n===TESTAGEM===\n\n");
 
     char *results_dir = strdup("resultados/");
     char *expected_dir = strdup(expected);

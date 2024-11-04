@@ -185,6 +185,30 @@ void fast_answer2_test(int N, Entity_Manager em, Output out, Query_data qd){
     add_query_data(qd, elapsed, 2);
 }
 
+void answer3_test(int min, int max, Entity_Manager em, Output out, Query_data qd){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
+    Genre gen = NULL;
+    update_arr_total_likes(em->music_M,min,max);
+    sort_gen(em->music_M,min,max);
+    int gen_arr_len = get_gen_arr_len(em->music_M);
+    int escreveu = 0;
+    for (int i = 0; i < gen_arr_len; i++){
+        gen = get_genre_by_index(em->music_M, i);
+        escreveu += print_genre_info(gen, out);
+    }
+    if (!escreveu)
+        output_empty(out);
+    
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+
+    add_query_data(qd, elapsed, 3);
+}
+
+
 void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Query_data qd){
     char output_file[34];
     snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
@@ -207,7 +231,7 @@ void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Que
     case (3):
         short *max = calloc(1, sizeof(int));
         short min = get_querie3_info(q, max);
-        answer3(min, *max, em, out);
+        answer3_test(min, *max, em, out, qd);
         free(max);
         break;
     }
