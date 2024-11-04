@@ -41,6 +41,7 @@ int valid_musics(GSList *musics, Music_Manager mm, short age)
         {
             char *gen = get_genre(m);
             add_like_genre(mm, gen, age);
+            free (gen);
         }
     }
     // for (temp = musics; temp != NULL && r; temp = temp->next)
