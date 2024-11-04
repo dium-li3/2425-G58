@@ -75,6 +75,7 @@ void answer3(int min, int max, Entity_Manager em, Output out){
     }
     if (!escreveu)
         output_empty(out);
+}
 
 void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
     char output_file[34];

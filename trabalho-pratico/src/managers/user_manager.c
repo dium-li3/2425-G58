@@ -34,8 +34,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Output out = open_out("resultados/users_errors.csv");
     User user = NULL;
     while (get_nRead (p) != -1){
-        user = (User)parse_
-          (p, (void *)create_user_from_tokens);
+        user = (User)parse_line (p, (void *)create_user_from_tokens);
         if (user != NULL){
             if (valid_musics(get_liked_musics (user), mm, get_user_age (user)))
                 insert_user_by_id (user, user_manager);

@@ -125,6 +125,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
     Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
+    int i = 0;
     while (get_nRead(p) != -1){
         music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
@@ -154,7 +155,7 @@ int print_genre_info(Genre gen, Output out)
 {
     if (gen->total_likes > 0){
         char *name = strdup (gen->name);
-        output_genre (name, gen->total_likes);
+        output_genre (name, gen->total_likes, out);
         free (name);
     }
     return gen->total_likes;

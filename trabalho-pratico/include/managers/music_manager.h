@@ -37,6 +37,6 @@ void get_total_likes(Music_Manager mm,int min_age, int max_age);
 
 Genre get_genre_by_index(Music_Manager mm,int index);
 
-int print_genre_info(Genre gen, FILE *fp);
+int print_genre_info(Genre gen, Output out);
 
 #endif

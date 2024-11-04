@@ -32,6 +32,10 @@ void output_artist (char *name, char *type, char *disc_duration, char *country, 
     fprintf(out->fp, "%s;%s;%s;%s\n", name, type, disc_duration, country);
 }
 
+void output_genre (char *name_gen, int likes, Output out){
+    fprintf(out->fp, "%s;%d\n", name_gen, likes);
+}
+
 void error_output (Parser p, Output out){
     char *line = NULL;
     go_back_1line (p);
