@@ -4,10 +4,10 @@
 #include "user_manager.h"
 #include "sintatica.h"
 #include "parser.h"
-#include "utils.h"
 #include "users.h"
 #include "music_manager.h"
 #include "logica.h"
+#include "output.h"
 
 //g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
@@ -29,92 +29,31 @@ void insert_user_by_id(User u, User_Manager user_manager){
     g_hash_table_insert (user_manager->users_by_id, id, u);
 }
 
-
-/*
-    Guarda o user de uma linha na hash table do manager.
-    Devolve 1 caso tenha corrido tudo bem, e
-    devolve 0 caso o user tenha falhado a validação
-    sintática, nesse caso não o guarda.
-*/
-
-/*
-//SListas, 569-604MB, 1.8s-2s, 20M allocs ->667MB allocated
-int store_User (User_Manager user_manager, GSList *linhas){
-    int r = 1;
-    char **tokens = calloc (8 ,sizeof(char *));
-    char *linha = strdup (linhas->data);
-    tokens = parse_line(linha, tokens);
-    free (linha);
-    User user = create_user_from_tokens (tokens);
-    for (int i = 0; i < 8; i++){
-        free (tokens[i]);
-    }
-    free (tokens);
-    if (user != NULL){
-        insert_user_by_id (user, user_manager);
-    }
-    else r = 0;
-    return r;
-}
-
-void store_Users (FILE *fp_Users, User_Manager user_manager){
-    GSList *linhas = parse_file (fp_Users);
-    FILE *user_errors = fopen ("user_errors.csv", "w+");
-    GSList *help = linhas;
-    while (linhas != NULL){
-        int user_valido = store_User (user_manager, linhas);
-        if (!user_valido) {
-            //print da linha para o documento de erros de user.
-            fprintf(user_errors, "%s", (char *)linhas->data);
-        }
-        linhas = linhas->next;
-    }
-    g_slist_free_full(help, free);
-}*/
-
-/*
-//Acessos repetidos ao ficheiro 450-470MB, 1.8s-2s, 20M allocs ->592MB allocated
-int store_User (User_Manager user_manager, char *line){
-    int r = 1;
-    char **tokens = calloc (8 ,sizeof(char *));
-    tokens = parse_line(line, tokens);
-    User user = create_user_from_tokens (tokens);
-    for (int i = 0; i < 8; i++){
-        free (tokens[i]);
-    }
-    free (tokens);
-    if (user != NULL){
-        i
-    }
-    else r = 0;
-    return r;
-}*/
-
-void store_Users (FILE *fp_Users, User_Manager user_manager, Music_Manager mm){
-    ssize_t nRead = 0;
-    char **line = calloc(1, sizeof (char *));
-    FILE *user_errors = fopen ("resultados/users_errors.csv", "w");
+void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
+    Parser p = open_parser (user_path);
+    Output out = open_out("resultados/users_errors.csv");
     User user = NULL;
-    while (nRead != -1){
-        user = (User)parse_line (fp_Users, (void *)create_user_from_tokens, &nRead);
+    while (get_nRead (p) != -1){
+        user = (User)parse_
+          (p, (void *)create_user_from_tokens);
         if (user != NULL){
             if (valid_musics(get_liked_musics (user), mm, get_user_age (user)))
                 insert_user_by_id (user, user_manager);
             else {
                 free_user(user);
-                error_output (fp_Users, user_errors, line, nRead);
+                error_output (p, out);
                 user = NULL;//pode-se apagar isto né?
         }
         }
         else{
-            if (nRead != -1){
-                error_output (fp_Users, user_errors, line, nRead);
+            if (get_nRead (p) != -1){
+                error_output (p, out);
             }
         }
     }
     gen_freq_acum (mm);
-    fclose (user_errors);
-    free (line); 
+    close_parser (p);
+    close_output (out);
 }
 
 

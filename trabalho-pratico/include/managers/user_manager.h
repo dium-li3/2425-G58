@@ -10,7 +10,7 @@ typedef struct user_manager *User_Manager;
 
 User_Manager create_user_manager();
 
-void store_Users (FILE *fp_Users, User_Manager user_manager, Music_Manager music_manager);
+void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
 
 User search_user_by_id(int id, User_Manager user_manager);
 

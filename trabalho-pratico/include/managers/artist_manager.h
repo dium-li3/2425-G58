@@ -15,7 +15,7 @@ void insert_artists_by_id(Artist a, Art_Manager art_manager);
 
 void order_duration (Art_Manager artist_manager);
 
-void store_Artists (FILE *fp_artists, Art_Manager artists_manager);
+void store_Artists (char *art_path, Art_Manager artists_manager);
 
 Artist search_artist_by_id(int id, Art_Manager art_manager);
 

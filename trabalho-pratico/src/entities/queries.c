@@ -1,6 +1,7 @@
 #include <glib.h>
 
 #include "queries.h"
+#include "parser.h"
 
 /*
     O objetivo será criar uma única querie, que tem os seus dados
@@ -118,9 +119,9 @@ int store_querie_from_token (Querie q, char **tokens, int n_tokens){
     return q->querie;
 }
 
-int read_querie_line(FILE *fp, Querie q){
+int read_querie_line(Parser pq, Querie q){
     char **tokens = calloc (3, sizeof(char *));//basta 3 espaços por agora
-    int n_tokens = parse_1line_querie(fp, tokens);
+    int n_tokens = parse_1line_querie(pq, tokens);
     int type = store_querie_from_token (q, tokens, n_tokens);
     if (get_querie_type(q) != -1)
         for (int i = 0; i < 3; i++){

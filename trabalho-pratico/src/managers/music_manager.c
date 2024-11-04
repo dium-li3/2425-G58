@@ -3,8 +3,8 @@
 #include "parser.h"
 #include "music_manager.h"
 #include "artist_manager.h"
-#include "utils.h"
 #include "logica.h"
+#include "output.h"
 
 typedef struct genre
 {
@@ -64,7 +64,7 @@ int insert_gen(Music m, Music_Manager mus_m, int i)
 }
 
 
-void add_like_genre(Music_Manager mm, char *genre, short age)//<------------
+void add_like_genre(Music_Manager mm, char *genre, short age)
 {
     int r = 0;
     for (int i = 0; i < mm->genre_array->len && !r; i++)
@@ -75,7 +75,7 @@ void add_like_genre(Music_Manager mm, char *genre, short age)//<------------
         }
 }
 
-void gen_freq_acum(Music_Manager mm)//<------------
+void gen_freq_acum(Music_Manager mm)
 {
     for (int i = 0; i < mm->genre_array->len; i++)
         for (int j = 1; j < 121; j++)
@@ -121,18 +121,13 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
-void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am)
-{
-    ssize_t nRead = 0;
-    char **line = calloc(1, sizeof(char *));
-    FILE *music_errors = fopen("resultados/musics_errors.csv", "w");
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
+    Parser p = open_parser(music_path);
+    Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
-    int i = 0;
-    while (nRead != -1)
-    {
-        music = parse_line(fp_musics, (void *)create_music_from_tokens, &nRead);
-        if (music != NULL)
-        {
+    while (get_nRead(p) != -1){
+        music = parse_line(p, (void *)create_music_from_tokens);
+        if (music != NULL){
             if (valid_artists(get_music_artists(music), get_music_duration(music), am))
             {
                 insert_music_by_id(music, mm);
@@ -143,23 +138,25 @@ void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am)
             {
                 free_music(music);
                 music = NULL;
-                error_output(fp_musics, music_errors, line, nRead);
+                error_output(p, out);
             }
         }
-        else
-        {
-            if (nRead != -1)
-                error_output(fp_musics, music_errors, line, nRead);
+        else{
+            if (get_nRead(p) != -1)
+                error_output(p, out);
         }
     }
-    fclose(music_errors);
-    free(line);
+    close_parser(p);
+    close_output(out);
 }
 
-int print_genre_info(Genre gen, FILE *fp)
+int print_genre_info(Genre gen, Output out)
 {
-    if (gen->total_likes > 0)
-        fprintf(fp, "%s;%d\n", gen->name, gen->total_likes);
+    if (gen->total_likes > 0){
+        char *name = strdup (gen->name);
+        output_genre (name, gen->total_likes);
+        free (name);
+    }
     return gen->total_likes;
 }
 
