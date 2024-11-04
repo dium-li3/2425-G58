@@ -13,7 +13,7 @@ typedef struct parser{
 Parser open_parser(char *path){
     Parser p = NULL;
     FILE *temp = NULL;
-
+    
     if ((temp = fopen(path, "r")) != NULL) {
         p = calloc (1, sizeof (struct parser));
         p->fp = temp;

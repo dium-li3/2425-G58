@@ -50,7 +50,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
             }
         }
     }
-    gen_freq_acum (mm);
+    gen_arr_freq_acum (mm);
     close_parser (p);
     close_output (out);
 }
