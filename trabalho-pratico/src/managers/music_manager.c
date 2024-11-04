@@ -9,7 +9,7 @@
 typedef struct genre
 {
     char *name;
-    int likes[120];
+    int likes[121];
     int total_likes;
 } *Genre;
 
@@ -31,52 +31,66 @@ Genre create_gen(char *gen_name)
     return gen;
 }
 
+static void genre_clear (Genre *gen){
+    free ((*gen)->name);
+    free (*gen);
+}
+
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, free, (void *)free_music);
-    mm->genre_array = g_array_new(FALSE, FALSE, sizeof(Genre));
+    mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
+    g_array_set_clear_func(mm->genre_array, (GDestroyNotify) genre_clear);
     return mm;
 }
 
-void insert_gen(Music m, Music_Manager mus_m, int i)
+//Devolve 1 caso tenha inserido um novo genero de musica.
+int insert_gen(Music m, Music_Manager mus_m, int i)
 {
-    int r = 0;
+    int r = 1;
     char *gen = get_genre(m);
-    for (int i = 0; i < mus_m->genre_array->len && !r; i++)
+    for (int i = 0; i < mus_m->genre_array->len && r; i++)
         if (strcmp(gen, g_array_index(mus_m->genre_array, Genre, i)->name) == 0)
-            r++;
+            r = 0;
 
-    if (r == 0)
+    if (r)
     {
         Genre gen_real = create_gen(gen);
         g_array_insert_val(mus_m->genre_array, i, gen_real);
     }
+    free (gen);
+    return r;
 }
 
-void add_like_genre(Music_Manager mm, Genre gen, short age)
+
+void add_like_genre(Music_Manager mm, char *genre, short age)//<------------
 {
     int r = 0;
     for (int i = 0; i < mm->genre_array->len && !r; i++)
-        if (strcmp(gen->name, g_array_index(mm->genre_array, Genre, i)->name) == 0)
+        if (strcmp(genre, g_array_index(mm->genre_array, Genre, i)->name) == 0)
         {
             g_array_index(mm->genre_array, Genre, i)->likes[age]++;
             r++;
         }
 }
 
-void gen_freq_acum(Music_Manager mm,int min_age, int max_age)
+void gen_freq_acum(Music_Manager mm)//<------------
 {
     for (int i = 0; i < mm->genre_array->len; i++)
-        for (int j = 1; j < 120; j++)
+        for (int j = 1; j < 121; j++)
             g_array_index(mm->genre_array, Genre, i)->likes[j] += g_array_index(mm->genre_array, Genre, i)->likes[j - 1];
 }
 
 void get_total_likes(Music_Manager mm,int min_age, int max_age)
 {
     for (int i = 0; i < mm->genre_array->len; i++)
-    {
-        int tot_likes = g_array_index(mm->genre_array, Genre, i)->likes[max_age] - g_array_index(mm->genre_array, Genre, i)->likes[min_age];
+    {   
+        int tot_likes = 0;
+        if (min_age > 0)
+            tot_likes = g_array_index(mm->genre_array, Genre, i)->likes[max_age] - g_array_index(mm->genre_array, Genre, i)->likes[min_age-1];
+        else
+            tot_likes = g_array_index(mm->genre_array, Genre, i)->likes[max_age];
         g_array_index(mm->genre_array, Genre, i)->total_likes = tot_likes;
     }
     
@@ -122,7 +136,8 @@ void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am)
             if (valid_artists(get_music_artists(music), get_music_duration(music), am))
             {
                 insert_music_by_id(music, mm);
-                insert_gen(music, mm, i++);
+                if (insert_gen(music, mm, i))
+                    i++;
             }
             else
             {
@@ -141,9 +156,11 @@ void store_Musics(FILE *fp_musics, Music_Manager mm, Art_Manager am)
     free(line);
 }
 
-void print_genre_info(Genre gen, FILE *fp)
+int print_genre_info(Genre gen, FILE *fp)
 {
-    fprintf(fp, "%s;%d\n", gen->name, gen->total_likes);
+    if (gen->total_likes > 0)
+        fprintf(fp, "%s;%d\n", gen->name, gen->total_likes);
+    return gen->total_likes;
 }
 
 void free_music_manager(Music_Manager mm)
