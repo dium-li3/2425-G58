@@ -62,8 +62,19 @@ void fast_answer2(int N, Entity_Manager em, Output out){
     }
 }
 
+
 void answer3(int min, int max, Entity_Manager em, Output out){
-}
+    Genre gen = NULL;
+    get_total_likes(em->music_M,min,max);
+    sort_gen(em->music_M,min,max);
+    int gen_arr_len = get_gen_arr_len(em->music_M);
+    int escreveu = 0;
+    for (int i = 0; i < gen_arr_len; i++){
+        gen = get_genre_by_index(em->music_M, i);
+        escreveu += print_genre_info(gen, out);
+    }
+    if (!escreveu)
+        output_empty(out);
 
 void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
     char output_file[34];
@@ -87,7 +98,7 @@ void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
     case (3):
         short *max = calloc(1, sizeof(int));
         short min = get_querie3_info(q, max);
-        answer3(min, *max, em, out);
+        answer3(min, *max, em,out);
         free(max);
         break;
     }
