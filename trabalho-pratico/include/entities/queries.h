@@ -5,6 +5,8 @@
 
 #include "parser.h"
 
+typedef struct query_data *Query_data;
+
 typedef struct querie *Querie;
 
 typedef struct querie1 *Querie1;
@@ -56,5 +58,13 @@ int read_querie_line(Parser pq, Querie q);
 
 void free_querie (Querie q);
 
+Query_data create_query_data();
+
+//Incrementa automaticamente o nº de execuções.
+void add_query_data(Query_data qd, double time, int type);
+
+double get_query_data_time(Query_data qd, int i);
+
+int get_query_data_n(Query_data qd, int i);
 
 #endif

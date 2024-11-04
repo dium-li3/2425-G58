@@ -166,8 +166,8 @@ GSList *parse_file (Parser p){
 }
 
 /*
-    Guarda a linha lida na string dada.
-    Devolve -1 caso não tenha lido nada.
+    Guarda a linha lida na string dada (aqui, ** é endereço de string e não array 2d)
+    p->nRead indica se a leitura correu bem ou não.
 */
 void parse_1line (Parser p, char **line){
     size_t n;

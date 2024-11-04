@@ -4,6 +4,7 @@
 
 #include "output.h"
 #include "parser.h"
+#include "queries.h"
 
 typedef struct output{
     FILE *fp;
@@ -49,7 +50,19 @@ void error_output (Parser p, Output out){
 */
 void print_query_errors(GSList *l) {
     while (l != NULL) {
-        printf("\tDiscrepância na linha %d.\n", GPOINTER_TO_INT(l->data));
+        printf("    -Discrepância na linha %d.\n", GPOINTER_TO_INT(l->data));
         l = l->next;
+    }
+}
+
+void print_query_time(Query_data qd) {
+    int i;
+    double t;
+
+    printf("\nTempos de execução para cada query (média|total):\n");
+
+    for(i = 0; i < 3; i++) {
+        t = get_query_data_time(qd, i);
+        printf("    -Query %d: %.6fms | %.6fms\n", i+1, t/get_query_data_n(qd, i), t);
     }
 }
