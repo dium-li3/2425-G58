@@ -65,7 +65,7 @@ void fast_answer2(int N, Entity_Manager em, Output out){
 
 void answer3(int min, int max, Entity_Manager em, Output out){
     Genre gen = NULL;
-    get_total_likes(em->music_M,min,max);
+    update_arr_total_likes(em->music_M,min,max);
     sort_gen(em->music_M,min,max);
     int gen_arr_len = get_gen_arr_len(em->music_M);
     int escreveu = 0;
