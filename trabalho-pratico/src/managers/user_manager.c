@@ -112,6 +112,7 @@ void store_Users (FILE *fp_Users, User_Manager user_manager, Music_Manager mm){
             }
         }
     }
+    gen_freq_acum (mm);
     fclose (user_errors);
     free (line); 
 }
