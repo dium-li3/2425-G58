@@ -20,8 +20,8 @@ void output_genre (char *name_gen, int likes, Output out);
 
 void error_output (Parser p, Output out);
 
-void print_query_errors(GSList *l);
+void print_query_errors(GArray *a);
 
-void print_query_time(Query_data qd);
+void print_query_time(Query_stats qs);
 
 #endif
