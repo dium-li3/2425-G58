@@ -48,21 +48,21 @@ void error_output (Parser p, Output out){
 /*
     Percorre a lista para ir printando as linhas onde há erros (programa de testes).
 */
-void print_query_errors(GSList *l) {
-    while (l != NULL) {
-        printf("    -Discrepância na linha %d.\n", GPOINTER_TO_INT(l->data));
-        l = l->next;
+void print_query_errors(GArray *a) {
+    int i;
+    for(i = 0; i < a->len; i++) {
+        printf("    -Discrepância na linha %d.\n", g_array_index(a, int, i));
     }
 }
 
-void print_query_time(Query_data qd) {
+void print_query_time(Query_stats qs) {
     int i;
     double t;
 
     printf("\nTempos de execução para cada query (média|total):\n");
 
     for(i = 0; i < 3; i++) {
-        t = get_query_data_time(qd, i);
-        printf("    -Query %d: %.6fms | %.6fms\n", i+1, t/get_query_data_n(qd, i), t);
+        t = get_query_data_time(qs, i);
+        printf("    -Query %d: %.6fms | %.6fms\n", i+1, t/get_query_data_n(qs, i), t);
     }
 }

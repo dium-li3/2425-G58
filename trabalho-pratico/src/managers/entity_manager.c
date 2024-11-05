@@ -129,7 +129,7 @@ void answer_all_queries(Parser queries, Entity_Manager em){
 
 //funções para programa-testes VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-void answer1_test(int id, Entity_Manager em, Output out, Query_data qd){
+void answer1_test(int id, Entity_Manager em, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -140,10 +140,10 @@ void answer1_test(int id, Entity_Manager em, Output out, Query_data qd){
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
     
-    add_query_data(qd, elapsed, 1);
+    add_query_data(qs, elapsed, 1);
 }
 
-void slow_answer2_test(int N, char *country, Entity_Manager em, Output out, Query_data qd){
+void slow_answer2_test(int N, char *country, Entity_Manager em, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -163,10 +163,10 @@ void slow_answer2_test(int N, char *country, Entity_Manager em, Output out, Quer
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 
-    add_query_data(qd, elapsed, 2);
+    add_query_data(qs, elapsed, 2);
 }
 
-void fast_answer2_test(int N, Entity_Manager em, Output out, Query_data qd){
+void fast_answer2_test(int N, Entity_Manager em, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -182,10 +182,10 @@ void fast_answer2_test(int N, Entity_Manager em, Output out, Query_data qd){
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 
-    add_query_data(qd, elapsed, 2);
+    add_query_data(qs, elapsed, 2);
 }
 
-void answer3_test(int min, int max, Entity_Manager em, Output out, Query_data qd){
+void answer3_test(int min, int max, Entity_Manager em, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -205,11 +205,11 @@ void answer3_test(int min, int max, Entity_Manager em, Output out, Query_data qd
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 
-    add_query_data(qd, elapsed, 3);
+    add_query_data(qs, elapsed, 3);
 }
 
 
-void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Query_data qd){
+void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Query_stats qs){
     char output_file[34];
     snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
     Output out = open_out (output_file);
@@ -217,34 +217,34 @@ void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Que
     {
     case (1):
         int id = get_querie1_info(q);
-        answer1_test(id, em, out, qd);
+        answer1_test(id, em, out, qs);
         break;
     case (2):
         short *N = calloc(1, sizeof(int));
         char *country = get_querie2_info(q, N);
         if (country == NULL)
-            fast_answer2_test(*N, em, out, qd);
+            fast_answer2_test(*N, em, out, qs);
         else
-            slow_answer2_test(*N, country, em, out, qd);
+            slow_answer2_test(*N, country, em, out, qs);
         free(N);
         break;
     case (3):
         short *max = calloc(1, sizeof(int));
         short min = get_querie3_info(q, max);
-        answer3_test(min, *max, em, out, qd);
+        answer3_test(min, *max, em, out, qs);
         free(max);
         break;
     }
     close_output (out);
 }
 
-void answer_all_queries_test(Parser queries, Entity_Manager em, Query_data qd){
+void answer_all_queries_test(Parser queries, Entity_Manager em, Query_stats qs){
     int i;
     Querie q = create_querie();
     for (i = 1; get_querie_type(q) != -1; i++)
     {
         int type = read_querie_line(queries, q);
-        answer_querie_test(q, em, type, i, qd);
+        answer_querie_test(q, em, type, i, qs);
     }
     free_querie(q);
 }

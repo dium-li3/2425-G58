@@ -8,10 +8,10 @@
     e o tempo total para essas execuções(time).
     O índice para uma query do tipo q é q-1.
 */
-typedef struct query_data {
+typedef struct query_stats {
     int n[3];
     double time[3];
-} *Query_data;
+} *Query_stats;
 
 /*
     O objetivo será criar uma única querie, que tem os seus dados
@@ -157,23 +157,23 @@ void free_querie (Querie q){
     free (q);
 }
 
-Query_data create_query_data() {
-    Query_data r = calloc(1, sizeof(struct query_data));
+Query_stats create_query_data() {
+    Query_stats r = calloc(1, sizeof(struct query_stats));
     return r;
 }
 
 /*
     Incrementa automaticamente o nº de execuções.
 */
-void add_query_data(Query_data qd, double time, int type) {
+void add_query_data(Query_stats qd, double time, int type) {
     qd->n[type-1]++;
     qd->time[type-1] += time;
 }
 
-double get_query_data_time(Query_data qd, int i) {
+double get_query_data_time(Query_stats qd, int i) {
     return (qd->time[i]);
 }
 
-int get_query_data_n(Query_data qd, int i) {
+int get_query_data_n(Query_stats qd, int i) {
     return (qd->n[i]);
 }

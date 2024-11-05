@@ -17,9 +17,9 @@ void answer_querie (Querie q, Entity_Manager em, int type, int n_querie);
 
 void answer_all_queries (Parser queries, Entity_Manager em);
 
-void answer_querie_test (Querie q, Entity_Manager em, int type, int n_querie, Query_data qd);
+void answer_querie_test (Querie q, Entity_Manager em, int type, int n_querie, Query_stats qs);
 
-void answer_all_queries_test (Parser queries, Entity_Manager em, Query_data qd);
+void answer_all_queries_test (Parser queries, Entity_Manager em, Query_stats qs);
 
 void free_entity_manager (Entity_Manager e);
 

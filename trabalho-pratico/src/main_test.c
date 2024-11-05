@@ -10,7 +10,7 @@
 #include "testagem.h"
 
 
-int trabalho_test(int argc, char **argv, Query_data qd){
+int trabalho_test(int argc, char **argv, Query_stats qs){
     char *path = argv[1];
 
 
@@ -26,7 +26,7 @@ int trabalho_test(int argc, char **argv, Query_data qd){
     store_Entities(entity_paths, entity_manager);
     free3Entities(entity_paths);
     //Resposta às queries
-    answer_all_queries_test(parser_queries, entity_manager, qd);
+    answer_all_queries_test(parser_queries, entity_manager, qs);
     //free moment
     free_entity_manager (entity_manager);
     close_parser(parser_queries);
@@ -41,13 +41,13 @@ int main (int argc, char **argv){
         return 1;
     }
 
-    Query_data qd = create_query_data();
+    Query_stats qs = create_query_data();
     
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
 
-    int r = trabalho_test(argc, argv, qd);
+    int r = trabalho_test(argc, argv, qs);
 
     if(r==0) {
         clock_gettime(CLOCK_REALTIME, &end);
@@ -58,8 +58,8 @@ int main (int argc, char **argv){
 
         testagem(argv[3]);
 
-        print_query_time(qd);
-        free(qd);
+        print_query_time(qs);
+        free(qs);
 
         printf("\nTempo total: %.6fs\n\n", elapsed);
         printf("\nUtilização de memória: %ld KB\n\n", r_usage.ru_maxrss);
