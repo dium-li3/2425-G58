@@ -17,12 +17,8 @@ int get_music_duration(Music m);
 
 GSList *get_music_artists (Music m);
 
-short get_likes(Music m, int min, int max);
-
-void add_like(Music m, int age);
-
-void likes_added_frequency(Music m);
-
 void free_music(Music m);
+
+int valid_duration (char *duration);
 
 #endif

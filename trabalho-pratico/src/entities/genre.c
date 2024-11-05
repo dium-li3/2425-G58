@@ -2,7 +2,7 @@
 #include <glib.h>
 #include "output.h"
 
-#define GEN_LEN 121
+#define GEN_LEN 150
 typedef struct genre
 {
     char *name;

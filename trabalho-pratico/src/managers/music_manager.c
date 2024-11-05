@@ -3,7 +3,6 @@
 #include "parser.h"
 #include "music_manager.h"
 #include "artist_manager.h"
-#include "logica.h"
 #include "output.h"
 #include "genre.h"
 
@@ -88,6 +87,32 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
+
+/*
+    Verifica que todos os artistas de uma dada lista existem.
+    Caso existam, adiciona a duration dada à discografia de todos os
+    artistas.
+*/
+int valid_artists(GSList *artists, int duration, Art_Manager am)
+{
+    int r = 1;
+    Artist a = NULL;
+    GSList *temp = NULL;
+    for (temp = artists; temp != NULL && r; temp = temp->next)
+    {
+        a = search_artist_by_id(get_art_id(temp->data), am); // hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        if (a == NULL)
+            r = 0;
+    }
+    for (temp = artists; temp != NULL && r; temp = temp->next)
+    {
+        a = search_artist_by_id(get_art_id(temp->data), am);
+        add_disc_duration(a, duration);
+    }
+    return r;
+}
+
+
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
     Output out = open_out("resultados/musics_errors.csv");
@@ -130,37 +155,3 @@ Genre get_genre_by_index(Music_Manager mm,int index)
     Genre gen = g_array_index(mm->genre_array, Genre, index);
     return gen;
 }
-
-// int cmp_like_gen(gconstpointer g1, gconstpointer g2)
-// {
-//     Genre *ga = (Genre *)g1;
-//     Genre *gb = (Genre *)g2;
-//     // if ((*aa)->disc_duration > (*bb)->disc_duration)
-//     //     return -1;
-//     // if ((*aa)->disc_duration < (*bb)->disc_duration)
-//     //     return 1;
-//     return (*gb)->likes_acum - (*ga)->likes_acum;
-// }
-
-// void add_gen_arr(Music m, Music_Manager mus_m)
-// {
-//     Genre gen = calloc(1, sizeof(struct genre));
-//     gen->name = get_genre(m);
-//     g_array_append_val(mus_m->genre_array,gen);
-//     copy_likes_in_gen(m, mus_m, mus_m->genre_array->len);
-// }
-
-// void fill_gen_arr(Music m, Music_Manager mus_m)
-// {
-//     int r = 0;
-
-//     for (int i = 0; i < mus_m->genre_array->len && !r; i++)
-//         if (strcmp(get_music_genre(m), mus_m->g_array_index(mus_m->genre_array, struct genre, i))->name == 0)
-//         {
-//             copy_likes_in_gen(m,mus_m,i);
-//             r++;
-//         }
-
-//     if (!r)
-//         add_gen_arr(m,mus_m);
-// }

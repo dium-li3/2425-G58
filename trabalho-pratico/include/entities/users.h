@@ -6,7 +6,6 @@
 #include <stdio.h>
 
 #include "users.h"
-#include "sintatica.h"
 #include "parser.h"
 #include "output.h"
 
@@ -49,5 +48,10 @@ void print_user_info(User u, Output out);
 
 //Dá free do user
 void free_user (User u);
+
+int valid_subscription (char *subs_type);
+
+//Verifica se os campos que têm de ser sintáticamente validados de um dado utilizador estão direito/válidos.
+int valid_user_sintatic (char *email, char *date, char sub_type);
 
 #endif

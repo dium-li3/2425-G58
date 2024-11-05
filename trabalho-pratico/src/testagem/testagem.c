@@ -5,10 +5,12 @@
 #include "parser.h"
 #include "output.h"
 
+#define LEN_RESULTS 40
 
-void update_paths(char *rf, char *ef, char *rd, char *ed, int i) {
-    snprintf(rf, 100, "%scommand%d_output.txt", rd, i);
-    snprintf(ef, 55, "%scommand%d_output.txt", ed, i);
+
+void update_paths(char *rf, char *ef, char *rd, char *ed, int i, size_t len_expected) {
+    snprintf(rf, LEN_RESULTS, "%scommand%d_output.txt", rd, i);
+    snprintf(ef, len_expected, "%scommand%d_output.txt", ed, i);
 }
 
 
@@ -47,14 +49,15 @@ void testagem(char *expected) {
     char *results_dir = strdup("resultados/");
     char *expected_dir = strdup(expected);
 
-    char results_file[100] = {'\0'};
-    char expected_file[55] = {'\0'};
+    size_t len_expected = strlen(expected) + 25;
+    char *results_file = calloc(LEN_RESULTS, sizeof(char));
+    char *expected_file = calloc(len_expected, sizeof(char));
 
     Parser rp = NULL, ep = NULL;
     int i = 1, corrects = 0;
     GSList *error_lines = NULL;
 
-    update_paths(results_file, expected_file, results_dir, expected_dir, i);
+    update_paths(results_file, expected_file, results_dir, expected_dir, i, len_expected);
 
     for (rp = open_parser(results_file), ep = open_parser(expected_file); (rp && ep); rp = open_parser(results_file), ep = open_parser(expected_file)){
         corrects += compare_files(rp, ep, &error_lines);
@@ -67,7 +70,7 @@ void testagem(char *expected) {
             error_lines = NULL;
         }
  
-        update_paths(results_file, expected_file, results_dir, expected_dir, ++i);
+        update_paths(results_file, expected_file, results_dir, expected_dir, ++i, len_expected);
 
         close_parser(rp);
         close_parser(ep);

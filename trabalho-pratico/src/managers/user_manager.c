@@ -2,11 +2,9 @@
 #include <stdio.h>
 
 #include "user_manager.h"
-#include "sintatica.h"
 #include "parser.h"
 #include "users.h"
 #include "music_manager.h"
-#include "logica.h"
 #include "output.h"
 
 //g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
@@ -28,6 +26,33 @@ void insert_user_by_id(User u, User_Manager user_manager){
     int *id = get_user_id_pointer(u);
     g_hash_table_insert (user_manager->users_by_id, id, u);
 }
+
+
+// Verifica se um dado utilizador é válido ou não.
+int valid_musics(GSList *musics, Music_Manager mm, short age)
+{
+    int r = 1;
+    Music m = NULL;
+    GSList *temp = NULL;
+    for (temp = musics; temp != NULL && r; temp = temp->next)
+    {
+        m = search_music_by_id(get_music_id(temp->data), mm); // hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        if (m == NULL)
+            r = 0;
+        else
+        {
+            char *gen = get_genre(m);
+            add_like_genre(mm, gen, age);
+            free (gen);
+        }
+    }
+    // for (temp = musics; temp != NULL && r; temp = temp->next)
+    // {
+    //     m = search_music_by_id(get_music_id(temp->data), mm);
+    // }
+    return r;
+}
+
 
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);

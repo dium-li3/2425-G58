@@ -4,7 +4,6 @@
 #include "user_manager.h"
 #include "users.h"
 #include "parser.h"
-#include "sintatica.h"
 #include "queries.h"
 
 

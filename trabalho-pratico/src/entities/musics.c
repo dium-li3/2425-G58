@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "musics.h"
-#include "sintatica.h"
 #include "parser.h"
+#include "utils.h"
 
 typedef struct music {
     int id;
@@ -45,7 +46,7 @@ int calc_duration_s(char *st) {
 Music create_music_from_tokens (char **tokens) {
     Music m = NULL;
 
-    if (valid_duration(tokens[3])) {
+    if (valid_duration(tokens[3]) && valid_list(tokens[2])) {
         int id = atoi(tokens[0]+1);
         GSList *artists_ids = store_list(tokens[2]);
         int duration_s = calc_duration_s(tokens[3]);
@@ -86,23 +87,6 @@ GSList *get_music_artists(Music m){
 }
 
 
-// short get_likes(Music m, int min, int max){
-//     return (m->likes[max] - m->likes[min]);
-// }
-
-
-// void add_like(Music m, int age){
-//     m->likes[age]++;
-// }
-
-
-// void likes_added_frequency(Music m){
-//     for (int i = 1; i < 120; i++){
-//         m->likes[i] += m->likes[i-1];
-//     }
-// }
-
-
 void free_music(Music m) {
     free(m->title);
     free(m->duration);
@@ -111,4 +95,18 @@ void free_music(Music m) {
     g_slist_free_full(m->artists_ids, free);
 
     free(m);
+}
+
+//Verifica se uma duração é válida e está escrita direito.
+int valid_duration (char *duration){
+    int r = 1;
+    if (strlen (duration) != 8) r = 0;
+
+    for (int i = 0; r && duration[i] != '\0'; i++){
+        if (i == 2 || i == 5) r = duration[i] == ':';
+        else if (i == 3 || i == 6) r = isdigit (duration[i]) && duration[i] < '6';
+        else r = isdigit (duration[i]);
+    }
+
+    return r;
 }
