@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "parser.h": "c",
+        "stdio.h": "c",
+        "queries.h": "c",
+        "resource.h": "c",
+        "testagem.h": "c",
+        "artists.h": "c",
+        "time.h": "c"
+    }
+}

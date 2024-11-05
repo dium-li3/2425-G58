@@ -57,8 +57,5 @@ dkms.conf
 *.csv
 *.txt
 
-#VSCode
-*.json
-
 #Cachegrind outputs
 cachegrind*
