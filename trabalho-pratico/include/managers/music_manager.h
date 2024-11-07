@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "musics.h"
 #include "artist_manager.h"
+#include "output.h"
 
 typedef struct genre *Genre;
 

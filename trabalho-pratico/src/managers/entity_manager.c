@@ -2,14 +2,14 @@
 #include <time.h>
 
 #include "entity_manager.h"
-#include "user_manager.h"
-#include "queries.h"
+#include "artists.h"
+#include "musics.h"
 #include "users.h"
 #include "artist_manager.h"
 #include "music_manager.h"
-#include "artists.h"
-#include "musics.h"
-#include "output.h"
+#include "user_manager.h"
+#include "queries.h"
+#include "parser.h"
 
 typedef struct entity_manager{
     Art_Manager artist_M;
@@ -35,53 +35,10 @@ void store_Entities(char **entity_paths, Entity_Manager entity_M){
 
 
 //funções normaisVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-// isto ficará no IO?
-
-void answer1(int id, Entity_Manager em, Output out){
-    User u = search_user_by_id(id, em->user_M);
-    print_user_info(u, out);
-}
-
-void slow_answer2(int N, char *country, Entity_Manager em, Output out){
-    int size = length_arr_disc(em->artist_M);
-    Artist a = NULL;
-    if (N == 0)
-        output_empty (out);
-    for (int i = 0; i < size && N > 0; i++){
-        a = search_artist_by_dur_country(em->artist_M, country, i);
-        if (a != NULL){
-            print_art_info(a, out);
-            N--;
-        }
-    }
-}
-
-void fast_answer2(int N, Entity_Manager em, Output out){
-    Artist a = NULL;
-    if (N == 0)
-        output_empty (out);
-    for (int i = 0; i < N; i++){
-        a = search_artist_by_dur_indice(em->artist_M, i);
-        print_art_info(a, out);
-    }
-}
 
 
-void answer3(int min, int max, Entity_Manager em, Output out){
-    Genre gen = NULL;
-    update_arr_total_likes(em->music_M,min,max);
-    sort_gen(em->music_M,min,max);
-    int gen_arr_len = get_gen_arr_len(em->music_M);
-    int escreveu = 0;
-    for (int i = 0; i < gen_arr_len; i++){
-        gen = get_genre_by_index(em->music_M, i);
-        escreveu += print_genre_info(gen, out);
-    }
-    if (!escreveu)
-        output_empty(out);
-}
-
-void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
+void answer_querie(Querie q, Entity_Manager em, int n_querie){
+    short type = get_querie_type(q);
     if (type > 0 ){
         char output_file[34];
         snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
@@ -89,23 +46,13 @@ void answer_querie(Querie q, Entity_Manager em, int type, int n_querie){
         switch (type)
         {
         case (1):
-            int id = get_querie1_info(q);
-            answer1(id, em, out);
+            answer1(q, em->user_M, out);
             break;
         case (2):
-            short *N = calloc(1, sizeof(int));
-            char *country = get_querie2_info(q, N);
-            if (country == NULL)
-                fast_answer2(*N, em, out);
-            else
-                slow_answer2(*N, country, em, out);
-            free(N);
+            answer2(q, em->artist_M, out);
             break;
         case (3):
-            short *max = calloc(1, sizeof(int));
-            short min = get_querie3_info(q, max);
-            answer3(min, *max, em,out);
-            free(max);
+            answer3(q, em->music_M,out);
             break;
         }
         close_output (out);
@@ -117,8 +64,8 @@ void answer_all_queries(Parser queries, Entity_Manager em){
     Querie q = create_querie();
     for (i = 1; get_querie_type(q) != -1; i++)
     {
-        int type = read_querie_line(queries, q);
-        answer_querie(q, em, type, i);
+        read_querie_line(queries, q);
+        answer_querie(q, em, i);
     }
     free_querie(q);
 }
@@ -129,113 +76,26 @@ void answer_all_queries(Parser queries, Entity_Manager em){
 
 //funções para programa-testes VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-void answer1_test(int id, Entity_Manager em, Output out, Query_stats qs){
-    struct timespec start, end;
-    double elapsed;
-    clock_gettime(CLOCK_REALTIME, &start);
-    
-    User u = search_user_by_id(id, em->user_M);
-    print_user_info(u, out);
-
-    clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
-    
-    add_query_data(qs, elapsed, 1);
-}
-
-void slow_answer2_test(int N, char *country, Entity_Manager em, Output out, Query_stats qs){
-    struct timespec start, end;
-    double elapsed;
-    clock_gettime(CLOCK_REALTIME, &start);
-    
-    int size = length_arr_disc(em->artist_M);
-    Artist a = NULL;
-    if (N == 0)
-        output_empty (out);
-    for (int i = 0; i < size && N > 0; i++){
-        a = search_artist_by_dur_country(em->artist_M, country, i);
-        if (a != NULL){
-            print_art_info(a, out);
-            N--;
+void answer_querie_test(Querie q, Entity_Manager em, int n_querie, Query_stats qs){
+    short type = get_querie_type(q);
+    if (type > 0){
+        char output_file[34];
+        snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+        Output out = open_out (output_file);
+        switch (type)
+        {
+        case (1):
+            answer1_test(q, em->user_M, out, qs);
+            break;
+        case (2):
+            answer2_test(q, em->artist_M, out, qs);
+            break;
+        case (3):
+            answer3_test(q, em->music_M, out, qs);
+            break;
         }
+        close_output (out);
     }
-
-    clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
-
-    add_query_data(qs, elapsed, 2);
-}
-
-void fast_answer2_test(int N, Entity_Manager em, Output out, Query_stats qs){
-    struct timespec start, end;
-    double elapsed;
-    clock_gettime(CLOCK_REALTIME, &start);
-
-    Artist a = NULL;
-    if (N == 0)
-        output_empty (out);
-    for (int i = 0; i < N; i++){
-        a = search_artist_by_dur_indice(em->artist_M, i);
-        print_art_info(a, out);
-    }
-
-    clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
-
-    add_query_data(qs, elapsed, 2);
-}
-
-void answer3_test(int min, int max, Entity_Manager em, Output out, Query_stats qs){
-    struct timespec start, end;
-    double elapsed;
-    clock_gettime(CLOCK_REALTIME, &start);
-    
-    Genre gen = NULL;
-    update_arr_total_likes(em->music_M,min,max);
-    sort_gen(em->music_M,min,max);
-    int gen_arr_len = get_gen_arr_len(em->music_M);
-    int escreveu = 0;
-    for (int i = 0; i < gen_arr_len; i++){
-        gen = get_genre_by_index(em->music_M, i);
-        escreveu += print_genre_info(gen, out);
-    }
-    if (!escreveu)
-        output_empty(out);
-    
-    clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
-
-    add_query_data(qs, elapsed, 3);
-}
-
-
-void answer_querie_test(Querie q, Entity_Manager em, int type, int n_querie, Query_stats qs){
-    char output_file[34];
-    snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
-    Output out = open_out (output_file);
-    switch (type)
-    {
-    case (1):
-        int id = get_querie1_info(q);
-        answer1_test(id, em, out, qs);
-        break;
-    case (2):
-        short *N = calloc(1, sizeof(int));
-        char *country = get_querie2_info(q, N);
-        if (country == NULL)
-            fast_answer2_test(*N, em, out, qs);
-        else
-            slow_answer2_test(*N, country, em, out, qs);
-        free(N);
-        break;
-    case (3):
-        short *max = calloc(1, sizeof(int));
-        short min = get_querie3_info(q, max);
-        answer3_test(min, *max, em, out, qs);
-        free(max);
-        break;
-    }
-    close_output (out);
 }
 
 void answer_all_queries_test(Parser queries, Entity_Manager em, Query_stats qs){
@@ -243,8 +103,8 @@ void answer_all_queries_test(Parser queries, Entity_Manager em, Query_stats qs){
     Querie q = create_querie();
     for (i = 1; get_querie_type(q) != -1; i++)
     {
-        int type = read_querie_line(queries, q);
-        answer_querie_test(q, em, type, i, qs);
+        read_querie_line(queries, q);
+        answer_querie_test(q, em, i, qs);
     }
     free_querie(q);
 }

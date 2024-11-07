@@ -1,7 +1,16 @@
+#define _GNU_SOURCE and #define _POSIC_C_SOURCE 1999309L
 #include <glib.h>
 
-#include "queries.h"
+
 #include "parser.h"
+#include "user_manager.h"
+#include "users.h"
+#include "artist_manager.h"
+#include "artists.h"
+#include "music_manager.h"
+#include "genre.h"
+#include "output.h"
+#include "queries.h"
 
 /*
     Estrutura para armazenar o nº de execuções de uma dada query (n)
@@ -106,7 +115,7 @@ short get_querie3_info(Querie q, short *max){
     return q->querie3->min;
 }
 
-int store_querie_from_token (Querie q, char **tokens, int n_tokens){
+void store_querie_from_token (Querie q, char **tokens, int n_tokens){
     for (int i = 0; i < 3; i++){
     }
     if (tokens[0] != NULL){
@@ -126,19 +135,64 @@ int store_querie_from_token (Querie q, char **tokens, int n_tokens){
         }
     }
     else set_querie_invalid(q);//não leu tokens
-    return q->querie;
 }
 
-int read_querie_line(Parser pq, Querie q){
+void read_querie_line(Parser pq, Querie q){
     char **tokens = calloc (3, sizeof(char *));//basta 3 espaços por agora
     int n_tokens = parse_1line_querie(pq, tokens);
-    int type = store_querie_from_token (q, tokens, n_tokens);
+    store_querie_from_token (q, tokens, n_tokens);
     if (get_querie_type(q) != -1)
         for (int i = 0; i < 3; i++){
             free (tokens[i]);
         }
     free (tokens);
-    return type;
+}
+
+void answer1(Querie q, User_Manager um, Output out){
+    Querie1 q1 = q->querie1;
+    User u = search_user_by_id(q1->id, um);
+    print_user_info(u, out);
+}
+
+void answer2(Querie q, Art_Manager am, Output out){
+    Querie2 q2 = q->querie2;
+    int size = length_arr_disc(am);
+    Artist a = NULL;
+    int N = q2->N;
+    if (N == 0)
+        output_empty (out);
+    else {
+        if (q2->country == NULL){
+            for (int i = 0; i < N; i++){
+                a = search_artist_by_dur_indice(am, i);
+                print_art_info(a, out);
+            }
+        }
+        else {
+            for (int i = 0; i < size && N > 0; i++){
+                a = search_artist_by_dur_country(am, q2->country, i);
+                if (a != NULL){
+                    print_art_info(a, out);
+                    N--;
+                }
+            }
+        }
+    }
+}
+
+
+void answer3(Querie q, Music_Manager mm, Output out){
+    Querie3 q3 = q->querie3;
+    Genre gen = NULL;
+    sort_gen(mm, q3->min, q3->max);
+    int gen_arr_len = get_gen_arr_len(mm);
+    int escreveu = 0;
+    for (int i = 0; i < gen_arr_len; i++){
+        gen = get_genre_by_index(mm, i);
+        escreveu += print_genre_info(gen, out);
+    }
+    if (!escreveu)
+        output_empty(out);
 }
 
 void free_querie2 (Querie2 q){
@@ -155,6 +209,79 @@ void free_querie (Querie q){
     free_querie2 (q->querie2);
     free_querie3 (q->querie3);
     free (q);
+}
+
+void answer1_test(Querie q, User_Manager um, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
+    Querie1 q1 = q->querie1;
+    User u = search_user_by_id(q1->id, um);
+    print_user_info(u, out);
+
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    
+    add_query_data(qs, elapsed, 1);
+}
+
+void answer2_test(Querie q, Art_Manager am, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
+    Querie2 q2 = q->querie2;
+    int size = length_arr_disc(am);
+    Artist a = NULL;
+    int N = q2->N;
+    if (N == 0)
+        output_empty (out);
+    else {
+        if (q2->country == NULL){
+            for (int i = 0; i < N; i++){
+                a = search_artist_by_dur_indice(am, i);
+                print_art_info(a, out);
+            }
+        }
+        else {
+            for (int i = 0; i < size && N > 0; i++){
+                a = search_artist_by_dur_country(am, q2->country, i);
+                if (a != NULL){
+                    print_art_info(a, out);
+                    N--;
+                }
+            }
+        }
+    }
+
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+
+    add_query_data(qs, elapsed, 2);
+}
+
+void answer3_test(Querie q, Music_Manager mm, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
+    Querie3 q3 = q->querie3;
+    Genre gen = NULL;
+    sort_gen(mm, q3->min, q3->max);
+    int gen_arr_len = get_gen_arr_len(mm);
+    int escreveu = 0;
+    for (int i = 0; i < gen_arr_len; i++){
+        gen = get_genre_by_index(mm, i);
+        escreveu += print_genre_info(gen, out);
+    }
+    if (!escreveu)
+        output_empty(out);
+    
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+
+    add_query_data(qs, elapsed, 3);
 }
 
 Query_stats create_query_data() {
