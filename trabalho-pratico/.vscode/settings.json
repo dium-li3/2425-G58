@@ -6,6 +6,10 @@
         "resource.h": "c",
         "testagem.h": "c",
         "artists.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "artist_manager.h": "c",
+        "users.h": "c",
+        "user_manager.h": "c",
+        "music_manager.h": "c"
     }
 }

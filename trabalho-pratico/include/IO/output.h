@@ -2,7 +2,7 @@
 #define OUTPUT_H
 #include <stdio.h>
 #include "parser.h"
-#include "queries.h"
+#include "testagem.h"
 
 typedef struct output *Output;
 
@@ -21,7 +21,5 @@ void output_genre (char *name_gen, int likes, Output out);
 void error_output (Parser p, Output out);
 
 void print_query_errors(GArray *a);
-
-void print_query_time(Query_stats qs);
 
 #endif

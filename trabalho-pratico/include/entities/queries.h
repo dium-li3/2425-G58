@@ -3,7 +3,12 @@
 
 #include <stdio.h>
 
+#include "output.h"
 #include "parser.h"
+#include "user_manager.h"
+#include "artist_manager.h"
+#include "music_manager.h"
+#include "testagem.h"
 
 typedef struct query_stats *Query_stats;
 
@@ -51,12 +56,24 @@ char *get_querie2_info(Querie q, short *N);
 short get_querie3_info(Querie q, short *max);
 
 //Enche a querie com a informação dada relevante ao tipo de querie que a informação dá.
-int store_querie_from_token (Querie q, char **tokens, int n_tokens);
+void store_querie_from_token (Querie q, char **tokens, int n_tokens);
 
 //Guarda a informação de uma linha de queries numa querie.
-int read_querie_line(Parser pq, Querie q);
+void read_querie_line(Parser pq, Querie q);
+
+void answer1(Querie q, User_Manager um, Output out);
+
+void answer2(Querie q, Art_Manager am, Output out);
+
+void answer3(Querie q, Music_Manager mm, Output out);
 
 void free_querie (Querie q);
+
+void answer1_test(Querie q, User_Manager um, Output out, Query_stats qs);
+
+void answer2_test(Querie q, Art_Manager am, Output out, Query_stats qs);
+
+void answer3_test(Querie q, Music_Manager mm, Output out, Query_stats qs);
 
 Query_stats create_query_data();
 

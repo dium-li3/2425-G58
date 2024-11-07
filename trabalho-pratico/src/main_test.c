@@ -58,7 +58,15 @@ int main (int argc, char **argv){
 
         testagem(argv[3]);
 
-        print_query_time(qs);
+            int i;
+        double t;
+
+        printf("\nTempos de execução para cada query (média|total):\n");
+
+        for(i = 0; i < 3; i++) {
+            t = get_query_data_time(qs, i);
+            printf("    -Query %d: %.6fms | %.6fms\n", i+1, t/get_query_data_n(qs, i), t);
+        }
         free(qs);
 
         printf("\nTempo total: %.6fs\n\n", elapsed);

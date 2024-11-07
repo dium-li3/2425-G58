@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "users.h"
 #include "parser.h"
 #include "output.h"
+#include "users.h"
 
 typedef struct user *User;
 
