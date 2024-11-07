@@ -14,13 +14,13 @@ typedef struct artist{
     char *name;
     char *description;
     float recipe_per_stream;
-    GSList *id_constituent;
+    GArray *id_constituent;
     char *country;
     char type; // individual = I e grupo = G
     int disc_duration;
 } *Artist;
 
-Artist create_art(int id, char *name, char *desc, float rps, GSList *idc, char *coun, char type){
+Artist create_art(int id, char *name, char *desc, float rps, GArray *idc, char *coun, char type){
     Artist a = malloc(sizeof(struct artist));
     a->id = id;
     a->name = strdup(name);
@@ -81,7 +81,7 @@ int compare_dur (gconstpointer a, gconstpointer b){
 
 Artist create_artist_from_tokens(char **tokens){
     char art_type = get_art_type(tokens[6]);
-    GSList *id_constituent = NULL; // ou array na forma como o Samu fez
+    GArray *id_constituent = NULL;
     id_constituent = store_list(tokens[4]);
     Artist a = NULL;
     if (!(art_type == 'I' && id_constituent != NULL) && art_type != 'E')
@@ -90,7 +90,8 @@ Artist create_artist_from_tokens(char **tokens){
         float recipe_per_stream = strtof(tokens[3], NULL);
         a = create_art(id, tokens[1], tokens[2], recipe_per_stream, id_constituent, tokens[5], art_type);
     }
-    else g_slist_free_full(id_constituent, free);
+    else if (id_constituent != NULL)
+        g_array_free(id_constituent, TRUE);
     return a;
 }
 
@@ -139,7 +140,8 @@ void add_disc_duration(Artist a, int duration){
 void free_art(Artist a){
     free(a->name);
     free(a->description);
-    g_slist_free_full(a->id_constituent, free);
+    if (a->id_constituent != NULL)
+        g_array_free(a->id_constituent, TRUE);
     free(a->country);
     free(a);
 }

@@ -8,7 +8,7 @@
 typedef struct music {
     int id;
     char *title;
-    GSList *artists_ids;
+    GArray *artists_ids;
     char *duration;
     int duration_s;
     char *genre;
@@ -17,7 +17,7 @@ typedef struct music {
 } *Music;
 
 
-Music create_music(int id, char *t, GSList *arts_ids, char *d, int d_s, char *g, short y, char *l) {
+Music create_music(int id, char *t, GArray *arts_ids, char *d, int d_s, char *g, short y, char *l) {
     Music m = calloc(1, sizeof(struct music));
     m->id = id;
     m->title = strdup(t);
@@ -48,7 +48,7 @@ Music create_music_from_tokens (char **tokens) {
 
     if (valid_duration(tokens[3]) && valid_list(tokens[2])) {
         int id = atoi(tokens[0]+1);
-        GSList *artists_ids = store_list(tokens[2]);
+        GArray *artists_ids = store_list(tokens[2]);
         int duration_s = calc_duration_s(tokens[3]);
         short year = (short)atoi(tokens[5]);
 
@@ -82,7 +82,7 @@ int get_music_duration(Music m){
 }
 
 
-GSList *get_music_artists(Music m){
+GArray *get_music_artists(Music m){
     return m->artists_ids;
 }
 
@@ -92,7 +92,8 @@ void free_music(Music m) {
     free(m->duration);
     free(m->genre);
     free(m->lyrics);
-    g_slist_free_full(m->artists_ids, free);
+    if (m->artists_ids != NULL)
+        g_array_free(m->artists_ids, TRUE);
 
     free(m);
 }

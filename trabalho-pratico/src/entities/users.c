@@ -12,10 +12,10 @@ typedef struct user{
     short age;
     char *country;
     char subscription_type;//normal = N, premium = P e inválido = E?
-    GSList *liked_music_ids;
+    GArray *liked_music_ids;
 } *User;
 
-User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GSList *lmids){
+User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GArray *lmids){
     User u = malloc(sizeof (struct user));
     u->id = id;
     u->email = strdup (email);
@@ -38,7 +38,7 @@ User create_user_from_tokens (char **tokens){
     int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type) && valid_list(tokens[7]);
     int id;
     int age;
-    GSList *liked_musics = NULL;
+    GArray *liked_musics = NULL;
     User u = NULL;
     if (valid){ //store
         id = atoi (tokens[0]+1);
@@ -81,7 +81,7 @@ short get_user_age (User u){
     return u->age;
 }
 
-GSList *get_liked_musics(User u){
+GArray *get_liked_musics(User u){
     return u->liked_music_ids;
 }
 
@@ -120,7 +120,8 @@ void free_user(User u){
     free(u->last_name);
     free(u->birth_date);
     free(u->country);
-    g_slist_free_full(u->liked_music_ids, free);
+    if (u->liked_music_ids != NULL)
+        g_array_free(u->liked_music_ids, TRUE);
     free(u);
 }
 

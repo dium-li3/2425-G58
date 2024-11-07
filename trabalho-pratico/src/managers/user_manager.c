@@ -28,15 +28,18 @@ void insert_user_by_id(User u, User_Manager user_manager){
 }
 
 
-// Verifica se um dado utilizador é válido ou não.
-int valid_musics(GSList *musics, Music_Manager mm, short age)
+/*
+    Verifica se as musicas de uma lista de musicas
+    pertencem todas às músicas que temos guardadas.
+*/
+int valid_musics(GArray *musics, Music_Manager mm, short age)
 {
     int r = 1;
+    int i, len = musics->len;
     Music m = NULL;
-    GSList *temp = NULL;
-    for (temp = musics; temp != NULL && r; temp = temp->next)
+    for (i = 0; i < len && r; i++)
     {
-        m = search_music_by_id(get_music_id(temp->data), mm); // hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        m = search_music_by_id(g_array_index(musics, int, i), mm);
         if (m == NULL)
             r = 0;
         else
@@ -46,10 +49,13 @@ int valid_musics(GSList *musics, Music_Manager mm, short age)
             free (gen);
         }
     }
-    // for (temp = musics; temp != NULL && r; temp = temp->next)
-    // {
-    //     m = search_music_by_id(get_music_id(temp->data), mm);
-    // }
+    /*for (i = 0; i < len && r; i++)
+    {
+        m = search_music_by_id(get_music_id(musics->data[i]), mm);
+        char *gen = get_genre(m);
+        add_like_genre(mm, gen, age);
+        free (gen);
+    }*/
     return r;
 }
 

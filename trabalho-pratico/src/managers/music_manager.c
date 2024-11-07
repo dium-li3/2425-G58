@@ -93,20 +93,20 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     Caso existam, adiciona a duration dada à discografia de todos os
     artistas.
 */
-int valid_artists(GSList *artists, int duration, Art_Manager am)
+int valid_artists(GArray *artists, int duration, Art_Manager am)
 {
     int r = 1;
+    int i, len = artists->len;
     Artist a = NULL;
-    GSList *temp = NULL;
-    for (temp = artists; temp != NULL && r; temp = temp->next)
+    for (i = 0;i < len && r; i++)
     {
-        a = search_artist_by_id(get_art_id(temp->data), am); // hmmm, acho q vai ter de ser fora da criaçao da Music :c
+        a = search_artist_by_id(g_array_index(artists, int, i), am);
         if (a == NULL)
             r = 0;
     }
-    for (temp = artists; temp != NULL && r; temp = temp->next)
+    for (i = 0;r && i < len; i++)
     {
-        a = search_artist_by_id(get_art_id(temp->data), am);
+        a = search_artist_by_id(g_array_index(artists, int, i), am);
         add_disc_duration(a, duration);
     }
     return r;

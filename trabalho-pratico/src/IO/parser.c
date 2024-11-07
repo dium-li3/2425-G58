@@ -51,21 +51,20 @@ void free_tokens(char **tokens, int n){
     Guarda os ids de uma lista guardados 
     numa linha para uma lista de verdade.
 */
-GSList *store_list (char *line){
+GArray *store_list (char *line){
     char *token = NULL;
     char *svptr = NULL;
 
-    GSList *list = NULL;
+    GArray *list = NULL;
     token = strtok_r (line, "\' ,[]", &svptr);
 
     if (token != NULL){
-        int *id1 = malloc(sizeof(int));
-        *id1 = atoi (token + 1);
-        list = g_slist_prepend (list, id1);
-        for (;(token = strtok_r (NULL, "\' ,]", &svptr)) != NULL;){
-            int *id = malloc(sizeof(int));
-            *id = atoi (token + 1);
-            list = g_slist_prepend (list, id);
+        int id1 = atoi (token + 1);
+        list = g_array_new(FALSE, TRUE, sizeof(int));
+        g_array_insert_val (list, 0,id1);
+        for (int i = 1;(token = strtok_r (NULL, "\' ,]", &svptr)) != NULL;){
+            int id = atoi (token + 1);
+            g_array_insert_val (list, i, id);
         }
     }
     return list;
@@ -149,21 +148,6 @@ int parse_1line_querie(Parser p, char **info){
     return n_token;
 }
 //Parse queries ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-/*
-    Guarda uma linha do file que lhe dão.
-*/
-GSList *parse_file (Parser p){
-    ssize_t nRead;
-    size_t n;
-    char *line = NULL;
-    GSList *lista = NULL;
-    //nRead = getline (&line, &n, fp);//ignorar a 1º linha
-    while ((nRead = getline (&line, &n, p->fp)) != -1){
-        lista = g_slist_prepend (lista, strdup (line));
-    }
-    free (line);
-    return lista;
-}
 
 /*
     Guarda a linha lida na string dada (aqui, ** é endereço de string e não array 2d)

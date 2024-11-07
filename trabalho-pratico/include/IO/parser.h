@@ -17,13 +17,13 @@ void go_back_1line (Parser p);
     Guarda os ids de uma lista guardados 
     numa linha para uma lista de verdade.
 */
-GSList *store_list (char *line);
+GArray *store_list (char *line);
 
 /*
     Guarda os ids de uma lista guardados 
     numa linha para uma lista de verdade.
 */
-GSList *parse_list (char *line);
+GArray *parse_list (char *line);
 
 /*
     Separa uma linha nos seus tokens.
@@ -33,11 +33,6 @@ void *parse_line (Parser p, void *(*Func)(char **));
     Lê uma linha do ficheiro, e devolve os tokens dessa linha.
 */
 int parse_1line_querie(Parser p, char **info);
-
-/*
-    Guarda as linhas lidas numa lista ligada ...
-*/
-GSList *parse_file (Parser p);
 
 /*
     Guarda 1 linha do ficheiro na line dada.

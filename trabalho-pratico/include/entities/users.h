@@ -12,7 +12,7 @@
 typedef struct user *User;
 
 //Dada uma linha dos dados de utilizadores, cria um User.
-User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GSList *lmids);
+User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GArray *lmids);
 
 /*
     Cria um User, baseado nos tokens recebidos.
@@ -39,7 +39,7 @@ short get_user_age (User u);
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type);
 
-GSList *get_liked_musics(User u);
+GArray *get_liked_musics(User u);
 
 /*
     Dá print do email, nomes, idade e pais do utilizador.

@@ -15,7 +15,7 @@ char* get_genre(Music m);
 
 int get_music_duration(Music m);
 
-GSList *get_music_artists (Music m);
+GArray *get_music_artists (Music m);
 
 void free_music(Music m);
 
