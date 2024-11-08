@@ -49,15 +49,14 @@ int valid_musics(GArray *musics, Music_Manager mm, short age)
             free (gen);
         }*/
     }
-
-    if (r)
-        for (i = 0; i < len && r; i++)
-        {
-            m = search_music_by_id(g_array_index(musics, int, i), mm);
-            char *gen = get_genre(m);
-            add_like_genre(mm, gen, age);
-            free (gen);
-        }
+    char *gen = NULL;
+    for (i = 0; r && i < len; i++)
+    {
+        m = search_music_by_id(g_array_index(musics, int, i), mm);
+        gen = get_genre(m);
+        add_like_genre(mm, gen, age);
+        free (gen);
+    }
 
     return r;
 }
@@ -75,7 +74,6 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
             else {
                 free_user(user);
                 error_output (p, out);
-                user = NULL;//pode-se apagar isto né?
         }
         }
         else{
