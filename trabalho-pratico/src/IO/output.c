@@ -70,3 +70,7 @@ void print_elapsed_times(double elapsed[]) {
     printf("\nTempo de free: %.6fs\n", elapsed[3]);
     printf("\nTempo total: %.6fs\n\n", elapsed[0]);
 }
+
+void print_query_time(int type, int n, double time) {
+    printf("    -Query %d: %.6fms | %.6fms\n", type, time/n, time);
+}

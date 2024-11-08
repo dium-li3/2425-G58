@@ -24,4 +24,6 @@ void print_query_errors(GArray *a);
 
 void print_elapsed_times(double elapsed[]);
 
+void print_query_time(int type, int n, double time);
+
 #endif

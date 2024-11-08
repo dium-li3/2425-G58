@@ -10,6 +10,8 @@
 #include "music_manager.h"
 #include "testagem.h"
 
+#define QUERYTYPES 3
+
 typedef struct query_stats *Query_stats;
 
 typedef struct querie *Querie;
