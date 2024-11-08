@@ -35,27 +35,23 @@ void insert_user_by_id(User u, User_Manager user_manager){
 int valid_musics(GArray *musics, Music_Manager mm, short age)
 {
     int r = 1;
-    int i, len = musics->len;
-    Music m = NULL;
-    for (i = 0; i < len && r; i++)
-    {
-        m = search_music_by_id(g_array_index(musics, int, i), mm);
-        if (m == NULL)
-            r = 0;
-        /*else
+    if (musics != NULL){
+        int i, len = musics->len;
+        Music m = NULL;
+        for (i = 0; i < len && r; i++)
         {
-            char *gen = get_genre(m);
+            m = search_music_by_id(g_array_index(musics, int, i), mm);
+            if (m == NULL)
+                r = 0;
+        }
+        char *gen = NULL;
+        for (i = 0; r && i < len; i++)
+        {
+            m = search_music_by_id(g_array_index(musics, int, i), mm);
+            gen = get_genre(m);
             add_like_genre(mm, gen, age);
             free (gen);
-        }*/
-    }
-    char *gen = NULL;
-    for (i = 0; r && i < len; i++)
-    {
-        m = search_music_by_id(g_array_index(musics, int, i), mm);
-        gen = get_genre(m);
-        add_like_genre(mm, gen, age);
-        free (gen);
+        }
     }
 
     return r;
