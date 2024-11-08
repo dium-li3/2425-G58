@@ -49,7 +49,7 @@ void free_tokens(char **tokens, int n){
 
 /*
     Guarda os ids de uma lista guardados 
-    numa linha para uma lista de verdade.
+    numa linha para um array.
 */
 GArray *store_list (char *line){
     char *token = NULL;

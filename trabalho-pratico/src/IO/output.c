@@ -55,11 +55,18 @@ void error_output (Parser p, Output out){
 }
 
 /*
-    Percorre a lista para ir printando as linhas onde há erros (programa de testes).
+    Percorre o array para ir printando as linhas onde há erros (programa de testes).
 */
 void print_query_errors(GArray *a) {
     int i;
     for(i = 0; i < a->len; i++) {
         printf("    -Discrepância na linha %d.\n", g_array_index(a, int, i));
     }
+}
+
+void print_elapsed_times(double elapsed[]) {
+    printf("\nTempo de armazenamento: %.6fs\n", elapsed[1]);
+    printf("\nTempo de resposta a queries: %.6fs\n", elapsed[2]);
+    printf("\nTempo de free: %.6fs\n", elapsed[3]);
+    printf("\nTempo total: %.6fs\n\n", elapsed[0]);
 }

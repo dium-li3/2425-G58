@@ -22,4 +22,6 @@ void error_output (Parser p, Output out);
 
 void print_query_errors(GArray *a);
 
+void print_elapsed_times(double elapsed[]);
+
 #endif

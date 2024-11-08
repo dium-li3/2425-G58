@@ -42,20 +42,23 @@ int valid_musics(GArray *musics, Music_Manager mm, short age)
         m = search_music_by_id(g_array_index(musics, int, i), mm);
         if (m == NULL)
             r = 0;
-        else
+        /*else
         {
             char *gen = get_genre(m);
             add_like_genre(mm, gen, age);
             free (gen);
-        }
+        }*/
     }
-    /*for (i = 0; i < len && r; i++)
-    {
-        m = search_music_by_id(get_music_id(musics->data[i]), mm);
-        char *gen = get_genre(m);
-        add_like_genre(mm, gen, age);
-        free (gen);
-    }*/
+
+    if (r)
+        for (i = 0; i < len && r; i++)
+        {
+            m = search_music_by_id(g_array_index(musics, int, i), mm);
+            char *gen = get_genre(m);
+            add_like_genre(mm, gen, age);
+            free (gen);
+        }
+
     return r;
 }
 

@@ -148,52 +148,6 @@ void read_querie_line(Parser pq, Querie q){
     free (tokens);
 }
 
-void answer1(Querie q, User_Manager um, Output out){
-    Querie1 q1 = q->querie1;
-    User u = search_user_by_id(q1->id, um);
-    print_user_info(u, out);
-}
-
-void answer2(Querie q, Art_Manager am, Output out){
-    Querie2 q2 = q->querie2;
-    int size = length_arr_disc(am);
-    Artist a = NULL;
-    int N = q2->N;
-    if (N == 0)
-        output_empty (out);
-    else {
-        if (q2->country == NULL){
-            for (int i = 0; i < N; i++){
-                a = search_artist_by_dur_indice(am, i);
-                print_art_info(a, out);
-            }
-        }
-        else {
-            for (int i = 0; i < size && N > 0; i++){
-                a = search_artist_by_dur_country(am, q2->country, i);
-                if (a != NULL){
-                    print_art_info(a, out);
-                    N--;
-                }
-            }
-        }
-    }
-}
-
-
-void answer3(Querie q, Music_Manager mm, Output out){
-    Querie3 q3 = q->querie3;
-    Genre gen = NULL;
-    sort_gen(mm, q3->min, q3->max);
-    int gen_arr_len = get_gen_arr_len(mm);
-    int escreveu = 0;
-    for (int i = 0; i < gen_arr_len; i++){
-        gen = get_genre_by_index(mm, i);
-        escreveu += print_genre_info(gen, out);
-    }
-    if (!escreveu)
-        output_empty(out);
-}
 
 void free_querie2 (Querie2 q){
     free (q->country);
@@ -211,7 +165,8 @@ void free_querie (Querie q){
     free (q);
 }
 
-void answer1_test(Querie q, User_Manager um, Output out, Query_stats qs){
+
+void answer1(Querie q, User_Manager um, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -223,10 +178,10 @@ void answer1_test(Querie q, User_Manager um, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
     
-    add_query_data(qs, elapsed, 1);
+    if (qs != NULL) add_query_stats(qs, elapsed, 1);
 }
 
-void answer2_test(Querie q, Art_Manager am, Output out, Query_stats qs){
+void answer2(Querie q, Art_Manager am, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -258,10 +213,10 @@ void answer2_test(Querie q, Art_Manager am, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 
-    add_query_data(qs, elapsed, 2);
+    if (qs != NULL) add_query_stats(qs, elapsed, 2);
 }
 
-void answer3_test(Querie q, Music_Manager mm, Output out, Query_stats qs){
+void answer3(Querie q, Music_Manager mm, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -281,10 +236,10 @@ void answer3_test(Querie q, Music_Manager mm, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 
-    add_query_data(qs, elapsed, 3);
+    if (qs != NULL) add_query_stats(qs, elapsed, 3);
 }
 
-Query_stats create_query_data() {
+Query_stats create_query_stats() {
     Query_stats r = calloc(1, sizeof(struct query_stats));
     return r;
 }
@@ -292,15 +247,15 @@ Query_stats create_query_data() {
 /*
     Incrementa automaticamente o nº de execuções.
 */
-void add_query_data(Query_stats qd, double time, int type) {
+void add_query_stats(Query_stats qd, double time, int type) {
     qd->n[type-1]++;
     qd->time[type-1] += time;
 }
 
-double get_query_data_time(Query_stats qd, int i) {
+double get_query_stats_time(Query_stats qd, int i) {
     return (qd->time[i]);
 }
 
-int get_query_data_n(Query_stats qd, int i) {
+int get_query_stats_n(Query_stats qd, int i) {
     return (qd->n[i]);
 }

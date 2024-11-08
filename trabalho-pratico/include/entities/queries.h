@@ -61,27 +61,21 @@ void store_querie_from_token (Querie q, char **tokens, int n_tokens);
 //Guarda a informação de uma linha de queries numa querie.
 void read_querie_line(Parser pq, Querie q);
 
-void answer1(Querie q, User_Manager um, Output out);
-
-void answer2(Querie q, Art_Manager am, Output out);
-
-void answer3(Querie q, Music_Manager mm, Output out);
-
 void free_querie (Querie q);
 
-void answer1_test(Querie q, User_Manager um, Output out, Query_stats qs);
+void answer1(Querie q, User_Manager um, Output out, Query_stats qs);
 
-void answer2_test(Querie q, Art_Manager am, Output out, Query_stats qs);
+void answer2(Querie q, Art_Manager am, Output out, Query_stats qs);
 
-void answer3_test(Querie q, Music_Manager mm, Output out, Query_stats qs);
+void answer3(Querie q, Music_Manager mm, Output out, Query_stats qs);
 
-Query_stats create_query_data();
+Query_stats create_query_stats();
 
 //Incrementa automaticamente o nº de execuções.
-void add_query_data(Query_stats qd, double time, int type);
+void add_query_stats(Query_stats qs, double time, int type);
 
-double get_query_data_time(Query_stats qd, int i);
+double get_query_stats_time(Query_stats qs, int i);
 
-int get_query_data_n(Query_stats qd, int i);
+int get_query_stats_n(Query_stats qs, int i);
 
 #endif
