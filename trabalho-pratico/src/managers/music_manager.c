@@ -126,8 +126,9 @@ gboolean music_exists (int id, Music_Manager mm){
 */
 gboolean all_musics_exist (GArray *musics, Music_Manager mm){
     gboolean r = TRUE;
-    for (int i = 0; i < musics->len && r; i++)
-        r = music_exists (g_array_index(musics, int, i), mm);
+    if (musics != NULL)
+        for (int i = 0; i < musics->len && r; i++)
+            r = music_exists (g_array_index(musics, int, i), mm);
     return r;
 }
 

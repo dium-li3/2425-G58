@@ -61,10 +61,10 @@ gboolean artist_exists(int id, Art_Manager art_manager)
 */
 gboolean all_artists_exist (GArray *artists, Art_Manager am){
     gboolean r = TRUE;
-    for (int i = 0; i < artists->len && r; i++){
-        if (!artist_exists (g_array_index(artists, int, i), am))
-            r = FALSE;
-    }
+    if (artists != NULL)
+        for (int i = 0; i < artists->len && r; i++){
+            r = artist_exists (g_array_index(artists, int, i), am);
+        }
     return r;
 }
 
