@@ -22,7 +22,7 @@ void clear_genre(Genre *gen){
     free (*gen);
 }
 
-int compare_genre_names(Genre gen, char *genre){
+gboolean compare_genre_names(Genre gen, char *genre){
     return strcmp(gen->name, genre);
 }
 

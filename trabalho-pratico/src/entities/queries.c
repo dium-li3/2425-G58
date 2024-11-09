@@ -172,8 +172,7 @@ void answer1(Querie q, User_Manager um, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Querie1 q1 = q->querie1;
-    User u = search_user_by_id(q1->id, um);
-    print_user_info(u, out);
+    print_user_info_by_id (um, q1->id, out);
 
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
@@ -187,26 +186,17 @@ void answer2(Querie q, Art_Manager am, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Querie2 q2 = q->querie2;
-    int size = length_arr_disc(am);
-    Artist a = NULL;
     int N = q2->N;
     if (N == 0)
         output_empty (out);
     else {
-        if (q2->country == NULL){
-            for (int i = 0; i < N; i++){
-                a = search_artist_by_dur_indice(am, i);
-                print_art_info(a, out);
-            }
-        }
+        if (q2->country == NULL)
+            print_N_art_info (am, N, out);
         else {
-            for (int i = 0; i < size && N > 0; i++){
-                a = search_artist_by_dur_country(am, q2->country, i);
-                if (a != NULL){
-                    print_art_info(a, out);
-                    N--;
-                }
-            }
+            char *country = NULL;
+            country = strdup (q2->country);
+            print_N_country_art_info (am, country, N, out);
+            free (country);
         }
     }
 
@@ -222,17 +212,10 @@ void answer3(Querie q, Music_Manager mm, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Querie3 q3 = q->querie3;
-    Genre gen = NULL;
     sort_gen(mm, q3->min, q3->max);
-    int gen_arr_len = get_gen_arr_len(mm);
-    int escreveu = 0;
-    for (int i = 0; i < gen_arr_len; i++){
-        gen = get_genre_by_index(mm, i);
-        escreveu += print_genre_info(gen, out);
-    }
-    if (!escreveu)
-        output_empty(out);
-    
+
+    print_all_genres_info (mm, out);
+
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
 

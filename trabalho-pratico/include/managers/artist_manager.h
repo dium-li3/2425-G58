@@ -17,11 +17,13 @@ void order_duration (Art_Manager artist_manager);
 
 void store_Artists (char *art_path, Art_Manager artists_manager);
 
-Artist search_artist_by_id(int id, Art_Manager art_manager);
+gboolean all_artists_exist (GArray *artists, Art_Manager am);
 
-Artist search_artist_by_dur_country(Art_Manager am, char *country, int i);
+void add_dur_artists (GArray *music_artists , int duration, Art_Manager am);
 
-Artist search_artist_by_dur_indice(Art_Manager am, int i);
+void print_N_country_art_info (Art_Manager am, char *country, int N, Output out);
+
+void print_N_art_info (Art_Manager am, int N, Output out);
 
 int length_arr_disc (Art_Manager am);
 

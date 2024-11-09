@@ -108,7 +108,7 @@ char *calc_duration_hms(int segs){
     int h = segs / 3600;
     int t = segs % 3600;
     int m = t / 60;
-    int s = t % 60 ;
+    int s = t % 60;
     char *hms =calloc (9, sizeof(char));
     sprintf(hms, "%02d:%02d:%02d", h, m, s);
     return hms;
@@ -122,7 +122,7 @@ void print_art_info(Artist a, Output out){
     output_artist (name, type, disc_duration, country, out);
     free (name);
     free (disc_duration);
-    free(type);
+    free (type);
     free (country);
 }
 

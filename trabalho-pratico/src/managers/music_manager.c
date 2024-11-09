@@ -12,11 +12,13 @@ typedef struct music_manager
     GArray *genre_array;
 } *Music_Manager;
 
+//Devolve o número de elementos úteis do array de generos.
 int get_gen_arr_len(Music_Manager mm)
 {
     return mm->genre_array->len;
 }
 
+//Cria e inicializa um Music_Manager base, com tudo vazio.
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
@@ -26,10 +28,26 @@ Music_Manager create_music_manager()
     return mm;
 }
 
-//Devolve 1 caso tenha inserido um novo genero de musica.
-int insert_gen(Music m, Music_Manager mus_m, int i)
+/*
+    Devolve o Genre que está na dada posição do array de Genres
+    do Music_Manager.
+*/
+Genre get_genre_by_index(Music_Manager mm,int index)
 {
-    int r = 1;
+    Genre gen = g_array_index(mm->genre_array, Genre, index);
+    return gen;
+}
+
+Music search_music_by_id(int id, Music_Manager music_manager)
+{
+    Music m = g_hash_table_lookup(music_manager->musics_by_id, &id);
+    return m;
+}
+
+//Devolve 1 caso tenha inserido um novo genero de musica.
+gboolean insert_gen(Music m, Music_Manager mus_m, int i)
+{
+    gboolean r = TRUE;
     char *gen = get_genre(m);
     for (int i = 0; i < mus_m->genre_array->len && r; i++){
         r = compare_genre_names(get_genre_by_index(mus_m, i), gen);
@@ -47,13 +65,25 @@ int insert_gen(Music m, Music_Manager mus_m, int i)
 
 void add_like_genre(Music_Manager mm, char *genre, short age)
 {
-    int r = 0;
-    for (int i = 0; i < mm->genre_array->len && !r; i++){
+    gboolean adicionou = FALSE;
+    for (int i = 0; i < mm->genre_array->len && !adicionou; i++){
         if (compare_genre_names(get_genre_by_index(mm, i), genre) == 0)
         {
             increment_like (get_genre_by_index(mm, i), age);
-            r++;
+            adicionou++;
         }
+    }
+}
+
+void add_like_genres (GArray *musics, Music_Manager mm, short age){
+    Music m = NULL;
+    char *gen = NULL;
+    for (int i = 0; i < musics->len; i++)
+    {
+        m = search_music_by_id(g_array_index(musics, int, i), mm);
+        gen = get_genre(m);
+        add_like_genre(mm, gen, age);
+        free (gen);
     }
 }
 
@@ -81,48 +111,48 @@ void insert_music_by_id(Music m, Music_Manager music_manager)
     g_hash_table_insert(music_manager->musics_by_id, id, m);
 }
 
-Music search_music_by_id(int id, Music_Manager music_manager)
-{
-    Music m = g_hash_table_lookup(music_manager->musics_by_id, &id);
-    return m;
-}
-
-
 /*
-    Verifica que todos os artistas de uma dada lista existem.
-    Caso existam, adiciona a duration dada à discografia de todos os
-    artistas.
+    Verifica se existe uma música guardada com o dado id.
 */
-int valid_artists(GArray *artists, int duration, Art_Manager am)
-{
-    int r = 1;
-    int i, len = artists->len;
-    Artist a = NULL;
-    for (i = 0;i < len && r; i++)
-    {
-        a = search_artist_by_id(g_array_index(artists, int, i), am);
-        if (a == NULL)
-            r = 0;
-    }
-    for (i = 0;r && i < len; i++)
-    {
-        a = search_artist_by_id(g_array_index(artists, int, i), am);
-        add_disc_duration(a, duration);
-    }
+gboolean music_exists (int id, Music_Manager mm){
+    gboolean r = TRUE;
+    r = g_hash_table_lookup(mm->musics_by_id, &id) ? TRUE : FALSE;
     return r;
 }
 
+/*
+    Verifica se as musicas de uma lista de ids de musicas
+    pertencem todas às músicas que temos guardadas.
+*/
+gboolean all_musics_exist (GArray *musics, Music_Manager mm){
+    gboolean r = TRUE;
+    for (int i = 0; i < musics->len && r; i++)
+        r = music_exists (g_array_index(musics, int, i), mm);
+    return r;
+}
 
+/*
+    Armazena a informação das músicas dadas por um ficheiro de um dado path
+    numa hashtable de Musicas e preenche um array de Genres sem nenhum repetido.
+
+    Também aproveita e adiciona a duração de cada música aos seus artistas
+    se as músicas forem válidas e então guardadas.
+
+    Escreve todas as linhas de músicas inválidas num ficheiro.
+*/
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
     Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
     int i = 0;
+    GArray *music_artists = NULL;
     while (get_nRead(p) != -1){
         music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
-            if (valid_artists(get_music_artists(music), get_music_duration(music), am))
+            music_artists = get_music_artists(music);
+            if (all_artists_exist(music_artists, am))
             {
+                add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
                 if (insert_gen(music, mm, i))
                     i++;
@@ -143,15 +173,20 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     close_output(out);
 }
 
+void print_all_genres_info (Music_Manager mm, Output out){
+    Genre gen = NULL;
+    int escreveu = 0;
+    for (int i = 0; i < mm->genre_array->len; i++){
+        gen = get_genre_by_index(mm, i);
+        escreveu += print_genre_info(gen, out);
+    }
+    if (!escreveu)
+        output_empty(out);
+}
+
 void free_music_manager(Music_Manager mm)
 {
     g_hash_table_destroy(mm->musics_by_id);
     g_array_free(mm->genre_array, TRUE);
     free(mm);
-}
-
-Genre get_genre_by_index(Music_Manager mm,int index)
-{
-    Genre gen = g_array_index(mm->genre_array, Genre, index);
-    return gen;
 }

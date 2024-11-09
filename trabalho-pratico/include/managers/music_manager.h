@@ -14,7 +14,7 @@ int get_gen_arr_len(Music_Manager mm);
 
 Music_Manager create_music_manager();
 
-void add_like_genre(Music_Manager mm, char *genre, short age);
+void add_like_genres (GArray *musics, Music_Manager mm, short age);
 
 void gen_arr_freq_acum(Music_Manager mm);
 
@@ -22,20 +22,16 @@ int cmp_like_gen (gconstpointer g1, gconstpointer g2);
 
 void sort_gen(Music_Manager mm,int min_age, int max_age);
 
-int insert_gen(Music m, Music_Manager mus_m, int i);
-
 void insert_music_by_id(Music m, Music_Manager music_manager);
 
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
+gboolean all_musics_exist (GArray *musics, Music_Manager mm);
 
-Music search_music_by_id(int id, Music_Manager music_manager);
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 
 void free_music_manager(Music_Manager mm);
 
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age);
 
-Genre get_genre_by_index(Music_Manager mm,int index);
-
-int print_genre_info(Genre gen, Output out);
+void print_all_genres_info(Music_Manager mm, Output out);
 
 #endif

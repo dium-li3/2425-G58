@@ -37,8 +37,8 @@ void store_Entities(char **entity_paths, Master_Manager entity_M){
 void answer_querie(Querie q, Master_Manager mm, int n_querie, Query_stats qs){
     short type = get_querie_type(q);
     if (type > 0){
-        char output_file[34];
-        snprintf(output_file, 34, "resultados/command%d_output.txt", n_querie);
+        char output_file[46];
+        snprintf(output_file, 46, "resultados/command%d_output.txt", n_querie);
         Output out = open_out (output_file);
         switch (type)
         {

@@ -39,31 +39,109 @@ void insert_artists_by_dur(Artist a, Art_Manager art_manager, int i){
     art_manager->art_by_dur = g_array_insert_val(art_manager->art_by_dur,i , a);
 }
 
-
 Artist search_artist_by_id(int id, Art_Manager art_manager)
 {
     Artist a = g_hash_table_lookup(art_manager->art_by_id, &id);
     return a;
 }
 
+/*
+    Verifica se um artista com o dado id existe.
+*/
+gboolean artist_exists(int id, Art_Manager art_manager)
+{
+    gboolean r = TRUE;
+    if (g_hash_table_lookup(art_manager->art_by_id, &id) == NULL)
+        r = FALSE;
+    return r;
+}
+
+/*
+    Verifica se todos os artistas num array de artistas existem.
+*/
+gboolean all_artists_exist (GArray *artists, Art_Manager am){
+    gboolean r = TRUE;
+    for (int i = 0; i < artists->len && r; i++){
+        if (!artist_exists (g_array_index(artists, int, i), am))
+            r = FALSE;
+    }
+    return r;
+}
+
+/*
+    Adiciona uma dada duração à discocrafia de todos os artistas de um dado array.
+*/
+void add_dur_artists (GArray *music_artists , int duration, Art_Manager am){
+    Artist a = NULL;
+    for (int i = 0; i < music_artists->len; i++){
+        a = search_artist_by_id (g_array_index(music_artists, int, i), am);
+        add_disc_duration(a, duration);
+    }
+}
+
+/*
+    Devolve o artista que está na posição pedida do array ordenado por discografia de artistas.
+*/
+Artist search_artist_by_dur_indice(Art_Manager am, int i){
+    Artist a = g_array_index(am->art_by_dur, Artist, i);
+    return a;
+}
+
+/*
+    Verifica se o artista numa dada posição do array de artistas 
+    ordenado por discografia pertence a um certo país.
+*/
 Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     Artist a = g_array_index(am->art_by_dur, Artist, i);
     char *countri = get_art_country (a);
     if (strcmp (countri, country))
         a = NULL;
     free (countri);
+
     return a;
 }
 
-Artist search_artist_by_dur_indice(Art_Manager am, int i){
-    Artist a = g_array_index(am->art_by_dur, Artist, i);
-    return a;
+/*
+    Dá print dos primeiros N artistas do array ordenado por discografia de artistas.
+*/
+void print_N_art_info (Art_Manager am, int N, Output out){
+    Artist a = NULL;
+    for (int i = 0; i < N; i++){
+        a = search_artist_by_dur_indice(am, i);
+        print_art_info(a, out);
+    }
 }
 
+/*
+    Dá print dos N primeiros artistas que pertencem a um dado país,
+    pela ordem em que aparecem no array de artistas ordenado por discografia.
+*/
+void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
+    Artist a = NULL;
+    for (int i = 0; i < am->art_by_dur->len && N > 0; i++){
+        a = search_artist_by_dur_country(am, country, i);
+        if (a != NULL){
+            print_art_info(a, out);
+            N--;
+        }
+    }
+}
+
+
+/*
+    Ordena um array de artistas por ordem decrescente de discografia.
+*/
 void order_duration (Art_Manager artist_manager){
     g_array_sort(artist_manager->art_by_dur, compare_dur);
 }
 
+/*
+    Guarda num array e numa hashtable todos os artistas
+    que estão num ficheiro cujo path é dado.
+    No final o array ainda não está ordenado.
+
+    Também dá print de algum artista que esteja incorreto.
+*/
 void store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
     Output out = open_out("resultados/artists_errors.csv");
