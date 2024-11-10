@@ -59,7 +59,7 @@ gboolean artist_exists(int id, Art_Manager art_manager)
 /*
     Verifica se todos os artistas num array de artistas existem.
 */
-gboolean all_artists_exist (GArray *artists, Art_Manager am){
+gboolean all_artists_exist (const GArray *artists, Art_Manager am){
     gboolean r = TRUE;
     if (artists != NULL)
         for (int i = 0; i < artists->len && r; i++){
@@ -71,7 +71,7 @@ gboolean all_artists_exist (GArray *artists, Art_Manager am){
 /*
     Adiciona uma dada duração à discocrafia de todos os artistas de um dado array.
 */
-void add_dur_artists (GArray *music_artists , int duration, Art_Manager am){
+void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
     for (int i = 0; i < music_artists->len; i++){
         a = search_artist_by_id (g_array_index(music_artists, int, i), am);
@@ -144,6 +144,11 @@ void order_duration (Art_Manager artist_manager){
 */
 void store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
+    if(p == NULL) {
+        perror("store_Artists(146)");
+        exit(1);
+    }
+
     Output out = open_out("resultados/artists_errors.csv");
     Artist artist = NULL;
     int i = 0;

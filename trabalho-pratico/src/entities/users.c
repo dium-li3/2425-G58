@@ -81,7 +81,7 @@ short get_user_age (User u){
     return u->age;
 }
 
-GArray *get_liked_musics(User u){
+const GArray *get_liked_musics(User u){
     return u->liked_music_ids;
 }
 

@@ -17,9 +17,9 @@ void order_duration (Art_Manager artist_manager);
 
 void store_Artists (char *art_path, Art_Manager artists_manager);
 
-gboolean all_artists_exist (GArray *artists, Art_Manager am);
+gboolean all_artists_exist (const GArray *artists, Art_Manager am);
 
-void add_dur_artists (GArray *music_artists , int duration, Art_Manager am);
+void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
 
 void print_N_country_art_info (Art_Manager am, char *country, int N, Output out);
 

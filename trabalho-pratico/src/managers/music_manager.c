@@ -75,7 +75,7 @@ void add_like_genre(Music_Manager mm, char *genre, short age)
     }
 }
 
-void add_like_genres (GArray *musics, Music_Manager mm, short age){
+void add_like_genres (const GArray *musics, Music_Manager mm, short age){
     Music m = NULL;
     char *gen = NULL;
     for (int i = 0; i < musics->len; i++)
@@ -124,7 +124,7 @@ gboolean music_exists (int id, Music_Manager mm){
     Verifica se as musicas de uma lista de ids de musicas
     pertencem todas às músicas que temos guardadas.
 */
-gboolean all_musics_exist (GArray *musics, Music_Manager mm){
+gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     gboolean r = TRUE;
     if (musics != NULL)
         for (int i = 0; i < musics->len && r; i++)
@@ -143,10 +143,15 @@ gboolean all_musics_exist (GArray *musics, Music_Manager mm){
 */
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
+    if(p == NULL) {
+        perror("store_Musics(145)");
+        exit(1);
+    }
+
     Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
     int i = 0;
-    GArray *music_artists = NULL;
+    const GArray *music_artists = NULL;
     while (get_nRead(p) != -1){
         music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
