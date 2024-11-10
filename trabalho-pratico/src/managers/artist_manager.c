@@ -61,10 +61,14 @@ gboolean artist_exists(int id, Art_Manager art_manager)
 */
 gboolean all_artists_exist (const GArray *artists, Art_Manager am){
     gboolean r = TRUE;
-    if (artists != NULL)
-        for (int i = 0; i < artists->len && r; i++){
+    int len = -1;
+
+    if (artists != NULL) {
+        len = artists->len;
+        for (int i = 0; i < len && r; i++){
             r = artist_exists (g_array_index(artists, int, i), am);
         }
+    }
     return r;
 }
 
@@ -73,7 +77,9 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am){
 */
 void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
-    for (int i = 0; i < music_artists->len; i++){
+    int len = music_artists->len;
+
+    for (int i = 0; i < len; i++){
         a = search_artist_by_id (g_array_index(music_artists, int, i), am);
         add_disc_duration(a, duration);
     }
@@ -118,7 +124,9 @@ void print_N_art_info (Art_Manager am, int N, Output out){
 */
 void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
     Artist a = NULL;
-    for (int i = 0; i < am->art_by_dur->len && N > 0; i++){
+    int len = am->art_by_dur->len;
+
+    for (int i = 0; i < len && N > 0; i++){
         a = search_artist_by_dur_country(am, country, i);
         if (a != NULL){
             print_art_info(a, out);
