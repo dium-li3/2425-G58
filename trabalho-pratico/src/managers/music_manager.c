@@ -82,14 +82,16 @@ void add_like_genre(Music_Manager mm, const char *genre, short age)
 void add_like_genres (const GArray *musics, Music_Manager mm, short age){
     Music m = NULL;
     const char *gen = NULL;
-    int len = musics->len;
+    int len = -1;
 
-    for (int i = 0; i < len; i++)
-    {
-        m = search_music_by_id(g_array_index(musics, int, i), mm);
-        gen = get_genre(m);
-        add_like_genre(mm, gen, age);
-        //free (gen);
+    if(musics != NULL) {
+        len = musics->len;
+        for (int i = 0; i < len; i++){
+            m = search_music_by_id(g_array_index(musics, int, i), mm);
+            gen = get_genre(m);
+            add_like_genre(mm, gen, age);
+            free (gen);
+        }
     }
 }
 
@@ -144,7 +146,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
         for (int i = 0; i < len && r; i++)
             r = music_exists (g_array_index(musics, int, i), mm);
     }
-    
+
     return r;
 }
 
