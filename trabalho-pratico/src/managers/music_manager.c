@@ -78,12 +78,14 @@ void add_like_genre(Music_Manager mm, char *genre, short age)
 void add_like_genres (GArray *musics, Music_Manager mm, short age){
     Music m = NULL;
     char *gen = NULL;
-    for (int i = 0; i < musics->len; i++)
-    {
-        m = search_music_by_id(g_array_index(musics, int, i), mm);
-        gen = get_genre(m);
-        add_like_genre(mm, gen, age);
-        free (gen);
+
+    if(musics != NULL) {
+        for (int i = 0; i < musics->len; i++){
+            m = search_music_by_id(g_array_index(musics, int, i), mm);
+            gen = get_genre(m);
+            add_like_genre(mm, gen, age);
+            free (gen);
+        }
     }
 }
 

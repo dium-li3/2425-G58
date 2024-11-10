@@ -75,9 +75,12 @@ gboolean all_artists_exist (GArray *artists, Art_Manager am){
 */
 void add_dur_artists (GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
-    for (int i = 0; i < music_artists->len; i++){
-        a = search_artist_by_id (g_array_index(music_artists, int, i), am);
-        add_disc_duration(a, duration);
+    
+    if(music_artists != NULL) {
+        for (int i = 0; i < music_artists->len; i++){
+            a = search_artist_by_id (g_array_index(music_artists, int, i), am);
+            add_disc_duration(a, duration);
+        }
     }
 }
 
