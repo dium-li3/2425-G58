@@ -60,7 +60,7 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int i)
         Genre gen_real = create_gen(gen);
         g_array_insert_val(mus_m->genre_array, i, gen_real);
     }
-    //free(gen);
+    
     return r;
 }
 
@@ -90,7 +90,6 @@ void add_like_genres (const GArray *musics, Music_Manager mm, short age){
             m = search_music_by_id(g_array_index(musics, int, i), mm);
             gen = get_genre(m);
             add_like_genre(mm, gen, age);
-            free (gen);
         }
     }
 }

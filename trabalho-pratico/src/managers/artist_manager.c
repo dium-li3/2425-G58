@@ -105,7 +105,6 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     const char *countri = get_art_country (a);
     if (strcmp (countri, country))
         a = NULL;
-    //free (countri);
 
     return a;
 }
