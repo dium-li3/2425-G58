@@ -18,12 +18,13 @@ int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
 
 
     char *path = argv[1];
+
     Parser parser_queries = open_parser (argv[2]);
-    
-    if (path[0] == '\0') {
-        //perror("ERROR: "); //o ficheiro com o nome dado não existe ou a diretoria foi mal escrita
-        return 2;
+    if(parser_queries == NULL) {
+        perror("trabalho_test(22)");
+        return 1;
     }
+
 
     char **entity_paths = path3Entities (path);
     Master_Manager master_manager = create_master_manager(); 

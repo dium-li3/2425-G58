@@ -58,8 +58,9 @@ void error_output (Parser p, Output out){
     Percorre o array para ir printando as linhas onde há erros (programa de testes).
 */
 void print_query_errors(GArray *a) {
-    int i;
-    for(i = 0; i < a->len; i++) {
+    int i, len = a->len;
+
+    for(i = 0; i < len; i++) {
         printf("    -Discrepância na linha %d.\n", g_array_index(a, int, i));
     }
 }

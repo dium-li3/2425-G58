@@ -14,7 +14,7 @@ int get_gen_arr_len(Music_Manager mm);
 
 Music_Manager create_music_manager();
 
-void add_like_genres (GArray *musics, Music_Manager mm, short age);
+void add_like_genres (const GArray *musics, Music_Manager mm, short age);
 
 void gen_arr_freq_acum(Music_Manager mm);
 
@@ -24,7 +24,7 @@ void sort_gen(Music_Manager mm,int min_age, int max_age);
 
 void insert_music_by_id(Music m, Music_Manager music_manager);
 
-gboolean all_musics_exist (GArray *musics, Music_Manager mm);
+gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
 
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 

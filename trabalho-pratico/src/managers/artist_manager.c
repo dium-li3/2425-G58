@@ -59,25 +59,29 @@ gboolean artist_exists(int id, Art_Manager art_manager)
 /*
     Verifica se todos os artistas num array de artistas existem.
 */
-gboolean all_artists_exist (GArray *artists, Art_Manager am){
+gboolean all_artists_exist (const GArray *artists, Art_Manager am){
     gboolean r = TRUE;
+    int len = -1;
 
-    if (artists != NULL)
-        for (int i = 0; i < artists->len && r; i++){
+    if (artists != NULL) {
+        len = artists->len;
+        for (int i = 0; i < len && r; i++){
             r = artist_exists (g_array_index(artists, int, i), am);
         }
-    
+    }
+  
     return r;
 }
 
 /*
     Adiciona uma dada duração à discocrafia de todos os artistas de um dado array.
 */
-void add_dur_artists (GArray *music_artists , int duration, Art_Manager am){
+void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
     
     if(music_artists != NULL) {
-        for (int i = 0; i < music_artists->len; i++){
+        int len = music_artists->len;
+        for (int i = 0; i < len; i++){
             a = search_artist_by_id (g_array_index(music_artists, int, i), am);
             add_disc_duration(a, duration);
         }
@@ -98,10 +102,10 @@ Artist search_artist_by_dur_indice(Art_Manager am, int i){
 */
 Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     Artist a = g_array_index(am->art_by_dur, Artist, i);
-    char *countri = get_art_country (a);
+    const char *countri = get_art_country (a);
     if (strcmp (countri, country))
         a = NULL;
-    free (countri);
+    //free (countri);
 
     return a;
 }
@@ -123,7 +127,9 @@ void print_N_art_info (Art_Manager am, int N, Output out){
 */
 void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
     Artist a = NULL;
-    for (int i = 0; i < am->art_by_dur->len && N > 0; i++){
+    int len = am->art_by_dur->len;
+
+    for (int i = 0; i < len && N > 0; i++){
         a = search_artist_by_dur_country(am, country, i);
         if (a != NULL){
             print_art_info(a, out);
@@ -149,6 +155,11 @@ void order_duration (Art_Manager artist_manager){
 */
 void store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
+    if(p == NULL) {
+        perror("store_Artists(146)");
+        exit(1);
+    }
+
     Output out = open_out("resultados/artists_errors.csv");
     Artist artist = NULL;
     int i = 0;

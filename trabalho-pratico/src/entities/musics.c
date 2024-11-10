@@ -72,8 +72,8 @@ int *get_music_id_pointer (Music m){
 }
 
 
-char* get_genre(Music m) {
-    return (strdup(m->genre));
+const char* get_genre(Music m) {
+    return m->genre;
 }
 
 
@@ -82,7 +82,7 @@ int get_music_duration(Music m){
 }
 
 
-GArray *get_music_artists(Music m){
+const GArray *get_music_artists(Music m){
     return m->artists_ids;
 }
 

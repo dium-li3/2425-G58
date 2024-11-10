@@ -39,7 +39,7 @@ short get_user_age (User u);
 //Dada uma string com o nome da subscription type, devolve o caracter que a representa.
 char get_sub_type (char *sub_type);
 
-GArray *get_liked_musics(User u);
+const GArray *get_liked_musics(User u);
 
 /*
     Dá print do email, nomes, idade e pais do utilizador.

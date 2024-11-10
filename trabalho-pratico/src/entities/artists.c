@@ -44,16 +44,16 @@ int *get_art_id_pointer(Artist a){
     return copy;
 }
 
-char *get_art_country(Artist a){
-    return strdup(a->country);
+const char *get_art_country(Artist a){
+    return (a->country);
 }
 
 int get_disc_duration(Artist a){
     return a->disc_duration;
 }
 
-char *get_art_name(Artist a){
-    return strdup(a->name);
+const char *get_art_name(Artist a){
+    return a->name;
 }
 
 char get_art_type_from_art(Artist a){

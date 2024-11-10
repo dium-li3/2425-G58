@@ -7,27 +7,27 @@
 
 int trabalho (int argc, char **argv, Query_stats qs){
     char *path = argv[1];
+
     Parser parser_queries = open_parser (argv[2]);
-    
-    if (path[0] == '\0') {
-        //perror("ERROR: "); //o ficheiro com o nome dado não existe ou a diretoria foi mal escrita
-        return 2;
+    if(parser_queries == NULL) {
+        perror("trabalho(11)");
+        return 1;
     }
 
     char **entity_paths = path3Entities (path);
     Master_Manager master_manager = create_master_manager (); 
-    
+
     //Armazenamento e ordenação da informação + validação
     store_Entities(entity_paths, master_manager);
     free3Entities(entity_paths);
-    
+
     //Resposta às queries
     answer_all_queries(parser_queries, master_manager, qs);
-    
+
     //free moment
     free_master_manager(master_manager);
     close_parser(parser_queries);
-    
+
     return 0;
 }
 

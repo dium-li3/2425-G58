@@ -11,11 +11,11 @@ int get_music_id(Music m);
 
 int *get_music_id_pointer(Music m);
 
-char* get_genre(Music m);
+const char* get_genre(Music m);
 
 int get_music_duration(Music m);
 
-GArray *get_music_artists (Music m);
+const GArray *get_music_artists (Music m);
 
 void free_music(Music m);
 

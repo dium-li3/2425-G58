@@ -48,8 +48,10 @@ Music search_music_by_id(int id, Music_Manager music_manager)
 gboolean insert_gen(Music m, Music_Manager mus_m, int i)
 {
     gboolean r = TRUE;
-    char *gen = get_genre(m);
-    for (int i = 0; i < mus_m->genre_array->len && r; i++){
+    const char *gen = get_genre(m);
+    int len = mus_m->genre_array->len;
+
+    for (int i = 0; i < len && r; i++){
         r = compare_genre_names(get_genre_by_index(mus_m, i), gen);
     }
 
@@ -58,29 +60,33 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int i)
         Genre gen_real = create_gen(gen);
         g_array_insert_val(mus_m->genre_array, i, gen_real);
     }
-    free(gen);
+    //free(gen);
     return r;
 }
 
 
-void add_like_genre(Music_Manager mm, char *genre, short age)
+void add_like_genre(Music_Manager mm, const char *genre, short age)
 {
     gboolean adicionou = FALSE;
-    for (int i = 0; i < mm->genre_array->len && !adicionou; i++){
+    int len = mm->genre_array->len;
+
+    for (int i = 0; i < len && !adicionou; i++){
         if (compare_genre_names(get_genre_by_index(mm, i), genre) == 0)
         {
             increment_like (get_genre_by_index(mm, i), age);
-            adicionou++;
+            adicionou = TRUE;
         }
     }
 }
 
-void add_like_genres (GArray *musics, Music_Manager mm, short age){
+void add_like_genres (const GArray *musics, Music_Manager mm, short age){
     Music m = NULL;
-    char *gen = NULL;
+    const char *gen = NULL;
+    int len = -1;
 
     if(musics != NULL) {
-        for (int i = 0; i < musics->len; i++){
+        len = musics->len;
+        for (int i = 0; i < len; i++){
             m = search_music_by_id(g_array_index(musics, int, i), mm);
             gen = get_genre(m);
             add_like_genre(mm, gen, age);
@@ -91,13 +97,17 @@ void add_like_genres (GArray *musics, Music_Manager mm, short age){
 
 void gen_arr_freq_acum(Music_Manager mm)
 {
-    for (int i = 0; i < mm->genre_array->len; i++)
+    int len = mm->genre_array->len;
+
+    for (int i = 0; i < len; i++)
         gen_freq_acum (get_genre_by_index(mm, i));
 }
 
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age)
 {
-    for (int i = 0; i < mm->genre_array->len; i++)
+    int len = mm->genre_array->len;
+
+    for (int i = 0; i < len; i++)
         update_gen_total_likes (get_genre_by_index(mm, i), min_age, max_age);
 }
 
@@ -126,12 +136,16 @@ gboolean music_exists (int id, Music_Manager mm){
     Verifica se as musicas de uma lista de ids de musicas
     pertencem todas às músicas que temos guardadas.
 */
-gboolean all_musics_exist (GArray *musics, Music_Manager mm){
+gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     gboolean r = TRUE;
-    
-    if (musics != NULL)
-        for (int i = 0; i < musics->len && r; i++)
+    int len = -1;
+
+    if (musics != NULL) {
+        len = musics->len;
+
+        for (int i = 0; i < len && r; i++)
             r = music_exists (g_array_index(musics, int, i), mm);
+    }
 
     return r;
 }
@@ -147,10 +161,15 @@ gboolean all_musics_exist (GArray *musics, Music_Manager mm){
 */
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
+    if(p == NULL) {
+        perror("store_Musics(145)");
+        exit(1);
+    }
+
     Output out = open_out("resultados/musics_errors.csv");
     Music music = NULL;
     int i = 0;
-    GArray *music_artists = NULL;
+    const GArray *music_artists = NULL;
     while (get_nRead(p) != -1){
         music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
@@ -181,7 +200,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
 void print_all_genres_info (Music_Manager mm, Output out){
     Genre gen = NULL;
     int escreveu = 0;
-    for (int i = 0; i < mm->genre_array->len; i++){
+    int len = mm->genre_array->len;
+
+    for (int i = 0; i < len; i++){
         gen = get_genre_by_index(mm, i);
         escreveu += print_genre_info(gen, out);
     }

@@ -10,7 +10,7 @@ typedef struct genre
     int total_likes;
 } *Genre;
 
-Genre create_gen(char *gen_name)
+Genre create_gen(const char *gen_name)
 {
     Genre gen = calloc(1, sizeof(struct genre));
     gen->name = strdup(gen_name);
@@ -22,7 +22,7 @@ void clear_genre(Genre *gen){
     free (*gen);
 }
 
-gboolean compare_genre_names(Genre gen, char *genre){
+gboolean compare_genre_names(Genre gen, const char *genre){
     return strcmp(gen->name, genre);
 }
 
