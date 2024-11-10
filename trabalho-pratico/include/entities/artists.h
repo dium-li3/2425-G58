@@ -17,11 +17,11 @@ int get_art_id(Artist a);
 int *get_art_id_pointer(Artist a);
 
 // Devolve a country de um artista.
-char *get_art_country(Artist a);
+const char *get_art_country(Artist a);
 
 int get_disc_duration(Artist a);
 
-char *get_art_name(Artist a);
+const char *get_art_name(Artist a);
 
 // Dada uma string com o tipo do artista, devolve o caracter que o representa.
 char get_art_type(char *art_type);

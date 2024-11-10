@@ -11,7 +11,7 @@ int get_music_id(Music m);
 
 int *get_music_id_pointer(Music m);
 
-char* get_genre(Music m);
+const char* get_genre(Music m);
 
 int get_music_duration(Music m);
 

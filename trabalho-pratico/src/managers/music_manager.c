@@ -48,7 +48,7 @@ Music search_music_by_id(int id, Music_Manager music_manager)
 gboolean insert_gen(Music m, Music_Manager mus_m, int i)
 {
     gboolean r = TRUE;
-    char *gen = get_genre(m);
+    const char *gen = get_genre(m);
     for (int i = 0; i < mus_m->genre_array->len && r; i++){
         r = compare_genre_names(get_genre_by_index(mus_m, i), gen);
     }
@@ -58,32 +58,32 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int i)
         Genre gen_real = create_gen(gen);
         g_array_insert_val(mus_m->genre_array, i, gen_real);
     }
-    free(gen);
+    //free(gen);
     return r;
 }
 
 
-void add_like_genre(Music_Manager mm, char *genre, short age)
+void add_like_genre(Music_Manager mm, const char *genre, short age)
 {
     gboolean adicionou = FALSE;
     for (int i = 0; i < mm->genre_array->len && !adicionou; i++){
         if (compare_genre_names(get_genre_by_index(mm, i), genre) == 0)
         {
             increment_like (get_genre_by_index(mm, i), age);
-            adicionou++;
+            adicionou = TRUE;
         }
     }
 }
 
 void add_like_genres (const GArray *musics, Music_Manager mm, short age){
     Music m = NULL;
-    char *gen = NULL;
+    const char *gen = NULL;
     for (int i = 0; i < musics->len; i++)
     {
         m = search_music_by_id(g_array_index(musics, int, i), mm);
         gen = get_genre(m);
         add_like_genre(mm, gen, age);
-        free (gen);
+        //free (gen);
     }
 }
 

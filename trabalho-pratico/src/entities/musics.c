@@ -72,8 +72,8 @@ int *get_music_id_pointer (Music m){
 }
 
 
-char* get_genre(Music m) {
-    return (strdup(m->genre));
+const char* get_genre(Music m) {
+    return m->genre;
 }
 
 

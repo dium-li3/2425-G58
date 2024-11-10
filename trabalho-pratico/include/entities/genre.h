@@ -6,11 +6,11 @@
 
 typedef struct genre *Genre;
 
-Genre create_gen(char *gen_name);
+Genre create_gen(const char *gen_name);
 
 void clear_genre(Genre *gen);
 
-int compare_genre_names(Genre gen, char *genre);
+int compare_genre_names(Genre gen, const char *genre);
 
 int get_genre_total_likes (Genre gen);
 

@@ -93,10 +93,10 @@ Artist search_artist_by_dur_indice(Art_Manager am, int i){
 */
 Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     Artist a = g_array_index(am->art_by_dur, Artist, i);
-    char *countri = get_art_country (a);
+    const char *countri = get_art_country (a);
     if (strcmp (countri, country))
         a = NULL;
-    free (countri);
+    //free (countri);
 
     return a;
 }
