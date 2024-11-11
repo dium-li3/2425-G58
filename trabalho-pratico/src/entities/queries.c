@@ -84,37 +84,6 @@ void set_querie3(short min, short max, Querie q){
     q->querie3->max = max;
 }
 
-short get_querie_type(Querie q){
-    return q->querie;
-}
-
-/*
-    Devolve o username a procurar pela querie 1,
-*/
-int get_querie1_info(Querie q){
-
-    return q->querie1->id;
-}
-
-/*
-    Devolve a country (se a querie 2 a tiver)
-    e atualiza o N dado para ter o valor do N
-    da querie 2.
-*/
-char *get_querie2_info(Querie q, short *N){
-    *N = q->querie2->N;
-    return q->querie2->country;
-}
-
-/*
-    Devolve o minimo da querie 3, e atualiza
-    o max dado para ter o valor do maximo da querie 3.
-*/
-short get_querie3_info(Querie q, short *max){
-    *max = q->querie3->max;
-    return q->querie3->min;
-}
-
 void store_querie_from_token (Querie q, char **tokens, int n_tokens){
     for (int i = 0; i < 3; i++){
     }
