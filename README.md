@@ -1,5 +1,5 @@
 # Laboratórios de Informática III (2024/2025)
 
-* Nome Completo Aluno 1 - AXXXXXX - username github
-* Nome Completo Aluno 2 - AXXXXXX - username github
-* Nome Completo Aluno 3 - AXXXXXX - username github
+* Marco Rocha Ferreira - A106857 - MarcoFerreira05
+* Lucas Rafael da Cunha Franco Robertson - A89467 - lucasxdsy
+* Samuel Gibson Da Cunha Figueiredo Lobato  - A106907 - samuelgib05
