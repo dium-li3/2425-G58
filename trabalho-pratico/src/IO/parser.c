@@ -129,10 +129,9 @@ int parse_3_tokens (char *line, char **info){
 
 int parse_1line_querie(Parser p, char **info){
     int n_token = 0;
-    ssize_t nRead;
     size_t n;
     char *line = NULL;
-    if ((nRead = getline (&line, &n, p->fp)) != -1){
+    if ((p->nRead = getline (&line, &n, p->fp)) != -1){
         switch (line[0]){
             case ('2'):
                 n_token = parse_3_tokens (line, info);

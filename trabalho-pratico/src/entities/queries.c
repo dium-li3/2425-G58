@@ -84,6 +84,10 @@ void set_querie3(short min, short max, Querie q){
     q->querie3->max = max;
 }
 
+short get_querie_type(Querie q){
+    return q->querie;
+}
+
 void store_querie_from_token (Querie q, char **tokens, int n_tokens){
     for (int i = 0; i < 3; i++){
     }
@@ -110,7 +114,7 @@ void read_querie_line(Parser pq, Querie q){
     char **tokens = calloc (3, sizeof(char *));//basta 3 espaços por agora
     int n_tokens = parse_1line_querie(pq, tokens);
     store_querie_from_token (q, tokens, n_tokens);
-    if (get_querie_type(q) != -1)
+    if (q->querie != -1)
         for (int i = 0; i < 3; i++){
             free (tokens[i]);
         }

@@ -59,7 +59,7 @@ void answer_querie(Querie q, Master_Manager mm, int n_querie, Query_stats qs){
 void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     int i;
     Querie q = create_querie();
-    for (i = 1; get_querie_type(q) != -1; i++)
+    for (i = 1; get_nRead(queries) != -1; i++)
     {
         read_querie_line(queries, q);
         answer_querie(q, mm, i, qs);

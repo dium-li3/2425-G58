@@ -34,6 +34,9 @@ void set_querie2(short N, char *country, Querie q);
 //Atualiza a querie para ter informação relevante à querie3.
 void set_querie3(short min, short max, Querie q);
 
+//Devolve o tipo de querie que tem de ser respondida.
+short get_querie_type(Querie q);
+
 //Enche a querie com a informação dada relevante ao tipo de querie que a informação dá.
 void store_querie_from_token (Querie q, char **tokens, int n_tokens);
 
