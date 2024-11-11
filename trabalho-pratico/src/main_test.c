@@ -83,6 +83,7 @@ int main (int argc, char **argv){
 
         testagem(argv[3]);
 
+        printf("\nTempos de execução para cada query (média|total):\n");
         for(int i = 0; i < QUERYTYPES; i++) print_query_time(i+1, get_query_stats_n(qs, i), get_query_stats_time(qs, i));
         
         free(qs);
