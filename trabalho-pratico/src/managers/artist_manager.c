@@ -24,15 +24,15 @@ typedef struct array_art
 Art_Manager create_art_manager()
 {
     Art_Manager am = malloc(sizeof(struct art_manager));
-    am->art_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, free, (void *)free_art);
+    am->art_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (void *)free_art);
     am->art_by_dur = g_array_new(FALSE, TRUE, sizeof(Artist));
     return am;
 }
 
 void insert_artists_by_id(Artist a, Art_Manager art_manager)
 {
-    int *id = get_art_id_pointer(a);
-    g_hash_table_insert(art_manager->art_by_id, id, a);
+    int id = get_art_id(a);
+    g_hash_table_insert(art_manager->art_by_id, GINT_TO_POINTER(id), a);
 }
 
 void insert_artists_by_dur(Artist a, Art_Manager art_manager, int i){
@@ -41,7 +41,7 @@ void insert_artists_by_dur(Artist a, Art_Manager art_manager, int i){
 
 Artist search_artist_by_id(int id, Art_Manager art_manager)
 {
-    Artist a = g_hash_table_lookup(art_manager->art_by_id, &id);
+    Artist a = g_hash_table_lookup(art_manager->art_by_id, GINT_TO_POINTER(id));
     return a;
 }
 
@@ -51,7 +51,7 @@ Artist search_artist_by_id(int id, Art_Manager art_manager)
 gboolean artist_exists(int id, Art_Manager art_manager)
 {
     gboolean r = TRUE;
-    if (g_hash_table_lookup(art_manager->art_by_id, &id) == NULL)
+    if (g_hash_table_lookup(art_manager->art_by_id, GINT_TO_POINTER(id)) == NULL)
         r = FALSE;
     return r;
 }

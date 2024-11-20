@@ -8,9 +8,6 @@
 
 typedef struct artist *Artist;
 
-// Dada uma linha dos dados de artistas, cria um artista.
-Artist create_art(int id, char *nome, char *desc, float rps, GArray *idc, char *coun, char type);
-
 // Devolve o id de um artista.
 int get_art_id(Artist a);
 

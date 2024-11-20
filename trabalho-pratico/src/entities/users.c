@@ -8,23 +8,19 @@ typedef struct user{
     char *email;
     char *first_name;
     char *last_name;
-    char *birth_date; //possivelmente vai ser retirado
     short age;
     char *country;
-    char subscription_type;//normal = N, premium = P e inválido = E?
     GArray *liked_music_ids;
 } *User;
 
-User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, char *c, char st, GArray *lmids){
+User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids){
     User u = malloc(sizeof (struct user));
     u->id = id;
     u->email = strdup (email);
     u->first_name =strdup (fn);
     u->last_name = strdup (ln);
-    u->birth_date = strdup (bd);
     u->age = age;
     u->country = strdup (c);
-    u->subscription_type = st;
     u->liked_music_ids = lmids;
     return u;
 }
@@ -34,8 +30,7 @@ User create_user (int id, char *email, char *fn, char *ln, char *bd, short age, 
     Devolve NULL caso o user seja sintáticamente inválido.
 */
 User create_user_from_tokens (char **tokens){
-    char sub_type = get_sub_type (tokens[6]);
-    int valid = valid_user_sintatic (tokens[1], tokens[4], sub_type) && valid_list(tokens[7]);
+    int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
     int id;
     int age;
     GArray *liked_musics = NULL;
@@ -44,7 +39,7 @@ User create_user_from_tokens (char **tokens){
         id = atoi (tokens[0]+1);
         age = read_date_to_age (tokens[4]);
         liked_musics = store_list (tokens[7]);
-        u = create_user (id, tokens[1], tokens[2], tokens[3], tokens[4], age, tokens[5], sub_type, liked_musics);
+        u = create_user (id, tokens[1], tokens[2], tokens[3], age, tokens[5], liked_musics);
     }
     return u;
 }
@@ -61,21 +56,6 @@ int *get_user_id_pointer (User u){
     return copy;
 }
 
-char *get_user_email (User u){
-    return (strdup(u->email));
-}
-
-char *get_user_first_name (User u){
-    return (strdup(u->first_name));
-}
-
-char *get_user_last_name (User u){
-    return (strdup(u->last_name));
-}
-
-char *get_user_country (User u){
-    return (strdup(u->country));
-}
 
 short get_user_age (User u){
     return u->age;
@@ -86,15 +66,6 @@ const GArray *get_liked_musics(User u){
 }
 
 
-//Dada uma string com o nome da subscription type, devolve o caracter que a representa.
-char get_sub_type (char *sub_type){
-    char c = 'E';
-    if (strcmp (sub_type, "normal") == 0)
-        c = 'N';
-    else if (strcmp(sub_type, "premium") == 0)
-        c = 'P';
-    return c;
-}
 
 /*
     Dá print do email, nomes, idade e pais do utilizador.
@@ -118,7 +89,6 @@ void free_user(User u){
     free(u->email);
     free(u->first_name);
     free(u->last_name);
-    free(u->birth_date);
     free(u->country);
     if (u->liked_music_ids != NULL)
         g_array_free(u->liked_music_ids, TRUE);
@@ -199,7 +169,7 @@ int valid_subscription (char *subs_type){
 }
 
 //Verifica se os campos que têm de ser sintáticamente validados de um dado utilizador estão direito/válidos.
-int valid_user_sintatic (char *email, char *date, char sub_type){
+int valid_user_sintatic (char *email, char *date, char *sub_type){
    // printf("CALL VALID DATE%s\n",date);
-    return valid_email_string(email) && valid_date(date) && (sub_type != 'E');
+    return valid_email_string(email) && valid_date(date) && valid_subscription(sub_type);
 }

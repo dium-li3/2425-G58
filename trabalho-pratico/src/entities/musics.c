@@ -7,26 +7,20 @@
 
 typedef struct music {
     int id;
-    char *title;
     GArray *artists_ids;
-    char *duration;
     int duration_s;
     char *genre;
     short year;
-    char *lyrics;
 } *Music;
 
 
-Music create_music(int id, char *t, GArray *arts_ids, char *d, int d_s, char *g, short y, char *l) {
+Music create_music(int id, GArray *arts_ids, int d_s, char *g, short y) {
     Music m = calloc(1, sizeof(struct music));
     m->id = id;
-    m->title = strdup(t);
     m->artists_ids = arts_ids;
-    m->duration = strdup(d);
     m->duration_s = d_s;
     m->genre = strdup(g);
     m->year = y;
-    m->lyrics = strdup(l);
     //m->likes começa toda a 0 por causa do calloc.
     return m;
 }
@@ -52,7 +46,7 @@ Music create_music_from_tokens (char **tokens) {
         int duration_s = calc_duration_s(tokens[3]);
         short year = (short)atoi(tokens[5]);
 
-        m = create_music(id, tokens[1], artists_ids, tokens[3], duration_s, tokens[4], year, tokens[6]);
+        m = create_music(id, artists_ids, duration_s, tokens[4], year);
     }
 
     return m;
@@ -88,10 +82,7 @@ const GArray *get_music_artists(Music m){
 
 
 void free_music(Music m) {
-    free(m->title);
-    free(m->duration);
     free(m->genre);
-    free(m->lyrics);
     if (m->artists_ids != NULL)
         g_array_free(m->artists_ids, TRUE);
 

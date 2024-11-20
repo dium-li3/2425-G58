@@ -15,7 +15,7 @@ typedef struct user_manager {
 
 User_Manager create_user_manager(){
     User_Manager um = malloc (sizeof(struct user_manager));
-    um->users_by_id = g_hash_table_new_full (g_int_hash, g_int_equal, free, (void *)free_user); //hash
+    um->users_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void *)free_user); //hash
     return um;
 }
 
@@ -23,8 +23,8 @@ User_Manager create_user_manager(){
     Insere um User na posição id da hash table.
 */
 void insert_user_by_id(User u, User_Manager user_manager){
-    int *id = get_user_id_pointer(u);
-    g_hash_table_insert (user_manager->users_by_id, id, u);
+    int id = get_user_id(u);
+    g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
 }
 
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
@@ -62,7 +62,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
 }
 
 User search_user_by_id(int id, User_Manager user_manager){
-    User u = g_hash_table_lookup(user_manager->users_by_id, &id);
+    User u = g_hash_table_lookup(user_manager->users_by_id, GINT_TO_POINTER(id));
     return u;
 }
 

@@ -48,3 +48,9 @@ clean:
 
 clean_res:
 	rm -f resultados/*
+
+# Search for complex functions
+complexity:
+	@echo Only printing when Modified McCabe Cyclomatic Complexity is above 5
+	@echo | pmccabe -v
+	@pmccabe $(SRCS)| sort -nr | awk '{if($$1>5)print}'

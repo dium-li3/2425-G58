@@ -22,7 +22,7 @@ int get_gen_arr_len(Music_Manager mm)
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
-    mm->musics_by_id = g_hash_table_new_full(g_int_hash, g_int_equal, free, (void *)free_music);
+    mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
     g_array_set_clear_func(mm->genre_array, (GDestroyNotify) clear_genre);
     return mm;
@@ -40,7 +40,7 @@ Genre get_genre_by_index(Music_Manager mm,int index)
 
 Music search_music_by_id(int id, Music_Manager music_manager)
 {
-    Music m = g_hash_table_lookup(music_manager->musics_by_id, &id);
+    Music m = g_hash_table_lookup(music_manager->musics_by_id, GINT_TO_POINTER(id));
     return m;
 }
 
@@ -118,8 +118,8 @@ void sort_gen(Music_Manager mm,int min_age, int max_age)
 
 void insert_music_by_id(Music m, Music_Manager music_manager)
 {
-    int *id = get_music_id_pointer(m);
-    g_hash_table_insert(music_manager->musics_by_id, id, m);
+    int id = get_music_id(m);
+    g_hash_table_insert(music_manager->musics_by_id, GINT_TO_POINTER(id), m);
 }
 
 /*
@@ -127,7 +127,7 @@ void insert_music_by_id(Music m, Music_Manager music_manager)
 */
 gboolean music_exists (int id, Music_Manager mm){
     gboolean r = TRUE;
-    r = g_hash_table_lookup(mm->musics_by_id, &id) ? TRUE : FALSE;
+    r = g_hash_table_lookup(mm->musics_by_id, GINT_TO_POINTER(id)) ? TRUE : FALSE;
     return r;
 }
 

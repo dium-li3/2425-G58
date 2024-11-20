@@ -12,19 +12,17 @@
 typedef struct artist{
     int id;
     char *name;
-    char *description;
-    float recipe_per_stream;
+    double recipe_per_stream;
     GArray *id_constituent;
     char *country;
     char type; // individual = I e grupo = G
     int disc_duration;
 } *Artist;
 
-Artist create_art(int id, char *name, char *desc, float rps, GArray *idc, char *coun, char type){
+Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char type){
     Artist a = malloc(sizeof(struct artist));
     a->id = id;
     a->name = strdup(name);
-    a->description = strdup(desc);
     a->recipe_per_stream = rps;
     a->id_constituent = idc;
     a->country = strdup(coun);
@@ -87,8 +85,8 @@ Artist create_artist_from_tokens(char **tokens){
     if (!(art_type == 'I' && id_constituent != NULL) && art_type != 'E')
     { // negação do caso inválido (individual com id e constituent ñ nulo)
         int id = atoi(tokens[0] + 1);
-        float recipe_per_stream = strtof(tokens[3], NULL);
-        a = create_art(id, tokens[1], tokens[2], recipe_per_stream, id_constituent, tokens[5], art_type);
+        float recipe_per_stream = strtod(tokens[3], NULL);
+        a = create_art(id, tokens[1], recipe_per_stream, id_constituent, tokens[5], art_type);
     }
     else if (id_constituent != NULL)
         g_array_free(id_constituent, TRUE);
@@ -109,7 +107,7 @@ char *calc_duration_hms(int segs){
     int t = segs % 3600;
     int m = t / 60;
     int s = t % 60;
-    char *hms =calloc (9, sizeof(char));
+    char *hms =calloc (33, sizeof(char));
     sprintf(hms, "%02d:%02d:%02d", h, m, s);
     return hms;
 }
@@ -139,7 +137,6 @@ void add_disc_duration(Artist a, int duration){
 
 void free_art(Artist a){
     free(a->name);
-    free(a->description);
     if (a->id_constituent != NULL)
         g_array_free(a->id_constituent, TRUE);
     free(a->country);
