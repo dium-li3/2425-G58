@@ -34,11 +34,11 @@ void store_Entities(char **entity_paths, Master_Manager entity_M){
 
 
 
-void answer_querie(Querie q, Master_Manager mm, int n_querie, Query_stats qs){
-    short type = get_querie_type(q);
+void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
+    short type = get_query_type(q);
     if (type > 0){
         char output_file[46];
-        snprintf(output_file, 46, "resultados/command%d_output.txt", n_querie);
+        snprintf(output_file, 46, "resultados/command%d_output.txt", n_query);
         Output out = open_out (output_file);
         switch (type)
         {
@@ -58,13 +58,13 @@ void answer_querie(Querie q, Master_Manager mm, int n_querie, Query_stats qs){
 
 void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     int i;
-    Querie q = create_querie();
+    Query q = create_query();
     for (i = 1; get_nRead(queries) != -1; i++)
     {
-        read_querie_line(queries, q);
-        answer_querie(q, mm, i, qs);
+        read_query_line(queries, q);
+        answer_query(q, mm, i, qs);
     }
-    free_querie(q);
+    free_query(q);
 }
 
 

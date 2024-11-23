@@ -116,16 +116,14 @@ char *calc_duration_hms(int segs){
     return hms;
 }
 
-void print_art_info(Artist a, Output out){
-    char *type = get_art_type_str (a);
-    char *disc_duration = calc_duration_hms(a->disc_duration);
-    char *name = strdup (a->name);
-    char *country = strdup (a->country);
-    output_artist (name, type, disc_duration, country, out);
-    free (name);
-    free (disc_duration);
-    free (type);
-    free (country);
+void print_art_info(Artist a, char separador,Output out){
+    char **infos = calloc (4, sizeof(char *)); 
+    infos[0] = strdup (a->name);
+    infos[1] = get_art_type_str (a);
+    infos[2] = calc_duration_hms(a->disc_duration);
+    infos[3] = strdup (a->country);
+    output_geral (infos, 4, separador, out);
+    free_tokens (infos, 4);
 }
 
 //só serve para test

@@ -4,6 +4,7 @@
 #include <glib.h>
 
 #include "parser.h"
+#include "utils.h"
 
 typedef struct parser{
     FILE *fp;
@@ -34,17 +35,6 @@ ssize_t get_nRead (Parser p){
 
 void go_back_1line (Parser p){
     fseek (p->fp, -(p->nRead), SEEK_CUR);
-}
-
-/*
-    Dados n tokens, liberta a memoria usada por eles
-    e pelo pointer que os guarda.
-*/
-void free_tokens(char **tokens, int n){
-    for (int i = 0; i < 8; i++){
-        free (tokens[i]);
-    }
-    free (tokens);
 }
 
 /*
@@ -127,7 +117,7 @@ int parse_3_tokens (char *line, char **info){
     return n_token;
 }
 
-int parse_1line_querie(Parser p, char **info){
+int parse_1line_query(Parser p, char **info){
     int n_token = 0;
     size_t n;
     char *line = NULL;

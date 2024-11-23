@@ -26,10 +26,10 @@ void output_empty (Output out){
     fprintf(out->fp, "\n");
 }
 
-void output_geral (char **infos, int n_infos, Output out){
+void output_geral (char **infos, int n_infos, char separador,Output out){
     fprintf(out->fp, "%s", infos[0]);
     for (int i = 1; i < n_infos; i++){
-        fprintf(out->fp, ";%s", infos[i]);
+        fprintf(out->fp, "%c%s", separador, infos[i]);
     }
     fprintf(out->fp, "\n");
 }

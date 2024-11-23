@@ -25,7 +25,7 @@ char get_art_type(char *art_type);
 
 char get_art_type_from_art(Artist a);
 
-void print_art_info(Artist a, Output out);
+void print_art_info(Artist a, char separador, Output out);
 
 int compare_dur (gconstpointer a, gconstpointer b);
 

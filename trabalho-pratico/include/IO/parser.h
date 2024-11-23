@@ -32,7 +32,7 @@ void *parse_line (Parser p, void *(*Func)(char **));
 /*
     Lê uma linha do ficheiro, e devolve os tokens dessa linha.
 */
-int parse_1line_querie(Parser p, char **info);
+int parse_1line_query(Parser p, char **info);
 
 /*
     Guarda 1 linha do ficheiro na line dada.

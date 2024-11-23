@@ -112,11 +112,11 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
 /*
     Dá print dos primeiros N artistas do array ordenado por discografia de artistas.
 */
-void print_N_art_info (Art_Manager am, int N, Output out){
+void print_N_art_info (Art_Manager am, int N, char separador, Output out){
     Artist a = NULL;
     for (int i = 0; i < N; i++){
         a = search_artist_by_dur_indice(am, i);
-        print_art_info(a, out);
+        print_art_info(a, separador, out);
     }
 }
 
@@ -124,14 +124,14 @@ void print_N_art_info (Art_Manager am, int N, Output out){
     Dá print dos N primeiros artistas que pertencem a um dado país,
     pela ordem em que aparecem no array de artistas ordenado por discografia.
 */
-void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
+void print_N_country_art_info (Art_Manager am, char *country, int N, char separador, Output out){
     Artist a = NULL;
     int len = am->art_by_dur->len;
 
     for (int i = 0; i < len && N > 0; i++){
         a = search_artist_by_dur_country(am, country, i);
         if (a != NULL){
-            print_art_info(a, out);
+            print_art_info(a, separador, out);
             N--;
         }
     }
