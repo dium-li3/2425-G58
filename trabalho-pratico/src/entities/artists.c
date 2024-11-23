@@ -5,6 +5,7 @@
 #include "artists.h"
 #include "parser.h"
 #include "output.h"
+#include "utils.h"
 
 // #include "sintatica.h"
 // #include "parser.h"
@@ -80,9 +81,12 @@ int compare_dur (gconstpointer a, gconstpointer b){
 Artist create_artist_from_tokens(char **tokens){
     char art_type = get_art_type(tokens[6]);
     GArray *id_constituent = NULL;
-    id_constituent = store_list(tokens[4]);
+    int valid_l = valid_list(tokens[4]);
+    if(valid_l) id_constituent = store_list(tokens[4]);
     Artist a = NULL;
-    if (!(art_type == 'I' && id_constituent != NULL) && art_type != 'E')
+    int valid = !(art_type == 'I' && id_constituent != NULL) && art_type != 'E' && valid_l;
+
+    if (valid)
     { // negação do caso inválido (individual com id e constituent ñ nulo)
         int id = atoi(tokens[0] + 1);
         float recipe_per_stream = strtod(tokens[3], NULL);
