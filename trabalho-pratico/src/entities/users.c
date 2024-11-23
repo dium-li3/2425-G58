@@ -65,22 +65,22 @@ const GArray *get_liked_musics(User u){
     return u->liked_music_ids;
 }
 
-
-
 /*
     Dá print do email, nomes, idade e pais do utilizador.
 */
-void print_user_info(User u, Output out){
+void print_user_info(User u, char separador, Output out){
     if (u != NULL){
-        char *email = strdup (u->email);
-        char *first_name = strdup (u->first_name);
-        char *last_name = strdup (u->last_name);
-        char *country = strdup (u->country);
-        output_user (email, first_name, last_name, u->age, country, out);
-        free (email);
-        free (first_name);
-        free (last_name);
-        free (country);
+        char **info = calloc (5, sizeof (char *));
+        info [0] = strdup (u->email);
+        info [1] = strdup (u->first_name);
+        info [2] = strdup (u->last_name);
+        info [3] = malloc (11*sizeof(char)); //não haverá ninguem com + de 999 anos...
+        sprintf(info [3], "%d", u->age);
+        info [4] = strdup (u->country);
+
+        output_geral(info, 5, separador, out);
+        
+        free_tokens (info, 5);
     }
     else output_empty (out);
 }

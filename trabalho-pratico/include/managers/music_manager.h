@@ -32,6 +32,6 @@ void free_music_manager(Music_Manager mm);
 
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age);
 
-void print_all_genres_info(Music_Manager mm, Output out);
+void print_all_genres_info(Music_Manager mm, char separador, Output out);
 
 #endif

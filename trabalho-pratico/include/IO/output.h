@@ -12,6 +12,8 @@ void close_output(Output out);
 
 void output_empty (Output out);
 
+void output_geral (char **infos, int n_infos, char separador,Output out);
+
 void output_user(char *email, char *first_name, char *last_name, int age, char *country, Output out);
 
 void output_artist (char *name, char *type, char *disc_duration, char *country, Output out);

@@ -1,6 +1,7 @@
 #include <strings.h>
 #include <glib.h>
 #include "output.h"
+#include "utils.h"
 
 #define GEN_LEN 150
 typedef struct genre
@@ -58,12 +59,15 @@ int cmp_like_gen(gconstpointer g1, gconstpointer g2)
     return r;
 }
 
-int print_genre_info(Genre gen, Output out)
+int print_genre_info(Genre gen, char separador, Output out)
 {
     if (gen->total_likes > 0){
-        char *name = strdup (gen->name);
-        output_genre (name, gen->total_likes, out);
-        free (name);
+        char **infos = calloc (2, sizeof (char *));
+        infos [0] = strdup (gen->name);
+        infos [1] = calloc (11, sizeof (char));
+        sprintf (infos [1], "%d", gen->total_likes);
+        output_geral (infos, 2, separador, out);
+        free_tokens (infos, 2);
     }
     return gen->total_likes;
 }

@@ -14,42 +14,42 @@
 
 typedef struct query_stats *Query_stats;
 
-typedef struct querie *Querie;
+typedef struct query *Query;
 
-typedef struct querie1 *Querie1;
+typedef struct query1 *Query1;
 
-typedef struct querie2 *Querie2;
+typedef struct query2 *Query2;
 
-typedef struct querie3 *Querie3;
+typedef struct query3 *Query3;
 
-//Cria uma struct querie com espaço para as 3 queries atuais, todas já alocadas mas vazias.
-Querie create_querie();
+//Cria uma struct query com espaço para as 3 queries atuais, todas já alocadas mas vazias.
+Query create_query();
 
-//Atualiza a querie para ter informação relevante à querie1.
-void set_querie1(int id, Querie q);
+//Atualiza a query para ter informação relevante à query1.
+void set_query1(int id, Query q);
 
-//Atualiza a querie para ter informação relevante à querie2.
-void set_querie2(short N, char *country, Querie q);
+//Atualiza a query para ter informação relevante à query2.
+void set_query2(short N, char *country, Query q);
 
-//Atualiza a querie para ter informação relevante à querie3.
-void set_querie3(short min, short max, Querie q);
+//Atualiza a query para ter informação relevante à query3.
+void set_query3(short min, short max, Query q);
 
-//Devolve o tipo de querie que tem de ser respondida.
-short get_querie_type(Querie q);
+//Devolve o tipo de query que tem de ser respondida.
+short get_query_type(Query q);
 
-//Enche a querie com a informação dada relevante ao tipo de querie que a informação dá.
-void store_querie_from_token (Querie q, char **tokens, int n_tokens);
+//Enche a query com a informação dada relevante ao tipo de query que a informação dá.
+void store_query_from_token (Query q, char **tokens, int n_tokens);
 
-//Guarda a informação de uma linha de queries numa querie.
-void read_querie_line(Parser pq, Querie q);
+//Guarda a informação de uma linha de queries numa query.
+void read_query_line(Parser pq, Query q);
 
-void free_querie (Querie q);
+void free_query (Query q);
 
-void answer1(Querie q, User_Manager um, Output out, Query_stats qs);
+void answer1(Query q, User_Manager um, Output out, Query_stats qs);
 
-void answer2(Querie q, Art_Manager am, Output out, Query_stats qs);
+void answer2(Query q, Art_Manager am, Output out, Query_stats qs);
 
-void answer3(Querie q, Music_Manager mm, Output out, Query_stats qs);
+void answer3(Query q, Music_Manager mm, Output out, Query_stats qs);
 
 Query_stats create_query_stats();
 

@@ -12,7 +12,7 @@ User_Manager create_user_manager();
 
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
 
-void print_user_info_by_id (User_Manager um, int id, Output out);
+void print_user_info_by_id (User_Manager um, int id, char separador, Output out);
 
 void free_user_manager(User_Manager um);
 
