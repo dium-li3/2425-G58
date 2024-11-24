@@ -26,6 +26,12 @@ void insert_music_by_id(Music m, Music_Manager music_manager);
 
 gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
 
+/*
+    Incrementa a receita total de todos os artistas
+    que fizeram uma dada música.
+*/
+void add_recipe_music_artists (int id, Music_Manager mm, Art_Manager am);
+
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 
 void free_music_manager(Music_Manager mm);

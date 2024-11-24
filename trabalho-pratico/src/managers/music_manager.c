@@ -149,6 +149,16 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
+/*  ---store_History---
+    Incrementa a receita total de todos os artistas
+    que fizeram uma dada música.
+*/
+void add_recipe_music_artists (int id, Music_Manager mm, Art_Manager am){
+    Music m = search_music_by_id (id, mm);
+    const GArray *artists_ids = get_music_artists (m);
+    add_recipe_artists (artists_ids, am);
+}
+
 /*
     Armazena a informação das músicas dadas por um ficheiro de um dado path
     numa hashtable de Musicas e preenche um array de Genres sem nenhum repetido.

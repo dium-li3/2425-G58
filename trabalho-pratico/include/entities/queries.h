@@ -26,7 +26,7 @@ typedef struct query3 *Query3;
 Query create_query();
 
 //Atualiza a query para ter informação relevante à query1.
-void set_query1(int id, Query q);
+void set_query1(int id, char type, Query q);
 
 //Atualiza a query para ter informação relevante à query2.
 void set_query2(short N, char *country, Query q);
@@ -48,7 +48,7 @@ void read_query_line(Parser pq, Query q);
 
 void free_query (Query q);
 
-void answer1(Query q, User_Manager um, Output out, Query_stats qs);
+void answer1(Query q, User_Manager um, Art_Manager am, Output out, Query_stats qs);
 
 void answer2(Query q, Art_Manager am, Output out, Query_stats qs);
 

@@ -49,7 +49,7 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
         switch (type)
         {
         case (1):
-            answer1(q, mm->user_M, out, qs);
+            answer1(q, mm->user_M, mm->artist_M, out, qs);
             break;
         case (2):
             answer2(q, mm->artist_M, out, qs);

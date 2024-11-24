@@ -69,9 +69,9 @@ User search_user_by_id(int id, User_Manager user_manager){
 /*
     Dá print de um User cujo id é o dado.
 */
-void print_user_info_by_id (User_Manager um, int id, Output out){
+void print_user_res_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
-    print_user_info(u, out);
+    print_user_res(u, out);
 }
 
 void free_user_manager(User_Manager um){

@@ -30,7 +30,7 @@ const GArray *get_liked_musics(User u);
 /*
     Dá print do email, nomes, idade e pais do utilizador.
 */
-void print_user_info(User u, Output out);
+void print_user_res(User u, Output out);
 
 //Dá free do user
 void free_user (User u);

@@ -126,6 +126,14 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
 }
 
 /*
+    Dá print do resumo de um artista com um dado id.
+*/
+void print_art_res_by_id (Art_Manager am, int id, Output out){
+    Artist a = search_artist_by_dur_indice(am, id);
+    print_art_res (a, out);
+}
+
+/*
     Dá print dos primeiros N artistas do array ordenado por discografia de artistas.
 */
 void print_N_art_info (Art_Manager am, int N, Output out){
@@ -159,6 +167,40 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
 */
 void order_duration (Art_Manager artist_manager){
     g_array_sort(artist_manager->art_by_dur, compare_dur);
+}
+
+/*
+    Incrementa a receita total dos artistas cujos ids
+    estão no array dado.
+*/
+void add_recipe_artists (const GArray *artists, Art_Manager am){
+    Artist a = NULL, constintuent = NULL;
+    int id, len, len_ids;
+    double percentage;
+    const GArray *ids = NULL;
+
+    if (artists != NULL){
+        len = artists->len;
+        
+        for (int i = 0; i < len; i++){
+            id = g_array_index (artists, int, i);
+            a = search_artist_by_dur_indice(am, id);
+
+            if (get_art_type_from_art (a) == 'G'){ //caso particular de acrescentar a recipe aos membros de um grupo
+                ids = get_group_id_constituent (a);
+                len_ids = ids->len;
+                percentage = 1 / ids->len; //hmmm dá o número correto???? rever PI lol
+
+                for (int j = 0; j < len_ids; i++){
+                    id = g_array_index (artists, int, i);
+                    constintuent = search_artist_by_dur_indice(am, id);
+ 
+                    add_percentage_recipe (constintuent, percentage);
+                }
+            }
+            add_recipe (a);//Qualquer artista (individual ou grupo) recebe uma recipe inteira
+        }
+    }
 }
 
 /*

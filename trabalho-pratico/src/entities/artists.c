@@ -18,7 +18,8 @@ typedef struct artist{
     char *country;
     char type; // individual = I e grupo = G
     int disc_duration;
-    int n_albums; 
+    int n_albums;
+    double total_recipe;
 } *Artist;
 
 Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char type){
@@ -31,6 +32,7 @@ Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char 
     a->type = type;
     a->disc_duration = 0;
     a->n_albums = 0;
+    a->total_recipe = 0;
     return a;
 }
 
@@ -55,6 +57,13 @@ int get_disc_duration(Artist a){
 
 const char *get_art_name(Artist a){
     return a->name;
+}
+
+const GArray *get_group_id_constituent (Artist a){
+    const GArray *id_constituent = NULL;
+    if (a->type == 'G')
+        id_constituent = a->id_constituent;
+    return id_constituent;
 }
 
 char get_art_type_from_art(Artist a){
@@ -118,6 +127,23 @@ char *calc_duration_hms(int segs){
     return hms;
 }
 
+/*
+    Escreve num ficheiro de output um resumo
+    do artista, útil para a query 1.
+*/
+void print_art_res(Artist a, Output out){
+    char **infos = calloc (5, sizeof(char *)); 
+    infos[0] = strdup (a->name);
+    infos[1] = get_art_type_str (a);
+    infos[2] = strdup (a->country);
+    infos[3] = malloc (sizeof(char) * 11);
+    snprintf(infos[3], 11, "%d", a->n_albums);
+    infos[4] = malloc (sizeof(char) * 20);
+    snprintf(infos[4], 20, "%.2f", a->total_recipe);
+    output_geral (infos, 5, out);
+    free_tokens (infos, 5);
+}
+
 void print_art_info(Artist a,Output out){
     char **infos = calloc (4, sizeof(char *)); 
     infos[0] = strdup (a->name);
@@ -141,7 +167,24 @@ void add_disc_duration(Artist a, int duration){
 
 //Incrementa o número de albuns de um dado artista.
 void add_1_album (Artist a){
+//    if (a->type == 'I')
     a->n_albums++;
+}
+
+/*
+    Adiciona a receita inteira que um artista recebe
+    por música ouvida ao seu total ganho.
+*/
+void add_recipe (Artist a){
+    a->total_recipe += a->recipe_per_stream;
+}
+
+/*
+    Adiciona uma dada percentagem da receita por stream
+    a um dado Artista.
+*/
+void add_percentage_recipe (Artist a, double percentage){
+    a->total_recipe += a->recipe_per_stream * percentage;
 }
 
 void free_art(Artist a){
