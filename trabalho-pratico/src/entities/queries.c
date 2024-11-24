@@ -156,7 +156,7 @@ void answer1(Query q, User_Manager um, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Query1 q1 = q->query1;
-    print_user_info_by_id (um, q1->id, q->separador, out);
+    print_user_info_by_id (um, q1->id, out);
 
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
@@ -175,11 +175,11 @@ void answer2(Query q, Art_Manager am, Output out, Query_stats qs){
         output_empty (out);
     else {
         if (q2->country == NULL)
-            print_N_art_info (am, N, q->separador, out);
+            print_N_art_info (am, N, out);
         else {
             char *country = NULL;
             country = strdup (q2->country);
-            print_N_country_art_info (am, country, N, q->separador, out);
+            print_N_country_art_info (am, country, N, out);
             free (country);
         }
     }
@@ -198,7 +198,7 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     Query3 q3 = q->query3;
     sort_gen(mm, q3->min, q3->max);
 
-    print_all_genres_info (mm, q->separador, out);
+    print_all_genres_info (mm, out);
 
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;

@@ -34,7 +34,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
         exit(1);
     }
 
-    Output out = open_out("resultados/users_errors.csv");
+    Output out = open_out("resultados/users_errors.csv", ';');
     User user = NULL;
     const GArray *liked_musics = NULL;
     while (get_nRead (p) != -1){
@@ -69,9 +69,9 @@ User search_user_by_id(int id, User_Manager user_manager){
 /*
     Dá print de um User cujo id é o dado.
 */
-void print_user_info_by_id (User_Manager um, int id, char separador, Output out){
+void print_user_info_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
-    print_user_info(u, separador, out);
+    print_user_info(u, out);
 }
 
 void free_user_manager(User_Manager um){

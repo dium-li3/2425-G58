@@ -25,13 +25,15 @@ char get_art_type(char *art_type);
 
 char get_art_type_from_art(Artist a);
 
-void print_art_info(Artist a, char separador, Output out);
+void print_art_info(Artist a, Output out);
 
 int compare_dur (gconstpointer a, gconstpointer b);
 
 Artist create_artist_from_tokens(char **tokens);
 
 void add_disc_duration(Artist a, int duration);
+
+void add_1_album (Artist a);
 
 // Dá free do artista
 void free_art(Artist a);

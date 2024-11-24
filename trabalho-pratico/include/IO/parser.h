@@ -20,12 +20,6 @@ void go_back_1line (Parser p);
 GArray *store_list (char *line);
 
 /*
-    Guarda os ids de uma lista guardados 
-    numa linha para uma lista de verdade.
-*/
-GArray *parse_list (char *line);
-
-/*
     Separa uma linha nos seus tokens.
 */
 void *parse_line (Parser p, void *(*Func)(char **));
@@ -50,6 +44,6 @@ short read_date_to_age (char *bd);
 */
 char **path3Entities (char *path);
 
-void free3Entities (char **fp_entities);
+void freeEntityPaths (char **fp_entities);
 
 #endif

@@ -176,7 +176,7 @@ short read_date_to_age (char *bd){
 char **path3Entities (char *path){
     size_t length_path = strlen(path);
     char *base_path = malloc (length_path+13);
-    char **path_entities = malloc (sizeof (char*) * 3);
+    char **path_entities = malloc (sizeof (char*) * 5);
 
     strcpy (base_path, path);
     strcpy (base_path + length_path, "/users.csv");
@@ -185,14 +185,20 @@ char **path3Entities (char *path){
     path_entities[1] = strdup (base_path);
     strcpy (base_path + length_path, "/artists.csv");
     path_entities[2] = strdup (base_path);
+    strcpy (base_path + length_path, "/albums.csv");
+    path_entities[3] = strdup (base_path);
+    strcpy (base_path + length_path, "/history.csv");
+    path_entities[4] = strdup (base_path);
     free (base_path);
 
     return path_entities;
 }
 
-void free3Entities (char **fp_entities){
+void freeEntityPaths (char **fp_entities){
     free (fp_entities[0]);
     free (fp_entities[1]);
     free (fp_entities[2]);
+    free (fp_entities[3]);
+    free (fp_entities[4]);
     free (fp_entities);
 }

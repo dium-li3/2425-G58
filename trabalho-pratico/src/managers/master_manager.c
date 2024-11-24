@@ -6,6 +6,7 @@
 #include "musics.h"
 #include "users.h"
 #include "artist_manager.h"
+#include "album_manager.h"
 #include "music_manager.h"
 #include "user_manager.h"
 #include "queries.h"
@@ -13,6 +14,7 @@
 
 typedef struct master_manager{
     Art_Manager artist_M;
+    Album_Manager album_M;
     Music_Manager music_M;
     User_Manager user_M;
 } *Master_manager;
@@ -20,6 +22,7 @@ typedef struct master_manager{
 Master_Manager create_master_manager(){
     Master_Manager e = calloc(1, sizeof(struct master_manager));
     e->user_M = create_user_manager();
+    e->album_M = create_album_manager();
     e->music_M = create_music_manager();
     e->artist_M = create_art_manager();
     return e;
@@ -27,9 +30,11 @@ Master_Manager create_master_manager(){
 
 void store_Entities(char **entity_paths, Master_Manager entity_M){
     store_Artists(entity_paths[2], entity_M->artist_M);
+    //store_Album (entity_paths[3], entity_M->album_M, entity_M->artist_M);
     store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M);
     order_duration (entity_M->artist_M);
     store_Users(entity_paths[0], entity_M->user_M, entity_M->music_M);
+    //store_History(entity_paths[4], ...);
 }
 
 
@@ -39,7 +44,8 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
     if (type > 0){
         char output_file[46];
         snprintf(output_file, 46, "resultados/command%d_output.txt", n_query);
-        Output out = open_out (output_file);
+        char separador = get_separador (q);
+        Output out = open_out (output_file, separador);
         switch (type)
         {
         case (1):
@@ -71,6 +77,7 @@ void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
 
 void free_master_manager(Master_Manager m){
     free_user_manager(m->user_M);
+    free_album_manager(m->album_M);
     free_music_manager(m->music_M);
     free_art_manager(m->artist_M);
     free(m);

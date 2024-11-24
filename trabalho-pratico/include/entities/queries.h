@@ -37,6 +37,9 @@ void set_query3(short min, short max, Query q);
 //Devolve o tipo de query que tem de ser respondida.
 short get_query_type(Query q);
 
+//Devolve o caractér a ser usado como separador no output de uma dada query.
+char get_separador (Query q);
+
 //Enche a query com a informação dada relevante ao tipo de query que a informação dá.
 void store_query_from_token (Query q, char **tokens, int n_tokens);
 

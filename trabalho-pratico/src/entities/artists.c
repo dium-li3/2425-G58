@@ -18,6 +18,7 @@ typedef struct artist{
     char *country;
     char type; // individual = I e grupo = G
     int disc_duration;
+    int n_albums; 
 } *Artist;
 
 Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char type){
@@ -29,6 +30,7 @@ Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char 
     a->country = strdup(coun);
     a->type = type;
     a->disc_duration = 0;
+    a->n_albums = 0;
     return a;
 }
 
@@ -116,13 +118,13 @@ char *calc_duration_hms(int segs){
     return hms;
 }
 
-void print_art_info(Artist a, char separador,Output out){
+void print_art_info(Artist a,Output out){
     char **infos = calloc (4, sizeof(char *)); 
     infos[0] = strdup (a->name);
     infos[1] = get_art_type_str (a);
     infos[2] = calc_duration_hms(a->disc_duration);
     infos[3] = strdup (a->country);
-    output_geral (infos, 4, separador, out);
+    output_geral (infos, 4, out);
     free_tokens (infos, 4);
 }
 
@@ -135,6 +137,11 @@ void print_art_info(Artist a, char separador,Output out){
 
 void add_disc_duration(Artist a, int duration){
     a->disc_duration += duration;
+}
+
+//Incrementa o número de albuns de um dado artista.
+void add_1_album (Artist a){
+    a->n_albums++;
 }
 
 void free_art(Artist a){

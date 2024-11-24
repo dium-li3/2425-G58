@@ -165,7 +165,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
         exit(1);
     }
 
-    Output out = open_out("resultados/musics_errors.csv");
+    Output out = open_out("resultados/musics_errors.csv", ';');
     Music music = NULL;
     int i = 0;
     const GArray *music_artists = NULL;
@@ -196,14 +196,14 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     close_output(out);
 }
 
-void print_all_genres_info (Music_Manager mm, char separador, Output out){
+void print_all_genres_info (Music_Manager mm, Output out){
     Genre gen = NULL;
     int escreveu = 0;
     int len = mm->genre_array->len;
 
     for (int i = 0; i < len; i++){
         gen = get_genre_by_index(mm, i);
-        escreveu += print_genre_info(gen, separador, out);
+        escreveu += print_genre_info(gen, out);
     }
     if (!escreveu)
         output_empty(out);

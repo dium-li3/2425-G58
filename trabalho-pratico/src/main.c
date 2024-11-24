@@ -19,7 +19,7 @@ int trabalho (int argc, char **argv, Query_stats qs){
 
     //Armazenamento e ordenação da informação + validação
     store_Entities(entity_paths, master_manager);
-    free3Entities(entity_paths);
+    freeEntityPaths(entity_paths);
 
     //Resposta às queries
     answer_all_queries(parser_queries, master_manager, qs);

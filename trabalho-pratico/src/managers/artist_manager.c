@@ -89,6 +89,22 @@ void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am
 }
 
 /*
+    Incrementa o número de albuns de todos os artistas
+    cujos ids estão num array de ids de artistas.
+*/
+void add_1_album_to_artists (const GArray *album_artists, Art_Manager am){
+    Artist a = NULL;
+
+    if (album_artists != NULL){
+        int len = album_artists->len;
+        for (int i = 0; i < len; i++){
+            a = search_artist_by_id (g_array_index(album_artists, int, i), am);
+            add_1_album (a);
+        }
+    }
+}
+
+/*
     Devolve o artista que está na posição pedida do array ordenado por discografia de artistas.
 */
 Artist search_artist_by_dur_indice(Art_Manager am, int i){
@@ -112,11 +128,11 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
 /*
     Dá print dos primeiros N artistas do array ordenado por discografia de artistas.
 */
-void print_N_art_info (Art_Manager am, int N, char separador, Output out){
+void print_N_art_info (Art_Manager am, int N, Output out){
     Artist a = NULL;
     for (int i = 0; i < N; i++){
         a = search_artist_by_dur_indice(am, i);
-        print_art_info(a, separador, out);
+        print_art_info(a, out);
     }
 }
 
@@ -124,14 +140,14 @@ void print_N_art_info (Art_Manager am, int N, char separador, Output out){
     Dá print dos N primeiros artistas que pertencem a um dado país,
     pela ordem em que aparecem no array de artistas ordenado por discografia.
 */
-void print_N_country_art_info (Art_Manager am, char *country, int N, char separador, Output out){
+void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
     Artist a = NULL;
     int len = am->art_by_dur->len;
 
     for (int i = 0; i < len && N > 0; i++){
         a = search_artist_by_dur_country(am, country, i);
         if (a != NULL){
-            print_art_info(a, separador, out);
+            print_art_info(a, out);
             N--;
         }
     }
@@ -159,7 +175,7 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
         exit(1);
     }
 
-    Output out = open_out("resultados/artists_errors.csv");
+    Output out = open_out("resultados/artists_errors.csv", ';');
     Artist artist = NULL;
     int i = 0;
     while (get_nRead(p) != -1){
