@@ -89,7 +89,7 @@ void free_music(Music m) {
     free(m);
 }
 
-//Verifica se uma duração é válida e está escrita direito.
+
 int valid_duration (char *duration){
     int r = 1;
     if (strlen (duration) != 8) r = 0;
