@@ -12,19 +12,13 @@ typedef struct music_manager
     GArray *genre_array;
 } *Music_Manager;
 
-//Devolve o número de elementos úteis do array de generos.
-int get_gen_arr_len(Music_Manager mm)
-{
-    return mm->genre_array->len;
-}
 
-//Cria e inicializa um Music_Manager base, com tudo vazio.
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
-    g_array_set_clear_func(mm->genre_array, (GDestroyNotify) clear_genre);
+    g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
     return mm;
 }
 
