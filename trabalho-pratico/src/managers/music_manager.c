@@ -96,6 +96,10 @@ void gen_arr_freq_acum(Music_Manager mm)
         gen_freq_acum (get_genre_by_index(mm, i));
 }
 
+
+/*
+    
+*/
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age)
 {
     int len = mm->genre_array->len;

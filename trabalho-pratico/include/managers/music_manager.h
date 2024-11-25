@@ -30,7 +30,7 @@ Music_Manager create_music_manager();
 
     @param musics Array das liked musics de um utilizador.
 
-    @param mm Music Manager (que contém o array de Genres).
+    @param mm Music Manager (contém o array de Genres).
 
     @param age Idade do utilizador. 
 */
@@ -44,22 +44,74 @@ void add_like_genres (const GArray *musics, Music_Manager mm, short age);
     de likes acumulados, de forma a que por exemplo, no índice 20 esteja o total de likes do género
     de utilizadores com 20 ou menos anos.
 
-    @param mm Music Manager (que contém o array de Genres).
+    @param mm Music Manager (contém o array de Genres).
 */
 void gen_arr_freq_acum(Music_Manager mm);
 
-int cmp_like_gen (gconstpointer g1, gconstpointer g2);
 
-void sort_gen(Music_Manager mm,int min_age, int max_age);
+/*
 
+*/
+void sort_gen(Music_Manager mm, int min_age, int max_age);
+
+
+/*
+    @brief Insere uma múscia na hash table segundo o seu id.
+
+    A chave (o int correspondente ao id) é armazenada na forma de int, recorrendo à macro GINT_TO_POINTER(),
+    para evitar fazer uma cópia do id e armazenar o endereço dessa cópia, poupando assim tempo e memória.
+
+    @param m Música a inserir.
+
+    @param music_manager Music Manager (contém a hash table de músicas).
+*/
 void insert_music_by_id(Music m, Music_Manager music_manager);
 
+
+/*
+    @brief Verifica se todas as músicas de um array existem.
+
+    Verifica se todas as músicas de um array constam no Music Manager, de forma a validar logicamente um utilizador.
+
+    @param musics Array de músicas a verificar.
+
+    @param mm Music Manager (contém a hash table de músicas).
+
+    @return Booleano (TRUE->todas as músicas existem e FALSE->pelo menos uma música não existe).
+*/
 gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
 
+
+/*
+    @brief Armazena todas as músicas e géneros.
+
+    Armazena a informação necessária das músicas de um ficheiro dado pelo caminho @p music_path
+    numa hashtable de músicas e preenche o array de Genres sem nenhum repetido.
+    Antes de efetivamente armazenar uma música, é feita a sua validação lógica (verificar se todos os seus
+    artistas existem).
+    Também adiciona a duração de cada música aos seus artistas se a música for válida e então guardada.
+    Escreve todas as linhas de músicas inválidas no ficheiro de erros correspondente.
+
+    @param music_path Caminho para o ficheiro CSV das músicas.
+
+    @param mm Music Manager que armazena as músicas e os géneros.
+
+    @param am Artist Manager (contém a hash table dos artistas).
+*/
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 
-void update_arr_total_likes(Music_Manager mm,int min_age, int max_age);
 
+/*
+    @brief Imprime os géneros para um ficheiro de resposta (query 3).
+
+    Imprime apenas um '\n' caso não imprima nenhum género
+
+    @param mm Music Manager (contém o array de géneros).
+
+    @param separador ';' ou '=', consoante o tipo da query (S).
+
+    @param out Ficheiro de resultado.
+*/
 void print_all_genres_info(Music_Manager mm, char separador, Output out);
 
 
