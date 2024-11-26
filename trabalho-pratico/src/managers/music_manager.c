@@ -5,6 +5,7 @@
 #include "artist_manager.h"
 #include "output.h"
 #include "genre.h"
+#include "album_manager.h"
 
 typedef struct music_manager
 {
@@ -168,7 +169,7 @@ void add_recipe_music_artists (int id, Music_Manager mm, Art_Manager am){
 
     Escreve todas as linhas de músicas inválidas num ficheiro.
 */
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
     Parser p = open_parser(music_path);
     if(p == NULL) {
         perror("store_Musics(145)");
@@ -183,7 +184,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
         music = parse_line(p, (void *)create_music_from_tokens);
         if (music != NULL){
             music_artists = get_music_artists(music);
-            if (all_artists_exist(music_artists, am))
+            if (all_artists_exist(music_artists, am) && album_exists(get_music_album (music), alm))
             {
                 add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);

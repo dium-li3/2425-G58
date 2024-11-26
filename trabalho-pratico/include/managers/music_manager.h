@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "musics.h"
 #include "artist_manager.h"
+#include "album_manager.h"
 #include "output.h"
 
 typedef struct genre *Genre;
@@ -32,7 +33,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
 */
 void add_recipe_music_artists (int id, Music_Manager mm, Art_Manager am);
 
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 
 void free_music_manager(Music_Manager mm);
 

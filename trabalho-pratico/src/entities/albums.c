@@ -47,7 +47,7 @@ Generic_Album create_generic_album_from_tokens (char **tokens){
     int valid_lists = valid_list (tokens[2]) && valid_list (tokens[4]);
     Generic_Album album = NULL;
     if (valid_lists){
-        int id = atoi (tokens[0]);
+        int id = atoi (tokens[0]+2);//ignorar o AL
         GArray *artists = store_list(tokens[2]);
         album = create_generic_album (id, tokens[1], artists);
     }

@@ -129,8 +129,11 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     Dá print do resumo de um artista com um dado id.
 */
 void print_art_res_by_id (Art_Manager am, int id, Output out){
-    Artist a = search_artist_by_dur_indice(am, id);
-    print_art_res (a, out);
+    Artist a = search_artist_by_id(id, am);
+    if (a!= NULL)
+        print_art_res (a, out);
+    else
+        output_empty (out);
 }
 
 /*

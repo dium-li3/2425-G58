@@ -6,6 +6,8 @@
 #include "parser.h"
 #include "utils.h"
 
+#define NEntities 5
+
 typedef struct parser{
     FILE *fp;
     ssize_t nRead;
@@ -176,7 +178,7 @@ short read_date_to_age (char *bd){
 char **path3Entities (char *path){
     size_t length_path = strlen(path);
     char *base_path = malloc (length_path+13);
-    char **path_entities = malloc (sizeof (char*) * 5);
+    char **path_entities = malloc (sizeof (char*) * NEntities);
 
     strcpy (base_path, path);
     strcpy (base_path + length_path, "/users.csv");

@@ -30,8 +30,8 @@ Master_Manager create_master_manager(){
 
 void store_Entities(char **entity_paths, Master_Manager entity_M){
     store_Artists(entity_paths[2], entity_M->artist_M);
-    //store_Album (entity_paths[3], entity_M->album_M, entity_M->artist_M);
-    store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M);
+    store_Album (entity_paths[3], entity_M->album_M, entity_M->artist_M);
+    store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M, entity_M->album_M);
     order_duration (entity_M->artist_M);
     store_Users(entity_paths[0], entity_M->user_M, entity_M->music_M);
     //store_History(entity_paths[4], ...);
