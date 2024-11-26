@@ -147,15 +147,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
-/*
-    Armazena a informação das músicas dadas por um ficheiro de um dado path
-    numa hashtable de Musicas e preenche um array de Genres sem nenhum repetido.
 
-    Também aproveita e adiciona a duração de cada música aos seus artistas
-    se as músicas forem válidas e então guardadas.
-
-    Escreve todas as linhas de músicas inválidas num ficheiro.
-*/
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
     if(p == NULL) {

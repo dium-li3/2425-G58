@@ -5,6 +5,8 @@
 #include "parser.h"
 #include "utils.h"
 
+
+
 typedef struct music {
     int id;
     GArray *artists_ids;
@@ -55,14 +57,6 @@ Music create_music_from_tokens (char **tokens) {
 
 int get_music_id(Music m) {
     return (m->id);
-}
-
-
-int *get_music_id_pointer (Music m){
-    int *copy = malloc(sizeof(int));
-    *copy = m->id;
-
-    return copy;
 }
 
 
