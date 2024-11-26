@@ -7,40 +7,6 @@
 #include "output.h"
 
 /**
- * @brief Example showing how to document a function with Doxygen.
- *
- * Description of what the function does. This part may refer to the parameters
- * of the function, like @p param1 or @p param2. A word of code can also be
- * inserted like @c this which is equivalent to <tt>this</tt> and can be useful
- * to say that the function returns a @c void or an @c int. If you want to have
- * more than one word in typewriter font, then just use @<tt@>.
- * We can also include text verbatim,
- * @verbatim like this@endverbatim
- * Sometimes it is also convenient to include an example of usage:
- * @code
- * BoxStruct *out = Box_The_Function_Name(param1, param2);
- * printf("something...\n");
- * @endcode
- * Or,
- * @code{.py}
- * pyval = python_func(arg1, arg2)
- * print pyval
- * @endcode
- * when the language is not the one used in the current source file (but
- * <b>be careful</b> as this may be supported only by recent versions
- * of Doxygen). By the way, <b>this is how you write bold text</b> or,
- * if it is just one word, then you can just do @b this.
- * @param param1 Description of the first parameter of the function.
- * @param param2 The second one, which follows @p param1.
- * @return Describe what the function returns.
- * @see Box_The_Second_Function
- * @see Box_The_Last_One
- * @see http://website/
- * @note Something to note.
- * @warning Warning.
- */
-
-/**
  * @brief Estrutura que representa um artista, com todas as informações que lhe são associadas.
  *
  * Mais especificamente, é um pointer para uma estrutura.
@@ -76,19 +42,6 @@ Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char 
  */
 
 int get_art_id(Artist a);
-
-/**
- * @brief Função desenvolvida para satisfazer o encapsulamento.
- *
- * Algoritmo necessário à componente de encapsulamento. 
- * 
- * @param a Artista cujo id será devolvido.
- * @return Pointer - para um inteiro - o qual aponta
- * para o id do artista.
- * @warning Esta função não é usada no código.
- */
-
-int *get_art_id_pointer(Artist a);
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -135,18 +88,6 @@ const char *get_art_name(Artist a);
  */
 
 char get_art_type(char *art_type);
-
-/**
- * @brief Função desenvolvida para satisfazer o encapsulamento.
- *
- * Algoritmo necessário à componente de encapsulamento. 
- * 
- * @param a Artista cujo tipo será devolvido.
- * @return Devolve o tipo do artista recebido.
- * @warning Esta função não é usada no código.
- */
-
-char get_art_type_from_art(Artist a);
 
 /**
  * @brief Função que "printa" um artista.
