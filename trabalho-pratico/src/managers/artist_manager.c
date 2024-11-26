@@ -5,6 +5,9 @@
 #include "artists.h"
 #include "parser.h"
 #include "output.h"
+#include "utils.h"
+
+#define ARTIST_ELEMS 7
 
 typedef struct art_manager
 {
@@ -223,16 +226,16 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
     Output out = open_out("resultados/artists_errors.csv", ';');
     Artist artist = NULL;
     int i = 0;
-    while (get_nRead(p) != -1){
-        artist = parse_line (p, (void *)create_artist_from_tokens);
+    char **tokens = calloc(8, sizeof (char *));
+    for (tokens = parse_line (p, ARTIST_ELEMS); tokens != NULL ; tokens = parse_line (p, ARTIST_ELEMS)){
+        artist = create_artist_from_tokens (tokens);
         if (artist != NULL){
             insert_artists_by_id (artist, artists_manager);
             insert_artists_by_dur(artist, artists_manager, i++);
-        }
-        else{
-            if (get_nRead(p) != -1)
+            }
+        else
                 error_output (p, out);
-        }
+        free_tokens(tokens, ARTIST_ELEMS);
     }
     close_parser (p);
     close_output (out);

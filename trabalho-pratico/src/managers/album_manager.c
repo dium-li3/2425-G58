@@ -6,6 +6,9 @@
 #include "parser.h"
 #include "output.h"
 #include "artist_manager.h"
+#include "utils.h"
+
+#define ALBUM_ELEMS 5
 
 typedef struct album_manager{
     GHashTable *albums_by_id;
@@ -43,27 +46,26 @@ void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man
     }
 
     Output out = open_out("resultados/albums_errors.csv", ';');
-    Generic_Album generic_album = NULL;
     Album album = NULL;
     int id;
-    const GArray *artists_ids = NULL;
+    GArray *artists_ids = NULL;
+    char **tokens = NULL;
 
-    while (get_nRead(p) != -1){
-        generic_album = parse_line (p, (void *)create_generic_album_from_tokens);
-        
-        if (generic_album != NULL){
-            id = get_album_id (generic_album);
-            artists_ids = get_album_artists (generic_album);
-            
+    for (tokens = parse_line (p, ALBUM_ELEMS); tokens != NULL; tokens = parse_line (p, ALBUM_ELEMS)){
+        if (valid_list (tokens[2])){
+            id = atoi(tokens[0]+2);
+            artists_ids = store_list (tokens[2]);
+            album = create_album_from_tokens (tokens[1]);
+
             add_1_album_to_artists (artists_ids, art_man);
-
-            album = create_album_delete_generic (generic_album);
             insert_album_by_id (album, id, album_man);
+
+            g_array_free (artists_ids, TRUE);
         }
-        else{
-            if (get_nRead(p) != -1)
-                error_output (p, out);
-        }
+        else
+            error_output (p, out);
+        
+        free_tokens(tokens, ALBUM_ELEMS);
     }
     close_parser (p);
     close_output (out);

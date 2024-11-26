@@ -22,7 +22,7 @@ GArray *store_list (char *line);
 /*
     Separa uma linha nos seus tokens.
 */
-void *parse_line (Parser p, void *(*Func)(char **));
+char **parse_line (Parser p, int elems);
 /*
     Lê uma linha do ficheiro, e devolve os tokens dessa linha.
 */

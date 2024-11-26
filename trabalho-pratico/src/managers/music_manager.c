@@ -6,6 +6,9 @@
 #include "output.h"
 #include "genre.h"
 #include "album_manager.h"
+#include "utils.h"
+
+#define MUSIC_ELEMS 8
 
 typedef struct music_manager
 {
@@ -178,13 +181,16 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
 
     Output out = open_out("resultados/musics_errors.csv", ';');
     Music music = NULL;
-    int i = 0;
+    int i = 0, album_id;
     const GArray *music_artists = NULL;
-    while (get_nRead(p) != -1){
-        music = parse_line(p, (void *)create_music_from_tokens);
-        if (music != NULL){
+    char **tokens;
+    for (tokens = parse_line(p, MUSIC_ELEMS); tokens != NULL; tokens = parse_line(p, MUSIC_ELEMS)){
+        music = create_music_from_tokens(tokens);
+        //Validação para saber se realmente guarda a entidade ou não
+        if (music != NULL){//sintatica
+            album_id = atoi (tokens[3] + 2);
             music_artists = get_music_artists(music);
-            if (all_artists_exist(music_artists, am) && album_exists(get_music_album (music), alm))
+            if (album_exists(album_id, alm) && all_artists_exist(music_artists, am))//logica
             {
                 add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
@@ -194,14 +200,13 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
             else
             {
                 free_music(music);
-                music = NULL;
                 error_output(p, out);
             }
         }
         else{
-            if (get_nRead(p) != -1)
-                error_output(p, out);
+            error_output(p, out);
         }
+        free_tokens(tokens, MUSIC_ELEMS);
     }
     close_parser(p);
     close_output(out);

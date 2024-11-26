@@ -6,6 +6,9 @@
 #include "users.h"
 #include "music_manager.h"
 #include "output.h"
+#include "utils.h"
+
+#define USER_ELEMS 8
 
 //g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
@@ -37,8 +40,9 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Output out = open_out("resultados/users_errors.csv", ';');
     User user = NULL;
     const GArray *liked_musics = NULL;
-    while (get_nRead (p) != -1){
-        user = (User)parse_line (p, (void *)create_user_from_tokens);
+    char **tokens;
+    for (tokens = parse_line(p, USER_ELEMS); tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
+        user = create_user_from_tokens(tokens);
         if (user != NULL){
             liked_musics = get_liked_musics(user);
             if (all_musics_exist(liked_musics, mm)){
@@ -48,13 +52,11 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
             else {
                 free_user(user);
                 error_output (p, out);
-        }
-        }
-        else{
-            if (get_nRead (p) != -1){
-                error_output (p, out);
             }
         }
+        else
+            error_output (p, out);
+        free_tokens(tokens, USER_ELEMS);
     }
     gen_arr_freq_acum (mm);
     close_parser (p);

@@ -67,25 +67,23 @@ GArray *store_list (char *line){
 /*
     Separa uma linha nos seus tokens.
 */
-void *parse_line (Parser p, void *(*Func)(char **)){
-    void *entity = NULL;
+char **parse_line (Parser p, int elems){
     size_t n;
     char *line = NULL;
     char *token = NULL;
     char *svptr = NULL;
+    char **info = NULL;
     p->nRead = getline (&line, &n, p->fp);
     if (p->nRead != -1){
         token = strtok_r (line, ";\"\n", &svptr);
-        char **info = calloc (8, sizeof (char *));
+        info = calloc (elems, sizeof (char *));
         info [0] = strdup (token);
-        for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < 8; j++){
+        for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < elems; j++){
             info [j] = strdup(token);
         }
-        entity = Func (info);
-        free_tokens(info, 8);
     }
     free (line);
-    return entity;
+    return info;
 }
 
 //Parse queries vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
