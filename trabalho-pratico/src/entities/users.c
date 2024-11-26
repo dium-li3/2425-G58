@@ -129,37 +129,6 @@ int valid_email_string (char *email){
 }
 
 /*
-    Verifica se uma data de nascimento é válida e está escrita direito.
-    Datas são escritas na forma aaaa/mm/dd com
-    meses entre 1 e 12 e dias entre 1 e 31
-*/
-int valid_date (char *date){
-    int v;
-    int mes = 0;
-    int dia = 0;
-    int ano = 0;
-    v = strlen(date) == 10 ? 1 : 0;
-    v = v ? date[4] == '/' && date[7] == '/' : 0;
-    char *svptr;
-    if (v){
-        char *s = strdup(date); //já n se verifica se é td digitos entre 0-3, 5-6 e 8-9...
-        ano = atoi (strtok_r (s, "/", &svptr));
-        mes = atoi (strtok_r (NULL, "/", &svptr));
-        dia = atoi (strtok_r (NULL, "/", &svptr));
-        free(s);
-        if (ano > 2024 || mes > 12 || dia > 31) v = 0;
-        if (v && ano == 2024){
-            if (mes > 9)
-                v = 0;
-            if (mes == 9)
-                if (dia > 9)
-                    v = 0;
-        }
-    }
-    return v;
-}
-
-/*
     Verifica se uma subscription_type está escrita direito.
     Possivelmente vai ser apagada por ser kinda trivializada pela get_sub_type
     que nos dá logo se a subscription é válida ou não.

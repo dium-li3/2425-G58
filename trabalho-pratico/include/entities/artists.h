@@ -23,9 +23,6 @@ const char *get_art_name(Artist a);
 //Devolve um array com os ids dos artistas que fazem parte de um grupo.
 const GArray *get_group_id_constituent (Artist a);
 
-// Dada uma string com o tipo do artista, devolve o caracter que o representa.
-char get_art_type(char *art_type);
-
 char get_art_type_from_art(Artist a);
 
 /*

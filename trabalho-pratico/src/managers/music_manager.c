@@ -188,7 +188,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
         music = create_music_from_tokens(tokens);
         //Validação para saber se realmente guarda a entidade ou não
         if (music != NULL){//sintatica
-            album_id = atoi (tokens[3] + 2);
+            album_id = get_music_album (music);
             music_artists = get_music_artists(music);
             if (album_exists(album_id, alm) && all_artists_exist(music_artists, am))//logica
             {

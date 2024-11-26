@@ -71,11 +71,18 @@ char get_art_type_from_art(Artist a){
 }
 
 char get_art_type(char *art_type){
-    char c = 'E';
-    if (strcmp(art_type, "individual") == 0)
-        c = 'I';
-    if (strcmp(art_type, "group") == 0)
-        c = 'G';
+    char c;
+    string_to_lower (art_type);
+    switch (same_string (art_type, "individual", "group")){
+        case (1):
+            c = 'I';
+            break;
+        case (2):
+            c = 'G';
+            break;
+        default:
+            c = 'E';
+    }
     return c;
 }
 
@@ -115,16 +122,6 @@ char *get_art_type_str (Artist a){
     else
         res = strdup ("group");
     return res;
-}
-
-char *calc_duration_hms(int segs){
-    int h = segs / 3600;
-    int t = segs % 3600;
-    int m = t / 60;
-    int s = t % 60;
-    char *hms =calloc (33, sizeof(char));
-    sprintf(hms, "%02d:%02d:%02d", h, m, s);
-    return hms;
 }
 
 /*
