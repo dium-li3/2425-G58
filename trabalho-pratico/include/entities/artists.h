@@ -20,6 +20,8 @@ int get_disc_duration(Artist a);
 
 const char *get_art_name(Artist a);
 
+double get_art_recipe_stream (Artist a);
+
 //Devolve um array com os ids dos artistas que fazem parte de um grupo.
 const GArray *get_group_id_constituent (Artist a);
 

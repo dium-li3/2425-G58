@@ -59,6 +59,10 @@ const char *get_art_name(Artist a){
     return a->name;
 }
 
+double get_art_recipe_stream (Artist a){
+    return a->recipe_per_stream;
+}
+
 const GArray *get_group_id_constituent (Artist a){
     const GArray *id_constituent = NULL;
     if (a->type == 'G')
@@ -177,11 +181,11 @@ void add_recipe (Artist a){
 }
 
 /*
-    Adiciona uma dada percentagem da receita por stream
+    Adiciona a percentagem da receita de um grupo
     a um dado Artista.
 */
-void add_percentage_recipe (Artist a, double percentage){
-    a->total_recipe += a->recipe_per_stream * percentage;
+void add_percentage_recipe (Artist a, double recipe){
+    a->total_recipe += recipe;
 }
 
 void free_art(Artist a){

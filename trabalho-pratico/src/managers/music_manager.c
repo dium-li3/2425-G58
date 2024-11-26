@@ -153,14 +153,16 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
-/*  ---store_History---
-    Incrementa a receita total de todos os artistas
-    que fizeram uma dada música.
-*/
-void add_recipe_music_artists (int id, Music_Manager mm, Art_Manager am){
+const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
     const GArray *artists_ids = get_music_artists (m);
-    add_recipe_artists (artists_ids, am);
+    return artists_ids; 
+}
+
+GArray *get_music_artists_copy_from_id (int id, Music_Manager mm){
+    Music m = search_music_by_id (id, mm);
+    GArray *artists_ids = get_music_artists_copy (m);
+    return artists_ids;
 }
 
 /*

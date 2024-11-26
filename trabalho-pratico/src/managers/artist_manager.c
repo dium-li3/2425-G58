@@ -181,25 +181,25 @@ void order_duration (Art_Manager artist_manager){
 */
 void add_recipe_artists (const GArray *artists, Art_Manager am){
     Artist a = NULL, constintuent = NULL;
-    int id, len, len_ids;
-    double percentage;
-    const GArray *ids = NULL;
-
+    int id, len, len_group;
+    double percentage, group_recipe;
+    const GArray *group_members = NULL;
     if (artists != NULL){
         len = artists->len;
         
         for (int i = 0; i < len; i++){
             id = g_array_index (artists, int, i);
-            a = search_artist_by_dur_indice(am, id);
+            a = search_artist_by_id(id, am);
 
             if (get_art_type_from_art (a) == 'G'){ //caso particular de acrescentar a recipe aos membros de um grupo
-                ids = get_group_id_constituent (a);
-                len_ids = ids->len;
-                percentage = 1 / ids->len; //hmmm dá o número correto???? rever PI lol
+                group_members = get_group_id_constituent (a);
+                len_group = group_members->len;
+                group_recipe = get_art_recipe_stream (a);
+                percentage = (double) group_recipe / group_members->len;
 
-                for (int j = 0; j < len_ids; i++){
-                    id = g_array_index (artists, int, i);
-                    constintuent = search_artist_by_dur_indice(am, id);
+                for (int j = 0; j < len_group; j++){
+                    id = g_array_index (group_members, int, j);
+                    constintuent = search_artist_by_id(id, am);
  
                     add_percentage_recipe (constintuent, percentage);
                 }

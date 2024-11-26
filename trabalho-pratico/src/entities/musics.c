@@ -71,6 +71,11 @@ const GArray *get_music_artists(Music m){
     return m->artists_ids;
 }
 
+GArray *get_music_artists_copy(Music m){
+    GArray *copy = g_array_copy (m->artists_ids);
+    return copy;
+}
+
 int get_music_album (Music m){
     return m->album_id;
 }

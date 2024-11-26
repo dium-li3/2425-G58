@@ -9,6 +9,7 @@
 #include "album_manager.h"
 #include "music_manager.h"
 #include "user_manager.h"
+#include "history_manager.h"
 #include "queries.h"
 #include "parser.h"
 
@@ -17,6 +18,7 @@ typedef struct master_manager{
     Album_Manager album_M;
     Music_Manager music_M;
     User_Manager user_M;
+    History_Manager hist_M;
 } *Master_manager;
 
 Master_Manager create_master_manager(){
@@ -25,6 +27,7 @@ Master_Manager create_master_manager(){
     e->album_M = create_album_manager();
     e->music_M = create_music_manager();
     e->artist_M = create_art_manager();
+    e->hist_M = create_history_manager();
     return e;
 }
 
@@ -34,7 +37,7 @@ void store_Entities(char **entity_paths, Master_Manager entity_M){
     store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M, entity_M->album_M);
     order_duration (entity_M->artist_M);
     store_Users(entity_paths[0], entity_M->user_M, entity_M->music_M);
-    //store_History(entity_paths[4], ...);
+    store_History(entity_paths[4], entity_M->hist_M, entity_M->artist_M, entity_M->music_M, entity_M->user_M);
 }
 
 
@@ -80,5 +83,6 @@ void free_master_manager(Master_Manager m){
     free_album_manager(m->album_M);
     free_music_manager(m->music_M);
     free_art_manager(m->artist_M);
+    free_history_manager(m->hist_M);
     free(m);
 }

@@ -17,6 +17,8 @@ int get_music_duration(Music m);
 
 const GArray *get_music_artists (Music m);
 
+GArray *get_music_artists_copy(Music m);
+
 int get_music_album (Music m);
 
 void free_music(Music m);
