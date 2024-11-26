@@ -18,7 +18,7 @@ Genre create_gen(const char *gen_name)
     return gen;
 }
 
-void clear_genre(Genre *gen){
+void free_genre(Genre *gen){
     free ((*gen)->name);
     free (*gen);
 }

@@ -8,7 +8,7 @@ typedef struct genre *Genre;
 
 Genre create_gen(const char *gen_name);
 
-void clear_genre(Genre *gen);
+void free_genre(Genre *gen);
 
 int compare_genre_names(Genre gen, const char *genre);
 

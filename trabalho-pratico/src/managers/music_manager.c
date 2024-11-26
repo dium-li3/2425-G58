@@ -12,19 +12,13 @@ typedef struct music_manager
     GArray *genre_array;
 } *Music_Manager;
 
-//Devolve o número de elementos úteis do array de generos.
-int get_gen_arr_len(Music_Manager mm)
-{
-    return mm->genre_array->len;
-}
 
-//Cria e inicializa um Music_Manager base, com tudo vazio.
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
-    g_array_set_clear_func(mm->genre_array, (GDestroyNotify) clear_genre);
+    g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
     return mm;
 }
 
@@ -102,6 +96,10 @@ void gen_arr_freq_acum(Music_Manager mm)
         gen_freq_acum (get_genre_by_index(mm, i));
 }
 
+
+/*
+    
+*/
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age)
 {
     int len = mm->genre_array->len;
@@ -149,15 +147,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
-/*
-    Armazena a informação das músicas dadas por um ficheiro de um dado path
-    numa hashtable de Musicas e preenche um array de Genres sem nenhum repetido.
 
-    Também aproveita e adiciona a duração de cada música aos seus artistas
-    se as músicas forem válidas e então guardadas.
-
-    Escreve todas as linhas de músicas inválidas num ficheiro.
-*/
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
     Parser p = open_parser(music_path);
     if(p == NULL) {

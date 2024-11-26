@@ -54,9 +54,7 @@ void error_output (Parser p, Output out){
     free (line);
 }
 
-/*
-    Percorre o array para ir printando as linhas onde há erros (programa de testes).
-*/
+
 void print_query_errors(GArray *a) {
     int i, len = a->len;
 

@@ -5,6 +5,8 @@
 #include "parser.h"
 #include "utils.h"
 
+
+
 typedef struct music {
     int id;
     GArray *artists_ids;
@@ -58,14 +60,6 @@ int get_music_id(Music m) {
 }
 
 
-int *get_music_id_pointer (Music m){
-    int *copy = malloc(sizeof(int));
-    *copy = m->id;
-
-    return copy;
-}
-
-
 const char* get_genre(Music m) {
     return m->genre;
 }
@@ -89,7 +83,7 @@ void free_music(Music m) {
     free(m);
 }
 
-//Verifica se uma duração é válida e está escrita direito.
+
 int valid_duration (char *duration){
     int r = 1;
     if (strlen (duration) != 8) r = 0;
