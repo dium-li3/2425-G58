@@ -5,6 +5,8 @@
 #include "parser.h"
 #include "utils.h"
 
+
+
 typedef struct music {
     int id;
     GArray *artists_ids;
@@ -49,14 +51,6 @@ int get_music_id(Music m) {
 }
 
 
-int *get_music_id_pointer (Music m){
-    int *copy = malloc(sizeof(int));
-    *copy = m->id;
-
-    return copy;
-}
-
-
 const char* get_genre(Music m) {
     return m->genre;
 }
@@ -71,10 +65,10 @@ const GArray *get_music_artists(Music m){
     return m->artists_ids;
 }
 
-GArray *get_music_artists_copy(Music m){
+/*GArray *get_music_artists_copy(Music m){
     GArray *copy = g_array_copy (m->artists_ids);
     return copy;
-}
+}*/
 
 int get_music_album (Music m){
     return m->album_id;

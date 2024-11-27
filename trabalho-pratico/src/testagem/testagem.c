@@ -63,7 +63,7 @@ void testagem(char *expected) {
         corrects += compare_files(rp, ep, error_lines);
     
         if(error_lines->len != 0){
-            printf("\nErro na query %d:\n", i);
+            printf("\nErro no comando %d:\n", i);
             print_query_errors(error_lines);
             error_lines->len = 0;
         }
@@ -83,5 +83,5 @@ void testagem(char *expected) {
     free(results_file);
     free(expected_file);
 
-    printf("\nQueries certas: %d/%d\n\n", corrects, i-1);
+    printf("\nResultados corretos: %d/%d\n\n", corrects, i-1);
 }

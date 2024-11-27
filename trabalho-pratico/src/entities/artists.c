@@ -102,14 +102,18 @@ int compare_dur (gconstpointer a, gconstpointer b){
 
 Artist create_artist_from_tokens(char **tokens){
     char art_type = get_art_type(tokens[6]);
+    
     GArray *id_constituent = NULL;
     int valid_l = valid_list(tokens[4]);
     if(valid_l) id_constituent = store_list(tokens[4]);
+    
     Artist a = NULL;
+
+    // negação do caso inválido (individual com id e constituent ñ nulo)
     int valid = !(art_type == 'I' && id_constituent != NULL) && art_type != 'E' && valid_l;
 
     if (valid)
-    { // negação do caso inválido (individual com id e constituent ñ nulo)
+    {
         int id = atoi(tokens[0] + 1);
         double recipe_per_stream = strtod(tokens[3], NULL);
         a = create_art(id, tokens[1], recipe_per_stream, id_constituent, tokens[5], art_type);
