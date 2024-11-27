@@ -88,40 +88,37 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm);
 //GArray *get_music_artists_copy_from_id (int id, Music_Manager mm);
 
 
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 /**
  * @brief Armazena todas as músicas e géneros.
  *
  * Armazena a informação necessária das músicas de um ficheiro dado pelo caminho @p music_path
  * numa hashtable de músicas e preenche o array de Genres sem nenhum repetido.
  * Antes de efetivamente armazenar uma música, é feita a sua validação lógica (verificar se todos os seus
- * artistas existem).
+ * artistas e o seu álbum existem).
  * Também adiciona a duração de cada música aos seus artistas se a música for válida e então guardada.
  * Escreve todas as linhas de músicas inválidas no ficheiro de erros correspondente.
- *
+ * 
  * @param music_path Caminho para o ficheiro CSV das músicas.
  *
  * @param mm Music Manager que armazena as músicas e os géneros.
  *
  * @param am Contém a hash table dos artistas.
+ * 
+ * @param alm Contém a hash table dos álbuns.
  */
-//void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 
 
-
-void print_all_genres_info(Music_Manager mm, Output out);
 /**
  * @brief Imprime os géneros para um ficheiro de resposta (query 3).
  *
- * Imprime apenas um '\n' caso não imprima nenhum género
+ * Imprime apenas um '\n' caso não imprima nenhum género.
  *
  * @param mm Contém o array de géneros.
  *
- * @param separador ';' ou '=', consoante o tipo da query (S).
- *
- * @param out Ficheiro de resultado.
+ * @param out Contém o ficheiro de resultado e o separador (';' ou '=', consoante o tipo da query (S)).
  */
-//void print_all_genres_info(Music_Manager mm, char separador, Output out);
+void print_all_genres_info(Music_Manager mm, Output out);
 
 
 /**

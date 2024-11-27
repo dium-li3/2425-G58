@@ -80,16 +80,4 @@ int get_music_album (Music m);
 void free_music(Music m);
 
 
-/**
- * @brief Valida uma duração.
- *
- * Verifica se a duração segue o formato hh:mm:ss, com mm e ss <= 59 e hh <= 99.
- *
- * @param durarion String com a duração.
- *
- * @return Booleano (1->válida e 0->inválida).
- */
-int valid_duration (char *duration);
-
-
 #endif

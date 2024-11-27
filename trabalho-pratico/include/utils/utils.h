@@ -32,7 +32,14 @@ void string_to_lower (char *s);
 //Verifica se uma dada string é igual a uma de duas dadas.
 int same_string (const char *comp, const char *s1, const char *s2);
 
-//Verifica se uma duração é válida e está escrita direito.
+/**
+ * @brief Valida uma duração.
+ *
+ * Verifica se a duração segue o formato hh:mm:ss, com mm e ss <= 59 e hh <= 99.
+ *
+ * @param durarion String com a duração.
+ *
+ * @return Booleano (1->válida e 0->inválida).
+ */
 int valid_duration (char *duration);
-
 #endif
