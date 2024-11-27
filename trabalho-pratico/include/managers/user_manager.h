@@ -29,7 +29,6 @@ User_Manager create_user_manager();
  * @param user_path path do ficheiro dos usuários.
  * @param user_manager gestor cuja hash table receberá os usuários.
  * @param music_manager gestor proprietário do array de gêneros.
- * @return Retorna @b void
  */
 
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
@@ -44,7 +43,6 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager musi
  * @param id id do usuário a ser expostos.
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
- * @return Retorna @b void
  */
 
 void print_user_info_by_id (User_Manager um, int id, char separador, Output out);
@@ -55,7 +53,6 @@ void print_user_info_by_id (User_Manager um, int id, char separador, Output out)
  * "Dá free" separadamente de cada um dos campos do gestor de usuários.
  * 
  * @param um Gestor cujos dados devem ser liberados.
- * @return Retorna @b void.
  */
 
 void free_user_manager(User_Manager um);

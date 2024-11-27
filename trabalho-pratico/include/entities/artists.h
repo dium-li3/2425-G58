@@ -74,7 +74,6 @@ char get_art_type(char *art_type);
  * @param a Artista cujo país será devolvido.
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
- * @return Retorna @b void.
  */
 
 void print_art_info(Artist a, char separador, Output out);
@@ -84,7 +83,7 @@ void print_art_info(Artist a, char separador, Output out);
  *
  * É um dos parâmetros que a função da glib @b g_array_sort() precisa para ordenar
  * o array de artistas do @b artist_manager segundo o tempo de discografia de cada um.
- * Quando a função for invocada, os parâmetros @p a e @p b serão dois artistas a ser
+ * Quando a função for invocada, os parâmetros @p a e @p b serão os dois artistas a serem
  * comparados.
  * 
  * A função retorna menor que zero se @p b for menor que @p a, zero se for igual,
@@ -93,7 +92,7 @@ void print_art_info(Artist a, char separador, Output out);
  * a sua exposição posteriormente.
  * 
  * @param a um g_pointer para um artista constante.
- * @param b outro artista que será comparadio com @p a.
+ * @param b outro artista que será comparado com @p a.
  * @return Resultado da comparação.
  */
 
@@ -126,7 +125,6 @@ Artist create_artist_from_tokens(char **tokens);
  * 
  * @param a Artista cuja discografia será incrementada.
  * @param duration Valor a incrementar na discografia.
- * @return Retorna @b void.
  */
 
 void add_disc_duration(Artist a, int duration);
@@ -137,7 +135,6 @@ void add_disc_duration(Artist a, int duration);
  * "Dá free" separadamente de cada um dos campos do artista.
  * 
  * @param a Artista cujos dados devem ser liberados.
- * @return Retorna @b void.
  */
 
 void free_art(Artist a);

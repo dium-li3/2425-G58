@@ -30,7 +30,6 @@ Art_Manager create_art_manager();
  * 
  * @param a Artista que será inserido na tabela.
  * @param art_manager Gestor proprietário da tabela.
- * @return Retorna @b void.
  */
 
 void insert_artists_by_id(Artist a, Art_Manager art_manager); 
@@ -44,7 +43,6 @@ void insert_artists_by_id(Artist a, Art_Manager art_manager);
  * @b disc_duration já preenchido) pelo seu tempo de discografia.
  * 
  * @param artist_manager Gestor cujo array será ordenado.
- * @return Retorna @b void.
  */
 
 void order_duration (Art_Manager artist_manager);
@@ -61,7 +59,6 @@ void order_duration (Art_Manager artist_manager);
  * 
  * @param art_path caminho do ficheiro que contém os artistas.
  * @param artist_manager Gestor que será preenchido com os artistas do ficheiro.
- * @return Retorna @b void.
  */
 
 void store_Artists (char *art_path, Art_Manager artists_manager);
@@ -96,7 +93,6 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am);
  * @param duration Valor que será adicionado ao tempo de discografia de cada membro
  * do array.
  * @param am Gestor de artistas.
- * @return Retorna @b void.
  */
 
 void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
@@ -115,7 +111,6 @@ void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
- * @return Retorna @b void.
  */
 
 void print_N_country_art_info (Art_Manager am, char *country, int N, char separador, Output out);
@@ -130,7 +125,6 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, char separa
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
- * @return Retorna @b void.
  */
 
 void print_N_art_info (Art_Manager am, int N, char separador, Output out);
@@ -152,7 +146,6 @@ int length_arr_disc (Art_Manager am);
  * "Dá free" separadamente de cada um dos campos do gestor de artistas.
  * 
  * @param art_manager Gestor cujos dados devem ser liberados.
- * @return Retorna @b void.
  */
 
 void free_art_manager(Art_Manager art_manager);
