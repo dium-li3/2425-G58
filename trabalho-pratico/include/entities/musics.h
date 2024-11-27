@@ -14,7 +14,7 @@ typedef struct music *Music;
  *
  * @param tokens Array com as strings correspondentes a cada campo.
  *
- * @return Apontador para uma música.
+ * @return Apontador para uma música (NULL caso a música seja inválida).
  */
 Music create_music_from_tokens (char **tokens);
 
