@@ -126,11 +126,11 @@ void store_query_from_token (Query q, char **tokens, int n_tokens){
 }
 
 void read_query_line(Parser pq, Query q){
-    char **tokens = calloc (3, sizeof(char *));//basta 3 espaços por agora
+    char **tokens = calloc (4, sizeof(char *));//basta 3 espaços por agora
     int n_tokens = parse_1line_query(pq, tokens);
     store_query_from_token (q, tokens, n_tokens);
     if (q->query != -1)
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 4; i++){
             free (tokens[i]);
         }
     free (tokens);

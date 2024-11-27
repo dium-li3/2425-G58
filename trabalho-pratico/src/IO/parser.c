@@ -94,7 +94,7 @@ int parse_line_spaces (char *line, char **info){
     char *ajudante = strdup (line);
     token = strtok_r (ajudante, " ", &svptr);
     info [n_token++] = strdup (token);
-    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 3){
+    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 4){
         info [n_token++] = strdup(token);
     }
     free (ajudante);
@@ -128,8 +128,8 @@ int parse_1line_query(Parser p, char **info){
                 break;
             case ('1'):
             case ('3'):
-            default:
                 n_token = parse_line_spaces (line, info);
+            default:
         }
     }
     else info = NULL;

@@ -226,7 +226,7 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
     Output out = open_out("resultados/artists_errors.csv", ';');
     Artist artist = NULL;
     int i = 0;
-    char **tokens = calloc(8, sizeof (char *));
+    char **tokens;
     for (tokens = parse_line (p, ARTIST_ELEMS); tokens != NULL ; tokens = parse_line (p, ARTIST_ELEMS)){
         artist = create_artist_from_tokens (tokens);
         if (artist != NULL){
