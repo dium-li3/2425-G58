@@ -16,7 +16,7 @@ typedef struct art_manager *Art_Manager;
  * decrescente com base no tempo de discografia dos seus membros.
  * Esta função é chamada no @b master_manager.
  * 
- * @return Gestor de artista, com sua hash e seu array vazios.
+ * @return Apontador para o novo gestor de artista, com sua hash e seu array vazios.
  */
 
 Art_Manager create_art_manager();
@@ -30,7 +30,7 @@ Art_Manager create_art_manager();
  * 
  * @param a Artista que será inserido na tabela.
  * @param art_manager Gestor proprietário da tabela.
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void insert_artists_by_id(Artist a, Art_Manager art_manager); 
@@ -41,10 +41,10 @@ void insert_artists_by_id(Artist a, Art_Manager art_manager);
  *
  * Após o armazenamento dos artistas e das músicas nos seus respetivos
  * gestores, essa função ordena o array dos artistas (cada um com o campo
- * @c disc_duration já preenchido) pelo seu tempo de discografia.
+ * @b disc_duration já preenchido) pelo seu tempo de discografia.
  * 
  * @param artist_manager Gestor cujo array será ordenado.
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void order_duration (Art_Manager artist_manager);
@@ -57,11 +57,11 @@ void order_duration (Art_Manager artist_manager);
  * - especificamente no seu array e na sua hash - todos os artistas
  * presentes em um ficheiro dado o caminho deste.
  * 
- * Ademais, o algoritmo também expõe algum artista que esteja incorreto.
+ * Ademais, também expõe algum artista que esteja incorreto.
  * 
  * @param art_path caminho do ficheiro que contém os artistas.
  * @param artist_manager Gestor que será preenchido com os artistas do ficheiro.
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void store_Artists (char *art_path, Art_Manager artists_manager);
@@ -69,19 +69,17 @@ void store_Artists (char *art_path, Art_Manager artists_manager);
 /**
  * @brief Confere se todos os artistas de um array estão presentes no gestor.
  *
- * Função que devolve @c TRUE se todos os artistas de um array se encontram
+ * Função que devolve @b TRUE se todos os artistas de um array se encontram
  * no array do gestor de artistas.
  * 
  * Esta função é utilizada durante o armazenamento das músicas, assegurando
  * que todos os artistas que produziram uma determinada música estão registados
  * no gestor, para que a duração dessa música seja adicionada ao campo 
- * @c disc_duration de cada um deles.
- * 
- * Ademais, o algoritmo também expõe algum artista que esteja incorreto.
+ * @b disc_duration de cada um deles.
  * 
  * @param artists Array dos artistas produtores de dada música.
  * @param artist_manager Gestor usado de parâmetro.
- * @return @c TRUE se todos os artistas se encontram no gestor; @c FALSE, do contrário.
+ * @return @b TRUE se todos os artistas se encontram no gestor; @b FALSE, do contrário.
  */
 
 gboolean all_artists_exist (const GArray *artists, Art_Manager am);
@@ -92,13 +90,13 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am);
  * Após a @b all_artists_exist confirmar a existência de todos os artistas que
  * compuseram uma determinada música, será a @b add_dur_artists a responsável por
  * adicionar, em cada um dos artistas, a duração dessa faixa aos seus campos
- * @c disc_duration
+ * @b disc_duration
  * 
  * @param music_artists Array dos artistas produtores de dada música.
  * @param duration Valor que será adicionado ao tempo de discografia de cada membro
  * do array.
  * @param am Gestor de artistas.
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
@@ -117,7 +115,7 @@ void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void print_N_country_art_info (Art_Manager am, char *country, int N, char separador, Output out);
@@ -132,7 +130,7 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, char separa
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void print_N_art_info (Art_Manager am, int N, char separador, Output out);
@@ -154,7 +152,7 @@ int length_arr_disc (Art_Manager am);
  * "Dá free" separadamente de cada um dos campos do gestor de artistas.
  * 
  * @param art_manager Gestor cujos dados devem ser liberados.
- * @return Retorna @c void.
+ * @return Retorna @b void.
  */
 
 void free_art_manager(Art_Manager art_manager);

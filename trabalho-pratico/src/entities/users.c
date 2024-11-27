@@ -13,6 +13,11 @@ typedef struct user{
     GArray *liked_music_ids;
 } *User;
 
+/*
+    Cria um User, baseado nos tokens recebidos.
+    Devolve NULL caso o user seja sintáticamente inválido.
+*/
+
 User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids){
     User u = malloc(sizeof (struct user));
     u->id = id;
