@@ -22,6 +22,6 @@ void update_gen_total_likes (Genre gen, int min_age, int max_age);
 
 int cmp_like_gen(gconstpointer g1, gconstpointer g2);
 
-int print_genre_info(Genre gen, char separador, Output out);
+int print_genre_info(Genre gen, Output out);
 
 #endif

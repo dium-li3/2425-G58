@@ -68,7 +68,7 @@ const GArray *get_liked_musics(User u){
 /*
     Dá print do email, nomes, idade e pais do utilizador.
 */
-void print_user_info(User u, char separador, Output out){
+void print_user_res(User u, Output out){
     if (u != NULL){
         char **info = calloc (5, sizeof (char *));
         info [0] = strdup (u->email);
@@ -78,7 +78,7 @@ void print_user_info(User u, char separador, Output out){
         sprintf(info [3], "%d", u->age);
         info [4] = strdup (u->country);
 
-        output_geral(info, 5, separador, out);
+        output_geral(info, 5, out);
         
         free_tokens (info, 5);
     }
@@ -126,37 +126,6 @@ int valid_email_string (char *email){
         }
     }
     return r;
-}
-
-/*
-    Verifica se uma data de nascimento é válida e está escrita direito.
-    Datas são escritas na forma aaaa/mm/dd com
-    meses entre 1 e 12 e dias entre 1 e 31
-*/
-int valid_date (char *date){
-    int v;
-    int mes = 0;
-    int dia = 0;
-    int ano = 0;
-    v = strlen(date) == 10 ? 1 : 0;
-    v = v ? date[4] == '/' && date[7] == '/' : 0;
-    char *svptr;
-    if (v){
-        char *s = strdup(date); //já n se verifica se é td digitos entre 0-3, 5-6 e 8-9...
-        ano = atoi (strtok_r (s, "/", &svptr));
-        mes = atoi (strtok_r (NULL, "/", &svptr));
-        dia = atoi (strtok_r (NULL, "/", &svptr));
-        free(s);
-        if (ano > 2024 || mes > 12 || dia > 31) v = 0;
-        if (v && ano == 2024){
-            if (mes > 9)
-                v = 0;
-            if (mes == 9)
-                if (dia > 9)
-                    v = 0;
-        }
-    }
-    return v;
 }
 
 /*

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "musics.h"
 #include "artist_manager.h"
+#include "album_manager.h"
 #include "output.h"
 
 typedef struct genre *Genre;
@@ -82,6 +83,12 @@ void insert_music_by_id(Music m, Music_Manager music_manager);
 gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
 
 
+const GArray *get_music_artists_from_id (int id, Music_Manager mm);
+
+//GArray *get_music_artists_copy_from_id (int id, Music_Manager mm);
+
+
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 /**
  * @brief Armazena todas as músicas e géneros.
  *
@@ -98,9 +105,11 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm);
  *
  * @param am Contém a hash table dos artistas.
  */
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
+//void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
 
 
+
+void print_all_genres_info(Music_Manager mm, Output out);
 /**
  * @brief Imprime os géneros para um ficheiro de resposta (query 3).
  *
@@ -112,7 +121,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am);
  *
  * @param out Ficheiro de resultado.
  */
-void print_all_genres_info(Music_Manager mm, char separador, Output out);
+//void print_all_genres_info(Music_Manager mm, char separador, Output out);
 
 
 /**

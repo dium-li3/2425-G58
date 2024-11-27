@@ -1,5 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
 //#include <regex.h>
 #include "utils.h"
 
@@ -19,4 +21,86 @@ void free_tokens(char **tokens, int n){
         free (tokens[i]);
     }
     free (tokens);
+}
+
+/*
+    Calcula a duração em segundos. Só pode ser usada depois de se validar a string.
+*/
+int calc_duration_s(char *st) {
+    int h = 0, m = 0, s = 0;
+    sscanf(st, "%d:%d:%d", &h, &m, &s);
+
+    return (h*3600 + m*60 + s);
+}
+
+char *calc_duration_hms(int segs){
+    int h = segs / 3600;
+    int t = segs % 3600;
+    int m = t / 60;
+    int s = t % 60;
+    char *hms =calloc (33, sizeof(char));
+    sprintf(hms, "%02d:%02d:%02d", h, m, s);
+    return hms;
+}
+
+/*
+    Verifica se uma data de nascimento é válida e está escrita direito.
+    Datas são escritas na forma aaaa/mm/dd com
+    meses entre 1 e 12 e dias entre 1 e 31
+*/
+int valid_date (char *date){
+    int v;
+    int mes = 0;
+    int dia = 0;
+    int ano = 0;
+    v = strlen(date) == 10 ? 1 : 0;
+    v = v ? date[4] == '/' && date[7] == '/' : 0;
+    char *svptr;
+    if (v){
+        char *s = strdup(date); //já n se verifica se é td digitos entre 0-3, 5-6 e 8-9...
+        ano = atoi (strtok_r (s, "/", &svptr));
+        mes = atoi (strtok_r (NULL, "/", &svptr));
+        dia = atoi (strtok_r (NULL, "/", &svptr));
+        free(s);
+        if (ano > 2024 || mes > 12 || dia > 31) v = 0;
+        if (v && ano == 2024){
+            if (mes > 9)
+                v = 0;
+            if (mes == 9)
+                if (dia > 9)
+                    v = 0;
+        }
+    }
+    return v;
+}
+
+//Passa todas as maiusculas de uma string em minúsculas.
+void string_to_lower (char *s){
+    int i;
+    for (i = 0; s[i] != '\0'; i++)
+        s[i] = tolower (s[i]);
+}
+
+//Verifica se uma dada string é igual a uma de duas dadas.
+int same_string (const char *comp, const char *s1, const char *s2){
+    int r = 0;
+    if (strcmp (comp, s1) == 0)
+        r = 1;
+    else if (strcmp (comp, s2) == 0)
+        r = 2;
+    return r;
+}
+
+//Verifica se uma duração é válida e está escrita direito.
+int valid_duration (char *duration){
+    int r = 1;
+    if (strlen (duration) != 8) r = 0;
+
+    for (int i = 0; r && duration[i] != '\0'; i++){
+        if (i == 2 || i == 5) r = duration[i] == ':';
+        else if (i == 3 || i == 6) r = isdigit (duration[i]) && duration[i] < '6';
+        else r = isdigit (duration[i]);
+    }
+
+    return r;
 }

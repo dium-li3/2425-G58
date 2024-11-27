@@ -7,13 +7,15 @@
 
 typedef struct output{
     FILE *fp;
+    char separador;
 } *Output;
 
 
 
-Output open_out (char *path){
+Output open_out (char *path, char separador){
     Output out = calloc (1, sizeof (struct output));
     out->fp = fopen (path, "w");
+    out->separador = separador;
     return out;
 }
 
@@ -26,24 +28,12 @@ void output_empty (Output out){
     fprintf(out->fp, "\n");
 }
 
-void output_geral (char **infos, int n_infos, char separador,Output out){
+void output_geral (char **infos, int n_infos,Output out){
     fprintf(out->fp, "%s", infos[0]);
     for (int i = 1; i < n_infos; i++){
-        fprintf(out->fp, "%c%s", separador, infos[i]);
+        fprintf(out->fp, "%c%s", out->separador, infos[i]);
     }
     fprintf(out->fp, "\n");
-}
-
-void output_user(char *email, char *first_name, char *last_name, int age, char *country, Output out){
-    fprintf(out->fp, "%s;%s;%s;%d;%s\n", email, first_name, last_name, age, country);
-}
-
-void output_artist (char *name, char *type, char *disc_duration, char *country, Output out){
-    fprintf(out->fp, "%s;%s;%s;%s\n", name, type, disc_duration, country);
-}
-
-void output_genre (char *name_gen, int likes, Output out){
-    fprintf(out->fp, "%s;%d\n", name_gen, likes);
 }
 
 void error_output (Parser p, Output out){

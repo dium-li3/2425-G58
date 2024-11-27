@@ -5,6 +5,10 @@
 #include "artist_manager.h"
 #include "output.h"
 #include "genre.h"
+#include "album_manager.h"
+#include "utils.h"
+
+#define MUSIC_ELEMS 8
 
 typedef struct music_manager
 {
@@ -148,22 +152,38 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
 }
 
 
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
+const GArray *get_music_artists_from_id (int id, Music_Manager mm){
+    Music m = search_music_by_id (id, mm);
+    const GArray *artists_ids = get_music_artists (m);
+    return artists_ids; 
+}
+
+/*GArray *get_music_artists_copy_from_id (int id, Music_Manager mm){
+    Music m = search_music_by_id (id, mm);
+    GArray *artists_ids = get_music_artists_copy (m);
+    return artists_ids;
+}*/
+
+
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
     Parser p = open_parser(music_path);
     if(p == NULL) {
         perror("store_Musics(145)");
         exit(1);
     }
 
-    Output out = open_out("resultados/musics_errors.csv");
+    Output out = open_out("resultados/musics_errors.csv", ';');
     Music music = NULL;
-    int i = 0;
+    int i = 0, album_id;
     const GArray *music_artists = NULL;
-    while (get_nRead(p) != -1){
-        music = parse_line(p, (void *)create_music_from_tokens);
-        if (music != NULL){
+    char **tokens;
+    for (tokens = parse_line(p, MUSIC_ELEMS); tokens != NULL; tokens = parse_line(p, MUSIC_ELEMS)){
+        music = create_music_from_tokens(tokens);
+        //Validação para saber se realmente guarda a entidade ou não
+        if (music != NULL){//sintatica
+            album_id = get_music_album (music);
             music_artists = get_music_artists(music);
-            if (all_artists_exist(music_artists, am))
+            if (album_exists(album_id, alm) && all_artists_exist(music_artists, am))//logica
             {
                 add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
@@ -173,27 +193,26 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am){
             else
             {
                 free_music(music);
-                music = NULL;
                 error_output(p, out);
             }
         }
         else{
-            if (get_nRead(p) != -1)
-                error_output(p, out);
+            error_output(p, out);
         }
+        free_tokens(tokens, MUSIC_ELEMS);
     }
     close_parser(p);
     close_output(out);
 }
 
-void print_all_genres_info (Music_Manager mm, char separador, Output out){
+void print_all_genres_info (Music_Manager mm, Output out){
     Genre gen = NULL;
     int escreveu = 0;
     int len = mm->genre_array->len;
 
     for (int i = 0; i < len; i++){
         gen = get_genre_by_index(mm, i);
-        escreveu += print_genre_info(gen, separador, out);
+        escreveu += print_genre_info(gen, out);
     }
     if (!escreveu)
         output_empty(out);

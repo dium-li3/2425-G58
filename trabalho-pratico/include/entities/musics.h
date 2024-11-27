@@ -65,6 +65,10 @@ int get_music_duration(Music m);
 const GArray *get_music_artists (Music m);
 
 
+//GArray *get_music_artists_copy(Music m);
+
+int get_music_album (Music m);
+
 /**
  * @brief Liberta a memória alocada para uma música.
  *
@@ -86,5 +90,6 @@ void free_music(Music m);
  * @return Booleano (1->válida e 0->inválida).
  */
 int valid_duration (char *duration);
+
 
 #endif
