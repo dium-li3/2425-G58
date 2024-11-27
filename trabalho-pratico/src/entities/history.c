@@ -10,7 +10,7 @@ typedef struct history{
     int hour_of_day; //char?? ;)
     int duration;
     int music_id;
-    GArray *artist_ids;
+    //GArray *artist_ids; 200MB no dataset grande
 } *History;
 
 History create_history (int day, int month, int hour, int duration, int music_id){
@@ -20,7 +20,7 @@ History create_history (int day, int month, int hour, int duration, int music_id
     h->hour_of_day = hour;
     h->duration = duration;
     h->music_id = music_id;
-    h->artist_ids = NULL;
+    //h->artist_ids = NULL;
     return h;
 }
 
@@ -51,12 +51,12 @@ int get_history_music (History h){
     return h->music_id;
 }
 
-void set_artist_ids (History h, GArray *artist_ids){
-    h->artist_ids = artist_ids;
-}
+// void set_artist_ids (History h, GArray *artist_ids){
+//     h->artist_ids = artist_ids;
+// }
 
 void free_history (History h){
-    if (h->artist_ids != NULL)
-        g_array_free(h->artist_ids, TRUE);
+    // if (h->artist_ids != NULL)
+    //     g_array_free(h->artist_ids, TRUE);
     free (h);
 }
