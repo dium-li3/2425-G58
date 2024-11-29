@@ -41,6 +41,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     User user = NULL;
     const GArray *liked_musics = NULL;
     char **tokens;
+    tokens = parse_line(p, USER_ELEMS);
     for (tokens = parse_line(p, USER_ELEMS); tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
         user = create_user_from_tokens(tokens);
         if (user != NULL){

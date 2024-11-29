@@ -42,12 +42,12 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
         exit(1);
     }
 
-    Output out = open_out("resultados/histories_errors.csv", ';');
+    Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
     int id, year;
     char **tokens = NULL;
     const GArray *artist_ids;
-
+    tokens = parse_line (p, HISTORY_ELEMS);
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
         if (history != NULL){
