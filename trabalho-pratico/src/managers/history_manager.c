@@ -42,7 +42,7 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
         exit(1);
     }
 
-    Output out = open_out("resultados/histories_errors.csv", ';');
+    Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
     int id, year;
     char **tokens = NULL;
