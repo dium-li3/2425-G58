@@ -76,7 +76,17 @@ void testagem(char *expected) {
     
     g_array_free(error_lines, TRUE);
     if(rp != NULL) close_parser(rp);
-    if(ep != NULL) close_parser(ep);
+    if(ep != NULL) { //para obter o total de ficheiros de output esperados
+        close_parser(ep);
+        update_paths(results_file, expected_file, results_dir, expected_dir, ++i, len_expected);
+
+        for(ep = open_parser(expected_file); ep != NULL; ep = open_parser(expected_file)) {
+            update_paths(results_file, expected_file, results_dir, expected_dir, ++i, len_expected);
+            close_parser(ep);
+        }
+
+        if(ep != NULL) close_parser(ep);
+    }
 
     free(results_dir);
     free(expected_dir);
