@@ -177,6 +177,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
     int i = 0, album_id;
     const GArray *music_artists = NULL;
     char **tokens;
+    tokens = parse_line(p, MUSIC_ELEMS);
     for (tokens = parse_line(p, MUSIC_ELEMS); tokens != NULL; tokens = parse_line(p, MUSIC_ELEMS)){
         music = create_music_from_tokens(tokens);
         //Validação para saber se realmente guarda a entidade ou não

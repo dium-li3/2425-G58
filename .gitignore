@@ -60,3 +60,12 @@ dkms.conf
 #Cachegrind outputs
 cachegrind*
 massif*
+
+#Doxygen files
+html/
+latex/
+
+#Input Folders
+small/
+big/
+Dados-fase1
