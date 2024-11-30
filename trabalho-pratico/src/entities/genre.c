@@ -9,6 +9,7 @@ typedef struct genre
     char *name;
     int likes[GEN_LEN];
     int total_likes;
+    int index;
 } *Genre;
 
 Genre create_gen(const char *gen_name)

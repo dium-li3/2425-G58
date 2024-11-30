@@ -14,6 +14,8 @@ typedef struct music_manager
 {
     GHashTable *musics_by_id;
     GArray *genre_array;
+    char** genre_names;
+    int genre_number;
 } *Music_Manager;
 
 

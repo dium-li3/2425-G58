@@ -13,6 +13,8 @@
 //g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
     GHashTable *users_by_id;
+    char** users_ids;
+    int users_number;
 } *User_Manager;
 
 

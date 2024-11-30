@@ -11,6 +11,7 @@ typedef struct user{
     short age;
     char *country;
     GArray *liked_music_ids;
+    int index;
 } *User;
 
 User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids){
