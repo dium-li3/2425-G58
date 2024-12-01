@@ -5,6 +5,7 @@
 
 typedef struct history *History;
 
+
 /**
  * @brief Dados tokens, processa a informação contida neles
  * e coloca-a num struct history.
@@ -17,12 +18,16 @@ typedef struct history *History;
 */
 History create_history_from_tokens (char **tokens, int *year);
 
+
 /**
  * @brief Devolve o id da música à qual o histórico faz referencia.
  * 
- * @param h histórico que contém o id da música que queremos.
+ * @param h Histórico que contém o id da música que queremos.
+ * 
+ * @return Id da música.
 */
 int get_history_music (History h);
+
 
 /**
  * @brief Atualiza os ids de artistas guardados num histórico.
@@ -31,6 +36,37 @@ int get_history_music (History h);
  * @param artist_ids array que contém os artistas relevantes a este histórico.
 */
 void set_artist_ids (History h, GArray *artist_ids);
+
+
+/**
+ * @brief Devolve o dia de um histórico.
+ * 
+ * @param h Histórico cujo dia se quer obter.
+ * 
+ * @return Dia.
+ */
+int get_history_day(History h);
+
+
+/**
+ * @brief Devolve o mês de um histórico.
+ * 
+ * @param h Histórico cujo mês se quer obter.
+ * 
+ * @return Mês.
+ */
+int get_history_month(History h);
+
+
+/**
+ * @brief Devolve a duração em segundos de um histórico.
+ * 
+ * @param h Histórico cuja duração se pretende obter.
+ * 
+ * @return Duração em segundos.
+ */
+int get_history_dur(History h);
+
 
 /**
  * @brief Liberta o espaço usado por um histórico.

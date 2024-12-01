@@ -33,7 +33,7 @@ void insert_user_by_id(User u, User_Manager user_manager){
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        perror("store_Users(31)");
+        perror("store_Users(34)");
         exit(1);
     }
 
@@ -58,6 +58,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
         }
         else
             error_output (p, out);
+        
         free_tokens(tokens, USER_ELEMS);
     }
     gen_arr_freq_acum (mm);
