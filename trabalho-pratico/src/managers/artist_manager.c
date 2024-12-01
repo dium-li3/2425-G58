@@ -15,15 +15,6 @@ typedef struct art_manager
     GArray *art_by_dur;
 } *Art_Manager;
 
-/*
-typedef struct array_art
-{
-    GArray *artists;
-    int tamanho;
-    char *country;
-} *Arr_art;
-*/
-
 Art_Manager create_art_manager()
 {
     Art_Manager am = malloc(sizeof(struct art_manager));

@@ -4,6 +4,7 @@
 #include "utils.h"
 
 #define GEN_LEN 150
+
 typedef struct genre
 {
     char *name;
