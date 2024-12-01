@@ -188,7 +188,7 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
             music_artists = get_music_artists(music);
             if (album_exists(album_id, alm) && all_artists_exist(music_artists, am))//logica
             {
-                add_dur_artists (music_artists ,get_music_duration(music), am);
+                add_disc_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
                 if (insert_gen(music, mm, i))
                     i++;

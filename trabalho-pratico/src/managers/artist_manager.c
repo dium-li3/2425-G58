@@ -70,7 +70,7 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am){
 /*
     Adiciona uma dada duração à discocrafia de todos os artistas de um dado array.
 */
-void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
+void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
     
     if(music_artists != NULL) {
@@ -81,6 +81,17 @@ void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am
         }
     }
 }
+
+
+void add_listening_time_artists(const GArray *artists, int week, int time, Art_Manager am){
+    Artist a = NULL;
+
+    for(int i = 0; i < artists->len; i++) {
+        a = search_artist_by_id(g_array_index(artists, int, i), am);
+        add_list_time(a, week, time);
+    }
+}
+
 
 /*
     Incrementa o número de albuns de todos os artistas

@@ -90,10 +90,10 @@ void store_Artists (char *art_path, Art_Manager artists_manager);
 gboolean all_artists_exist (const GArray *artists, Art_Manager am);
 
 /**
- * @brief Adiciona um intervalo de tempo à discografia de um grupo de artistas.
+ * @brief Adiciona uma duração à discografia de um grupo de artistas.
  *
  * Após a @b all_artists_exist confirmar a existência de todos os artistas que
- * compuseram uma determinada música, será a @b add_dur_artists a responsável por
+ * compuseram uma determinada música, será a @b add_disc_duration a responsável por
  * adicionar, em cada um dos artistas, a duração dessa faixa aos seus campos
  * @b disc_duration
  * 
@@ -102,8 +102,21 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am);
  * do array.
  * @param am Gestor de artistas.
  */
+void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
 
-void add_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
+
+/**
+ * @brief Adiciona um tempo de reprodução a um array de artistas.
+ * 
+ * Adiciona @p time a cada artista de @p artists na posição @p week .
+ * 
+ * @param artists Array de artistas cujo tempo de reprodução deve ser aumentado.
+ * @param week Semana em que a reprodução ocorreu.
+ * @param time Duração da reprodução em segundos.
+ * @param am Contém a hash table de artistas por ids.
+ */
+void add_listening_time_artists(const GArray *artists, int week, int time, Art_Manager am);
+
 
 void add_1_album_to_artists (const GArray *album_artists, Art_Manager am);
 
