@@ -50,7 +50,8 @@ void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man
     int id;
     GArray *artists_ids = NULL;
     char **tokens = NULL;
-    tokens = parse_line (p, ALBUM_ELEMS);
+
+    tokens = parse_line (p, ALBUM_ELEMS); //ignorar a 1ª linha do ficheiro
     free_tokens(tokens, ALBUM_ELEMS);
     for (tokens = parse_line (p, ALBUM_ELEMS); tokens != NULL; tokens = parse_line (p, ALBUM_ELEMS)){
         // if (valid_list (tokens[2])){

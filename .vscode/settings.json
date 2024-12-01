@@ -3,6 +3,8 @@
         "parser.h": "c",
         "stdlib.h": "c",
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "artists.h": "c",
+        "user_manager.h": "c"
     }
 }

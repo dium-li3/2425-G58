@@ -7,9 +7,6 @@
 #include "output.h"
 #include "utils.h"
 
-// #include "sintatica.h"
-// #include "parser.h"
-
 typedef struct artist{
     int id;
     char *name;
@@ -158,13 +155,6 @@ void print_art_info(Artist a,Output out){
     output_geral (infos, 4, out);
     free_tokens (infos, 4);
 }
-
-//só serve para test
-// void print_dur (Artist a){
-//     FILE *fp = fopen ("help.txt", "a+");
-//     fprintf (fp, "%d\n", a->disc_duration);
-//     fclose (fp);
-// }
 
 void add_disc_duration(Artist a, int duration){
     a->disc_duration += duration;
