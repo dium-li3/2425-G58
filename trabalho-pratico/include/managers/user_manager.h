@@ -37,15 +37,15 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager musi
  * @brief Recebe o id de um usuário e expõe as suas informações.
  *
  * Busca o usuário na hash table do gestor de usuários e expõe os dados daquele,
- * separados pelo carácter @p separador dado como parâmetro.
+ * separados por um caractér guardado no Output.
  * 
  * @param um Gestor que fornece a hash table de usuários.
  * @param id id do usuário a ser expostos.
- * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  */
 
-void print_user_info_by_id (User_Manager um, int id, char separador, Output out);
+void print_user_res_by_id (User_Manager um, int id, Output out);
+
 
 /**
  * @brief Libera a memória ocupada por um gestor de usuários.

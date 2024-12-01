@@ -59,14 +59,13 @@ const GArray *get_liked_musics(User u);
 /**
  * @brief Expoẽ as informações de um usuário.
  *
- * Revela as informações de um usuário, separadas pelo separador indicado
- * como parâmetro. 
+ * Revela as informações de um usuário, separadas por
+ * um caractér guardado no @p out.
  * 
  * @param u Usuário que terá suas informações expostas.
- * @param separador carácter que irá separar as informações.
  */
 
-void print_user_info(User u, char separador, Output out);
+void print_user_res(User u, Output out);
 
 /**
  * @brief Libera a memória ocupada por um registo de usuário.

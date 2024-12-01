@@ -32,7 +32,7 @@ int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
 
     //Armazenamento e ordenação da informação + validação
     store_Entities(entity_paths, master_manager);
-    free3Entities(entity_paths);
+    freeEntityPaths(entity_paths);
 
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed[1] = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;

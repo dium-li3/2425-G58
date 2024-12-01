@@ -12,6 +12,8 @@
         "user_manager.h": "c",
         "music_manager.h": "c",
         "output.h": "c",
-        "master_manager.h": "c"
+        "master_manager.h": "c",
+        "genre.h": "c",
+        "strings.h": "c"
     }
 }

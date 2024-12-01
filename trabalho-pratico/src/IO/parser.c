@@ -6,6 +6,8 @@
 #include "parser.h"
 #include "utils.h"
 
+#define NEntities 5
+
 typedef struct parser{
     FILE *fp;
     ssize_t nRead;
@@ -65,25 +67,23 @@ GArray *store_list (char *line){
 /*
     Separa uma linha nos seus tokens.
 */
-void *parse_line (Parser p, void *(*Func)(char **)){
-    void *entity = NULL;
+char **parse_line (Parser p, int elems){
     size_t n;
     char *line = NULL;
     char *token = NULL;
     char *svptr = NULL;
+    char **info = NULL;
     p->nRead = getline (&line, &n, p->fp);
     if (p->nRead != -1){
         token = strtok_r (line, ";\"\n", &svptr);
-        char **info = calloc (8, sizeof (char *));
+        info = calloc (elems, sizeof (char *));
         info [0] = strdup (token);
-        for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < 8; j++){
+        for (int j = 1; (token = strtok_r (NULL, ";\"\n", &svptr)) != NULL && j < elems; j++){
             info [j] = strdup(token);
         }
-        entity = Func (info);
-        free_tokens(info, 8);
     }
     free (line);
-    return entity;
+    return info;
 }
 
 //Parse queries vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
@@ -94,7 +94,7 @@ int parse_line_spaces (char *line, char **info){
     char *ajudante = strdup (line);
     token = strtok_r (ajudante, " ", &svptr);
     info [n_token++] = strdup (token);
-    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 3){
+    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 4){
         info [n_token++] = strdup(token);
     }
     free (ajudante);
@@ -128,8 +128,8 @@ int parse_1line_query(Parser p, char **info){
                 break;
             case ('1'):
             case ('3'):
-            default:
                 n_token = parse_line_spaces (line, info);
+            default:
         }
     }
     else info = NULL;
@@ -176,7 +176,7 @@ short read_date_to_age (char *bd){
 char **path3Entities (char *path){
     size_t length_path = strlen(path);
     char *base_path = malloc (length_path+13);
-    char **path_entities = malloc (sizeof (char*) * 3);
+    char **path_entities = malloc (sizeof (char*) * NEntities);
 
     strcpy (base_path, path);
     strcpy (base_path + length_path, "/users.csv");
@@ -185,14 +185,20 @@ char **path3Entities (char *path){
     path_entities[1] = strdup (base_path);
     strcpy (base_path + length_path, "/artists.csv");
     path_entities[2] = strdup (base_path);
+    strcpy (base_path + length_path, "/albums.csv");
+    path_entities[3] = strdup (base_path);
+    strcpy (base_path + length_path, "/history.csv");
+    path_entities[4] = strdup (base_path);
     free (base_path);
 
     return path_entities;
 }
 
-void free3Entities (char **fp_entities){
+void freeEntityPaths (char **fp_entities){
     free (fp_entities[0]);
     free (fp_entities[1]);
     free (fp_entities[2]);
+    free (fp_entities[3]);
+    free (fp_entities[4]);
     free (fp_entities);
 }

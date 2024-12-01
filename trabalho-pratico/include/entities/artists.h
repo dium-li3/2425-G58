@@ -59,11 +59,17 @@ const char *get_art_name(Artist a);
  * será então comparado com as strings @b "individual" e @b "group", adquirindo o valor
  * @b 'I' ou @b 'G' consoante se verifique uma das respetivas igualdades.
  * 
- * @param a Artista cujo país será devolvido.
- * @return Devolve o país do artista recebido.
+ * @param a Artista cujo tipo será devolvido.
+ * @return Devolve o tipo do artista recebido.
  */
 
-char get_art_type(char *art_type);
+char get_art_type_from_art(Artist a);
+
+
+double get_art_recipe_stream (Artist a);
+
+//Devolve um array com os ids dos artistas que fazem parte de um grupo.
+const GArray *get_group_id_constituent (Artist a);
 
 /**
  * @brief Função que "printa" um artista.
@@ -76,7 +82,13 @@ char get_art_type(char *art_type);
  * @param out Struct usado pelo output.
  */
 
-void print_art_info(Artist a, char separador, Output out);
+/*
+    Escreve num ficheiro de output um resumo
+    do artista, útil para a query 1.
+*/
+void print_art_res(Artist a, Output out);
+
+void print_art_info(Artist a, Output out);
 
 /**
  * @brief Função usada de base para ordenar o array de artistas do @b artist_manager
@@ -129,6 +141,30 @@ Artist create_artist_from_tokens(char **tokens);
 
 void add_disc_duration(Artist a, int duration);
 
+
+/**
+ * @brief Aumenta em 1 o número de albuns que um artista tem.
+ *
+ * @param a Artista que vai ter o seu número de albuns incrementado.
+*/
+void add_1_album (Artist a);
+
+/*
+ * @brief Adiciona a receita inteira que um artista recebe por música ouvida ao seu total ganho.
+ *
+ * @param a Artista ao qual se vai aumentar a receita total.
+*/
+void add_recipe (Artist a);
+
+/**
+ * @brief Adiciona uma percentagem de outra receita por stream a um Artista.
+ * 
+ * @param a Artista ao qual a receita total vai ser aumentada.
+ * 
+ * @param percentage valor a ser somado à receita total.
+*/
+void add_percentage_recipe (Artist a, double percentage);
+
 /**
  * @brief Libera a memória ocupada por um registo de artista.
  *
@@ -136,7 +172,6 @@ void add_disc_duration(Artist a, int duration);
  * 
  * @param a Artista cujos dados devem ser liberados.
  */
-
 void free_art(Artist a);
 
 #endif

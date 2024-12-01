@@ -63,7 +63,7 @@ void testagem(char *expected) {
         corrects += compare_files(rp, ep, error_lines);
     
         if(error_lines->len != 0){
-            printf("\nErro na query %d:\n", i);
+            printf("\nErro no comando %d:\n", i);
             print_query_errors(error_lines);
             error_lines->len = 0;
         }
@@ -76,12 +76,22 @@ void testagem(char *expected) {
     
     g_array_free(error_lines, TRUE);
     if(rp != NULL) close_parser(rp);
-    if(ep != NULL) close_parser(ep);
+    if(ep != NULL) { //para obter o total de ficheiros de output esperados
+        close_parser(ep);
+        update_paths(results_file, expected_file, results_dir, expected_dir, ++i, len_expected);
+
+        for(ep = open_parser(expected_file); ep != NULL; ep = open_parser(expected_file)) {
+            update_paths(results_file, expected_file, results_dir, expected_dir, ++i, len_expected);
+            close_parser(ep);
+        }
+
+        if(ep != NULL) close_parser(ep);
+    }
 
     free(results_dir);
     free(expected_dir);
     free(results_file);
     free(expected_file);
 
-    printf("\nQueries certas: %d/%d\n\n", corrects, i-1);
+    printf("\nResultados corretos: %d/%d\n\n", corrects, i-1);
 }

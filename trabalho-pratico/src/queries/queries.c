@@ -36,7 +36,8 @@ typedef struct query{
 } *Query;
 
 typedef struct query1{
-    int id; //username a procurar nos nossos dados.
+    int id; //id a procurar nos nossos dados.
+    char type; // A == artist e U == User
 } *Query1;
 
 typedef struct query2{
@@ -54,7 +55,7 @@ Query create_query(){
     q->query1 = calloc (1, sizeof(struct query1));
     q->query2 = calloc (1, sizeof(struct query2));
     q->query3 = calloc (1, sizeof(struct query3));
-    q->separador = ';';
+    q->separador = ' ';
     return q;
 }
 
@@ -63,9 +64,10 @@ void set_query_invalid(Query q){
     q->query = -1;
 }
 
-void set_query1(int id, Query q){
+void set_query1(int id, char entity, Query q){
     q->query = 1;
     q->query1->id = id;
+    q->query1->type = entity;
 }
 
 void set_query2(short N, char *country, Query q){
@@ -102,11 +104,13 @@ void store_query_from_token (Query q, char **tokens, int n_tokens){
         
         if (strlen (tokens[0]) > 1)
             q->separador = '=';
+        else
+            q->separador = ';';
         
         q->query = (short) atoi(tokens[0]);//numero da query.
         switch (q->query){
             case (1):
-                set_query1 ((int) atoi(tokens[1] + 1), q); //+1 para ignorar logo o U
+                set_query1 ((int) atoi(tokens[1] + 1), *tokens[1], q); //+1 para ignorar logo o U ou A
                 break;
             case (2):
                 set_query2 ((short) atoi(tokens[1]), tokens[2], q);
@@ -122,11 +126,11 @@ void store_query_from_token (Query q, char **tokens, int n_tokens){
 }
 
 void read_query_line(Parser pq, Query q){
-    char **tokens = calloc (3, sizeof(char *));//basta 3 espaços por agora
+    char **tokens = calloc (4, sizeof(char *));//basta 3 espaços por agora
     int n_tokens = parse_1line_query(pq, tokens);
     store_query_from_token (q, tokens, n_tokens);
     if (q->query != -1)
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 4; i++){
             free (tokens[i]);
         }
     free (tokens);
@@ -150,14 +154,17 @@ void free_query (Query q){
 }
 
 
-void answer1(Query q, User_Manager um, Output out, Query_stats qs){
+void answer1(Query q, User_Manager um, Art_Manager am, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
     
     Query1 q1 = q->query1;
-    print_user_info_by_id (um, q1->id, q->separador, out);
-
+    if (q1->type == 'U')
+        print_user_res_by_id (um, q1->id, out);
+    else
+        print_art_res_by_id (am, q1->id, out);
+    
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
     
@@ -175,11 +182,11 @@ void answer2(Query q, Art_Manager am, Output out, Query_stats qs){
         output_empty (out);
     else {
         if (q2->country == NULL)
-            print_N_art_info (am, N, q->separador, out);
+            print_N_art_info (am, N, out);
         else {
             char *country = NULL;
             country = strdup (q2->country);
-            print_N_country_art_info (am, country, N, q->separador, out);
+            print_N_country_art_info (am, country, N, out);
             free (country);
         }
     }
@@ -198,7 +205,7 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     Query3 q3 = q->query3;
     sort_gen(mm, q3->min, q3->max);
 
-    print_all_genres_info (mm, q->separador, out);
+    print_all_genres_info (mm, out);
 
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;

@@ -26,7 +26,8 @@ Genre create_gen(const char *gen_name);
  * @param gen Apontador para o gênero a ser libertado.
  */
 
-void clear_genre(Genre *gen);
+void free_genre(Genre *gen);
+
 
 /**
  * @brief Compara o nome de um gênero com outro nome, também
@@ -112,17 +113,17 @@ void update_gen_total_likes (Genre gen, int min_age, int max_age);
 
 int cmp_like_gen(gconstpointer g1, gconstpointer g2);
 
+
 /**
  * @brief Expõe as informações de um dado gênero.
  *
  * "Dá print" dos dados de um gênero especificado como parâmetro, dados esses
- * separados pelo carácter @p separador.
+ * separados por um caractér guardado no output.
  * 
  * @param gen Gênero o qual terá as informações reveladas.
- * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  */
 
-int print_genre_info(Genre gen, char separador, Output out);
+int print_genre_info(Genre gen, Output out);
 
 #endif
