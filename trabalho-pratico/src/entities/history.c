@@ -13,18 +13,6 @@ typedef struct history{
     //GArray *artist_ids; 200MB no dataset grande
 } *History;
 
-typedef struct artwtime {
-    int art_id;
-    int listening_time;
-} *ArtWTime;
-
-
-ArtWTime create_artwtime(int id, int lt) {
-    ArtWTime a = malloc(sizeof(struct artwtime));
-    a->art_id = id;
-    a->listening_time = lt;
-    return a;
-}
 
 History create_history (int day, int month, int hour, int duration, int music_id){
     History h = malloc (sizeof (struct history));
@@ -78,19 +66,6 @@ int get_history_month(History h){
 
 int get_history_dur(History h){
     return h->duration;
-}
-
-void add_artwtime_lt(ArtWTime a, int t){
-    a->listening_time += t;
-}
-
-int get_artwtime_id(ArtWTime a){
-    return a->art_id;
-}
-
-
-void free_artwtime(ArtWTime *a){
-    free(*a);
 }
 
 void free_history (History h){

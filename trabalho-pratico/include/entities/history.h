@@ -5,20 +5,6 @@
 
 typedef struct history *History;
 
-typedef struct artwtime *ArtWTime;
-
-
-/**
- * @brief Cria um par artista|tempo de reprodução;
- * 
- * @param id Id do artista.
- * 
- * @param lt Tempo de reprodução do artista.
- * 
- * @return Apontador para a estrutura criada.
- */
-ArtWTime create_artwtime(int id, int lt);
-
 
 /**
  * @brief Dados tokens, processa a informação contida neles
@@ -80,36 +66,6 @@ int get_history_month(History h);
  * @return Duração em segundos.
  */
 int get_history_dur(History h);
-
-
-/**
- * @brief Adiciona @p t ao tempo de reprodução de @p a .
- * 
- * @param a ArtWTime cujo tempo deve ser aumentado.
- * 
- * @param t Tempo a aumentar.
- */
-void add_artwtime_lt(ArtWTime a, int t);
-
-
-/**
- * @brief Devolve o id do artista de um par.
- * 
- * @param a Par cujo id se quer obter.
- * 
- * @return Id do artista de @p a .
- */
-int get_artwtime_id(ArtWTime a);
-
-
-/**
- * @brief Liberta o espaço usado por um par artista|tempo.
- * 
- * A função recebe um apontador para o apontador da estrutura por causa da glib.
- * 
- * @param a Apontador para o apontador para a struct artwtime a ser libertada.
- */
-void free_artwtime(ArtWTime *a);
 
 
 /**
