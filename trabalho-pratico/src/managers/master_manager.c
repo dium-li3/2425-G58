@@ -27,7 +27,7 @@ Master_Manager create_master_manager(){
     e->album_M = create_album_manager();
     e->music_M = create_music_manager();
     e->artist_M = create_art_manager();
-    e->hist_M = create_history_manager();
+    e->hist_M = create_history_manager(e->user_M,e->music_M);
     return e;
 }
 

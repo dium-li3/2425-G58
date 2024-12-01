@@ -32,8 +32,16 @@ int get_genre_total_likes (Genre gen){
     return gen->total_likes;
 }
 
+const char* get_genre_name (Genre gen){
+    return gen->name;
+}
+
 void increment_like(Genre gen, short age){
     gen->likes[age]++;
+}
+
+void add_gen_index (Genre gen, int index) {
+    gen->index = index;
 }
 
 void gen_freq_acum (Genre gen){

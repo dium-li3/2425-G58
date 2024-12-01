@@ -14,7 +14,7 @@ typedef struct music_manager
 {
     GHashTable *musics_by_id;
     GArray *genre_array;
-    char** genre_names;
+    GArray *genre_names;
     int genre_number;
 } *Music_Manager;
 
@@ -24,6 +24,7 @@ Music_Manager create_music_manager()
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
+    mm->genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
     g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
     return mm;
 }
@@ -44,8 +45,18 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
-//Devolve 1 caso tenha inserido um novo genero de musica.
-gboolean insert_gen(Music m, Music_Manager mus_m, int i)
+
+/*
+    Atribui um índice da matriz ao gênero.
+    Insere o gênero no array do mm (Devolve
+    1 caso tenha inserido um novo genero de
+    musica).
+    Guarda o nome do gênero no array de nomes.
+    Incrementa o número de gẽneros.
+    
+
+*/
+gboolean insert_gen(Music m, Music_Manager mus_m, int index)
 {
     gboolean r = TRUE;
     const char *gen = get_genre(m);
@@ -58,7 +69,10 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int i)
     if (r)
     {
         Genre gen_real = create_gen(gen);
-        g_array_insert_val(mus_m->genre_array, i, gen_real);
+        add_gen_index(gen_real,index);
+        g_array_insert_val(mus_m->genre_array, index, gen_real); 
+        g_array_insert_val(mus_m->genre_names,index,gen);
+        mus_m->genre_number++;        
     }
     
     return r;
@@ -153,6 +167,22 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
+int search_gen_index_by_id(int music_id,Music_Manager mm) {
+  Music m = search_music_by_id(music_id,mm);
+  const char *gen = get_genre(m);
+  Genre gen_real = create_gen(gen);
+  const char* gen_name = get_genre_name(gen_real);
+  int tam = mm->genre_array->len;
+  int index = -1;
+  for (int i = 0;i<tam && index < 0;i++) {
+    if (compare_genre_names(g_array_index(mm->genre_array,Genre,i),gen_name) == 0) {
+        index = i;
+    }
+  }
+
+  return index;
+}
+
 
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
@@ -165,6 +195,10 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     GArray *artists_ids = get_music_artists_copy (m);
     return artists_ids;
 }*/
+
+int get_genre_number(Music_Manager mm) {
+    return mm->genre_number;
+}
 
 
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
@@ -191,7 +225,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
                 add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
                 if (insert_gen(music, mm, i))
+                {
                     i++;
+                }
             }
             else
             {

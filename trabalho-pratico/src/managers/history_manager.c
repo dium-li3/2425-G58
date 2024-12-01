@@ -13,11 +13,14 @@
 
 typedef struct history_manager{
     GHashTable *histories_by_id;
+    char** matrix;
 } *History_Manager;
 
 History_Manager create_history_manager (){
     History_Manager hm = malloc (sizeof(struct history_manager));
     hm->histories_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void*)free_history);
+    hm->matrix = NULL;
+    
     return hm;
 }
 
@@ -35,7 +38,14 @@ History search_history_by_id(int id, History_Manager history_manager){
     return al;
 }
 
-void store_History (char *history_path, History_Manager history_man, Art_Manager am, Music_Manager mm, User_Manager um){
+void fill_matrix(int user_id, int music_id, User_Manager um, Music_Manager mm, History_Manager hm) {
+   int row = search_user_index_by_id(user_id,um);
+   int column = search_gen_index_by_id(music_id,mm);
+   hm->matrix[row][column]++;
+}
+
+void store_History (char *history_path, History_Manager hm, Art_Manager am, Music_Manager mm, User_Manager um){
+    
     Parser p = open_parser(history_path);
     if(p == NULL) {
         perror("store_history(35)");
@@ -44,15 +54,28 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
-    int id, year;
+    int id, user_id,music_id, year;
     char **tokens = NULL;
     const GArray *artist_ids;
     tokens = parse_line (p, HISTORY_ELEMS);
+
+    int row = get_user_number(um);
+    int column = get_genre_number(mm);
+    hm->matrix = malloc(row * sizeof(char *));
+        for (size_t i = 0; i < row; i++) {
+        hm->matrix[i] = malloc(column * sizeof(char));
+    }
+
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
         if (history != NULL){
             id = atoi (tokens[0]+1);
-            insert_history_by_id (history, id, history_man);
+            user_id = atoi (tokens[1]+1);
+            music_id = atoi (tokens[2]+1);
+            
+            insert_history_by_id (history, id, hm);
+            fill_matrix(user_id, music_id, um, mm, hm);
+
             artist_ids = get_music_artists_from_id (get_history_music (history), mm);
             /*
             artist_ids = get_music_artists_copy_from_id (get_history_music (history), mm);

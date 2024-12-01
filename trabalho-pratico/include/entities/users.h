@@ -15,7 +15,7 @@ typedef struct user *User;
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-User create_user_from_tokens (char **token);
+User create_user_from_tokens (char **tokens, int index, GArray *users_ids);
 
 //Devolve o username de um utilizador.
 int get_user_id (User u);
@@ -30,6 +30,9 @@ const GArray *get_liked_musics(User u);
 /*
     Dá print do email, nomes, idade e pais do utilizador.
 */
+
+int get_user_index(User u);
+
 void print_user_res(User u, Output out);
 
 //Dá free do user
