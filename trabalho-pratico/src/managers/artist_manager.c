@@ -228,6 +228,7 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
     int i = 0;
     char **tokens;
     tokens = parse_line (p, ARTIST_ELEMS);
+    free_tokens(tokens, ARTIST_ELEMS);
     for (tokens = parse_line (p, ARTIST_ELEMS); tokens != NULL ; tokens = parse_line (p, ARTIST_ELEMS)){
         artist = create_artist_from_tokens (tokens);
         if (artist != NULL){

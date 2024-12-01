@@ -51,6 +51,7 @@ void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man
     GArray *artists_ids = NULL;
     char **tokens = NULL;
     tokens = parse_line (p, ALBUM_ELEMS);
+    free_tokens(tokens, ALBUM_ELEMS);
     for (tokens = parse_line (p, ALBUM_ELEMS); tokens != NULL; tokens = parse_line (p, ALBUM_ELEMS)){
         // if (valid_list (tokens[2])){
         id = atoi(tokens[0]+2);
