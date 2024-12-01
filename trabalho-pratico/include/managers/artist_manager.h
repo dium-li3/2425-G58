@@ -112,11 +112,6 @@ void add_1_album_to_artists (const GArray *album_artists, Art_Manager am);
 */
 void print_art_res_by_id (Art_Manager am, int id, Output out);
 
-void print_N_country_art_info (Art_Manager am, char *country, int N, Output out);
-
-void print_N_art_info (Art_Manager am, int N, Output out);
-
-
 /**
  * @brief Expõe os N primeiros artistas do array do gestor, dado o seu country.
  *
@@ -128,12 +123,11 @@ void print_N_art_info (Art_Manager am, int N, Output out);
  * @param am Gestor que fornece o array de artistas.
  * @param country país usado como filtro na busca.
  * @param N Números de artistas a serem expostos.
- * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
  */
 
-void print_N_country_art_info (Art_Manager am, char *country, int N, char separador, Output out);
+void print_N_country_art_info (Art_Manager am, char *country, int N, Output out);
 
 /**
  * @brief Expõe os N primeiros artistas do array do gestor.
@@ -142,12 +136,11 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, char separa
  * 
  * @param am Gestor que fornece o array de artistas.
  * @param N Números de artistas a serem expostos.
- * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  * do array. 
  */
 
-void print_N_art_info (Art_Manager am, int N, char separador, Output out);
+void print_N_art_info (Art_Manager am, int N, Output out);
 
 /**
  * @brief Devolve o tamanho do array de artistas do gestor.

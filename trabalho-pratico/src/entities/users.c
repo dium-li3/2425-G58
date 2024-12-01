@@ -30,24 +30,7 @@ User create_user (int id, char *email, char *fn, char *ln, short age, char *c, G
     return u;
 }
 
-/*
-    Cria um User, baseado nos tokens recebidos.
-    Devolve NULL caso o user seja sintáticamente inválido.
-*/
-User create_user_from_tokens (char **tokens){
-    int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
-    int id;
-    int age;
-    GArray *liked_musics = NULL;
-    User u = NULL;
-    if (valid){ //store
-        id = atoi (tokens[0]+1);
-        age = read_date_to_age (tokens[4]);
-        liked_musics = store_list (tokens[7]);
-        u = create_user (id, tokens[1], tokens[2], tokens[3], age, tokens[5], liked_musics);
-    }
-    return u;
-}
+
 
 //Devolve o username do utilizador.
 int get_user_id(User u){
@@ -146,4 +129,23 @@ int valid_subscription (char *subs_type){
 int valid_user_sintatic (char *email, char *date, char *sub_type){
    // printf("CALL VALID DATE%s\n",date);
     return valid_email_string(email) && valid_date(date) && valid_subscription(sub_type);
+}
+
+/*
+    Cria um User, baseado nos tokens recebidos.
+    Devolve NULL caso o user seja sintáticamente inválido.
+*/
+User create_user_from_tokens (char **tokens){
+    int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
+    int id;
+    int age;
+    GArray *liked_musics = NULL;
+    User u = NULL;
+    if (valid){ //store
+        id = atoi (tokens[0]+1);
+        age = read_date_to_age (tokens[4]);
+        liked_musics = store_list (tokens[7]);
+        u = create_user (id, tokens[1], tokens[2], tokens[3], age, tokens[5], liked_musics);
+    }
+    return u;
 }
