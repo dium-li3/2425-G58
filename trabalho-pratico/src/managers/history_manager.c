@@ -18,7 +18,8 @@ typedef struct history_manager{
 
 
 void free_artists_by_week(GArray **a){
-    g_array_free(*a, TRUE);
+    if(*a != NULL)
+        g_array_free(*a, TRUE);
 }
 
 History_Manager create_history_manager (){
@@ -48,12 +49,12 @@ void insert_history_by_id (History h, int id, History_Manager history_manager){
     Procura o id do artista em questão.
     Se o encontrar, adiciona o tempo. Se não encontrar, insere no array um novo par.
 */
-void insert_artwtime(GArray **week_array, int id, int t){
+void insert_artwtime(GArray *week_array, int id, int t){
     int i;
     ArtWTime atual = NULL;
 
-    for(i = 0; i < (*week_array)->len; i++) {
-        atual = g_array_index(*week_array, ArtWTime, i);
+    for(i = 0; i < week_array->len; i++) {
+        atual = g_array_index(week_array, ArtWTime, i);
         
         if(get_artwtime_id(atual) == id) {
             add_artwtime_lt(atual, t);
@@ -61,9 +62,9 @@ void insert_artwtime(GArray **week_array, int id, int t){
         }
     }
 
-    if(i == (*week_array)->len) {
+    if(i == week_array->len) {
         atual = create_artwtime(id, t);
-        g_array_insert_val(*week_array, (*week_array)->len, atual);
+        g_array_append_val(week_array, atual);
     }
 }
 
@@ -86,7 +87,7 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
     int id, year, week, dur;
     char **tokens = NULL;
     const GArray *artist_ids;
-    GArray **week_array = NULL;
+    GArray *week_array = NULL;
 
     tokens = parse_line (p, HISTORY_ELEMS); //ignorar 1ª linha do ficheiro
     free_tokens(tokens, HISTORY_ELEMS);
@@ -105,11 +106,12 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 
 
             week = calc_week(get_history_day(history), get_history_month(history), year);
-            week_array = &(g_array_index(history_man->artists_by_week, GArray*, week));
+            week_array = g_array_index(history_man->artists_by_week, GArray*, week);
 
-            if(*week_array == NULL) { //inicializar o array de uma semana caso este ainda não exista
-                *week_array = g_array_new(FALSE, TRUE, sizeof(ArtWTime));
-                g_array_set_clear_func(*week_array, (GDestroyNotify) free_artwtime);
+            if(week_array == NULL) { //inicializar o array de uma semana caso este ainda não exista
+                week_array = g_array_new(FALSE, TRUE, sizeof(ArtWTime));
+                g_array_set_clear_func(week_array, (GDestroyNotify) free_artwtime);
+                g_array_insert_val(history_man->artists_by_week, week, week_array);
             }
 
             dur = get_history_dur(history);

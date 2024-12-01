@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Werror=discarded-qualifiers -O0 $(shell pkg-config --cflags glib-2.0) -g
-#CFLAGS = -Wall -Werror=discarded-qualifiers -O3 $(shell pkg-config --cflags glib-2.0)
+#CFLAGS = -Wall -Werror=discarded-qualifiers -O0 $(shell pkg-config --cflags glib-2.0) -g
+CFLAGS = -Wall -Werror=discarded-qualifiers -O3 $(shell pkg-config --cflags glib-2.0)
 LDFLAGS = $(shell pkg-config --libs glib-2.0)
 
 # Directories
