@@ -47,7 +47,8 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
     int id, year;
     char **tokens = NULL;
     const GArray *artist_ids;
-    tokens = parse_line (p, HISTORY_ELEMS);
+    tokens = parse_line (p, HISTORY_ELEMS); //ignorar a 1ª linha do ficheiro
+    free_tokens(tokens, HISTORY_ELEMS);
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
         if (history != NULL){
