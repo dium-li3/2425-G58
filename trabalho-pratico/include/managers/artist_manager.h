@@ -110,10 +110,10 @@ void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manag
  * 
  * Adiciona @p time a cada artista de @p artists na posição @p week .
  * 
- * @param artists Array de artistas cujo tempo de reprodução deve ser aumentado.
+ * @param artists Array de IDs de artistas cujo tempo de reprodução deve ser aumentado.
  * @param week Semana em que a reprodução ocorreu.
  * @param time Duração da reprodução em segundos.
- * @param am Contém a hash table de artistas por ids.
+ * @param am Contém a hash table de artistas por IDs.
  */
 void add_listening_time_artists(const GArray *artists, int week, int time, Art_Manager am);
 
