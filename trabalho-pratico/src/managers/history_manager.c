@@ -13,7 +13,8 @@
 
 typedef struct history_manager{
     GHashTable *histories_by_id;
-    char** matrix;
+    int** matrix;
+    int mat_size;
 } *History_Manager;
 
 History_Manager create_history_manager (){
@@ -24,9 +25,8 @@ History_Manager create_history_manager (){
     return hm;
 }
 
-void free_history_manager (History_Manager am){
-    g_hash_table_destroy (am->histories_by_id);
-    free (am);
+int **get_matrix(History_Manager hm) {
+    return hm->matrix;
 }
 
 void insert_history_by_id (History al, int id, History_Manager history_manager){
@@ -59,11 +59,12 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     const GArray *artist_ids;
     tokens = parse_line (p, HISTORY_ELEMS);
 
-    int row = get_user_number(um);
-    int column = get_genre_number(mm);
-    hm->matrix = malloc(row * sizeof(char *));
-        for (size_t i = 0; i < row; i++) {
-        hm->matrix[i] = malloc(column * sizeof(char));
+    int row = get_total_users(um);
+    int column = get_total_genres(mm);
+    hm->mat_size = get_total_users(um);
+    hm->matrix = calloc(row , sizeof(int));
+    for (size_t i = 0; i < row; i++) {
+        hm->matrix[i] = calloc(column, sizeof(int));
     }
 
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
@@ -91,4 +92,14 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     }
     close_parser (p);
     close_output (out);
+}
+
+void free_history_manager (History_Manager hm){
+    int rows = hm->mat_size;
+    g_hash_table_destroy (hm->histories_by_id);
+    for (int i = 0; i < rows; i++) {
+        free(hm->matrix[i]);
+    }
+    free(hm->matrix);
+    free (hm);
 }

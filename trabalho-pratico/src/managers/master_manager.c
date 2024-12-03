@@ -27,7 +27,7 @@ Master_Manager create_master_manager(){
     e->album_M = create_album_manager();
     e->music_M = create_music_manager();
     e->artist_M = create_art_manager();
-    e->hist_M = create_history_manager(e->user_M,e->music_M);
+    e->hist_M = create_history_manager();
     return e;
 }
 
@@ -59,6 +59,15 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
             break;
         case (3):
             answer3(q, mm->music_M, out, qs);
+            break;
+        case (4):
+            answer4(q, out, qs);
+            break;
+        case (5):
+            answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs);
+            break;
+        case (6):
+            answer6(q, out, qs);
             break;
         }
         close_output (out);

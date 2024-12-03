@@ -133,6 +133,10 @@ Music search_music_by_id(int id, Music_Manager music_manager);
 
 int search_gen_index_by_id(int music_id,Music_Manager mm);
 
-int get_genre_number(Music_Manager mm);
+int get_total_genres(Music_Manager mm);
+
+char **get_genre_names(Music_Manager mm);
+
+
 
 #endif

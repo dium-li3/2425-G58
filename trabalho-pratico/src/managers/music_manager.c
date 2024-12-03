@@ -14,8 +14,8 @@ typedef struct music_manager
 {
     GHashTable *musics_by_id;
     GArray *genre_array;
-    GArray *genre_names;
-    int genre_number;
+    char **genre_names;
+    int total_genres;
 } *Music_Manager;
 
 
@@ -24,7 +24,7 @@ Music_Manager create_music_manager()
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
-    mm->genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
+    mm->genre_names = NULL;
     g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
     return mm;
 }
@@ -70,9 +70,7 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int index)
     {
         Genre gen_real = create_gen(gen);
         add_gen_index(gen_real,index);
-        g_array_insert_val(mus_m->genre_array, index, gen_real); 
-        g_array_insert_val(mus_m->genre_names,index,gen);
-        mus_m->genre_number++;        
+        g_array_insert_val(mus_m->genre_array, index, gen_real);       
     }
     
     return r;
@@ -183,6 +181,10 @@ int search_gen_index_by_id(int music_id,Music_Manager mm) {
   return index;
 }
 
+char **get_genre_names(Music_Manager mm) {
+    return mm->genre_names;
+}
+
 
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
@@ -196,8 +198,8 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     return artists_ids;
 }*/
 
-int get_genre_number(Music_Manager mm) {
-    return mm->genre_number;
+int get_total_genres(Music_Manager mm) {
+    return mm->total_genres;
 }
 
 
@@ -211,7 +213,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
     Output out = open_out("resultados/musics_errors.csv", ';');
     Music music = NULL;
     int i = 0, album_id;
+    char *gen_name;
     const GArray *music_artists = NULL;
+    GArray *array_genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
     char **tokens;
     tokens = parse_line(p, MUSIC_ELEMS);
     for (tokens = parse_line(p, MUSIC_ELEMS); tokens != NULL; tokens = parse_line(p, MUSIC_ELEMS)){
@@ -226,6 +230,8 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
                 insert_music_by_id(music, mm);
                 if (insert_gen(music, mm, i))
                 {
+                    gen_name = strdup(tokens[6]);
+                    g_array_insert_val(array_genre_names,i,gen_name);
                     i++;
                 }
             }
@@ -240,6 +246,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
         }
         free_tokens(tokens, MUSIC_ELEMS);
     }
+    mm->genre_names = (char**) array_genre_names->data;
+    mm->total_genres = array_genre_names->len;
+    g_array_free(array_genre_names, FALSE);
     close_parser(p);
     close_output(out);
 }
@@ -261,5 +270,8 @@ void free_music_manager(Music_Manager mm)
 {
     g_hash_table_destroy(mm->musics_by_id);
     g_array_free(mm->genre_array, TRUE);
+    for (int i = 0; i < mm->total_genres; i++)
+        free (mm->genre_names[i]);
+    free(mm->genre_names);
     free(mm);
 }

@@ -33,14 +33,13 @@ User create_user (int id, char *email, char *fn, char *ln, short age, char *c, G
     Adiciona o id do user no array de ids.
     Atribui um índice da matriz ao user.
 */
-User create_user_from_tokens (char **tokens, int index, GArray *users_ids){
+User create_user_from_tokens (char **tokens, int index){
     int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
     int id;
     int age;
     GArray *liked_musics = NULL;
     User u = NULL;
     if (valid){ //store
-        g_array_insert_val(users_ids,index,*(tokens[0]+1)); // armazena o conteúdo do token
         id = atoi (tokens[0]+1);
         age = read_date_to_age (tokens[4]);
         liked_musics = store_list (tokens[7]);

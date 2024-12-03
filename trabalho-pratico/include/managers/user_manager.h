@@ -20,6 +20,8 @@ void print_user_res_by_id (User_Manager um, int id, Output out);
 
 void free_user_manager(User_Manager um);
 
-int get_user_number(User_Manager um);
+int get_total_users(User_Manager um);
+
+char **get_users_ids (User_Manager um);
 
 #endif
