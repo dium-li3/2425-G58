@@ -11,6 +11,7 @@ typedef struct user{
     short age;
     char *country;
     GArray *liked_music_ids;
+    GPtrArray *yearly_history_ids;
 } *User;
 
 /*
@@ -19,6 +20,7 @@ typedef struct user{
 */
 
 User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids){
+    GArray *year;
     User u = malloc(sizeof (struct user));
     u->id = id;
     u->email = strdup (email);
@@ -27,6 +29,12 @@ User create_user (int id, char *email, char *fn, char *ln, short age, char *c, G
     u->age = age;
     u->country = strdup (c);
     u->liked_music_ids = lmids;
+    u->yearly_history_ids = g_ptr_array_sized_new (7);
+
+    for (int i = 0; i < 7; i++){
+        year = g_array_new (FALSE, TRUE, sizeof(int));
+        g_ptr_array_add (u->yearly_history_ids, year);
+    }
     return u;
 }
 
@@ -51,6 +59,34 @@ short get_user_age (User u){
 
 const GArray *get_liked_musics(User u){
     return u->liked_music_ids;
+}
+
+//Devolve o histórico de um dado ano.
+const GArray *get_year_history(User u, int year){
+    const GArray *history_ids;
+    int id = 2024 - year;
+
+    if (id >= u->yearly_history_ids->len)
+        history_ids = NULL;
+    else
+        history_ids = g_ptr_array_index (u->yearly_history_ids, id);
+    return history_ids;
+}
+
+//Adiciona o id de um histórico num array de anos especifico de um user especifico.
+void add_year_history_id(User u, int year, int history_id){
+    GArray *year_history;
+    int id = 2024 - year;
+    int ptr_array_len = u->yearly_history_ids->len;
+    if (id > u->yearly_history_ids->len){
+        for (int i = ptr_array_len; i <= id; i++){
+            year_history = g_array_new (TRUE, TRUE, sizeof(int));
+            g_ptr_array_add (u->yearly_history_ids, year_history);
+        }
+    }
+    year_history = (GArray *)g_ptr_array_index (u->yearly_history_ids, id);
+
+    g_array_append_val (year_history, history_id);
 }
 
 /*
@@ -80,6 +116,10 @@ void free_user(User u){
     free(u->country);
     if (u->liked_music_ids != NULL)
         g_array_free(u->liked_music_ids, TRUE);
+
+    for (int i = 0; i < u->yearly_history_ids->len; i++)
+        g_array_free (u->yearly_history_ids->pdata[i], TRUE);
+    g_ptr_array_free (u->yearly_history_ids, TRUE);
     free(u);
 }
 

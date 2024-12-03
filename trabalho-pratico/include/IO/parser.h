@@ -72,12 +72,12 @@ char **parse_line (Parser p, int n_elems);
  * única dela que pede por um caso particular.
  * 
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
- * 
  * @param infos Pointer para strings com espaço para contar as divisões feitas na linha lida.
+ * @param n_tokens Número de tokens máximo no qual se consegue dividir a linha e guardar a informação.
  * 
  * @result Número de bits lidos na linha do ficheiro.
 */
-int parse_1line_query(Parser p, char **info);
+int parse_1line_query(Parser p, char **info, int n_tokens);
 
 /**
  * @brief Guarda 1 linha do ficheiro aberto pelo @p p na @p line dada.

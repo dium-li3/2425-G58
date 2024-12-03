@@ -44,7 +44,7 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
-    int id, year;
+    int hist_id, year, user_id;
     char **tokens = NULL;
     const GArray *artist_ids;
     tokens = parse_line (p, HISTORY_ELEMS); //ignorar a 1ª linha do ficheiro
@@ -52,8 +52,8 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
         if (history != NULL){
-            id = atoi (tokens[0]+1);
-            insert_history_by_id (history, id, history_man);
+            hist_id = atoi (tokens[0]+1);
+            insert_history_by_id (history, hist_id, history_man);
             artist_ids = get_music_artists_from_id (get_history_music (history), mm);
             /*
             artist_ids = get_music_artists_copy_from_id (get_history_music (history), mm);
@@ -61,6 +61,8 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
             */
             add_recipe_artists(artist_ids, am);
 
+            user_id = atoi (tokens[1]+1);
+            add_year_history_id_to_user (um, user_id, year, hist_id); 
         }
         else
             error_output (p, out);
@@ -69,4 +71,13 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
     }
     close_parser (p);
     close_output (out);
+}
+
+void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
+    History h = search_history_by_id (history_id, hm);
+    *listening_time = get_history_listening_time (h);
+    *music_id = get_history_music (h);
+    *month = get_history_month (h);
+    *day = get_history_day (h);
+    *hour = get_history_hour (h);
 }

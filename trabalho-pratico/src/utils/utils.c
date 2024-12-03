@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <glib.h>
 //#include <regex.h>
 #include "utils.h"
 

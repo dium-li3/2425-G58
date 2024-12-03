@@ -10,7 +10,6 @@
 
 #define USER_ELEMS 8
 
-//g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
     GHashTable *users_by_id;
 } *User_Manager;
@@ -69,6 +68,21 @@ User search_user_by_id(int id, User_Manager user_manager){
     User u = g_hash_table_lookup(user_manager->users_by_id, GINT_TO_POINTER(id));
     return u;
 }
+
+const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um){
+    User u = search_user_by_id (user_id, um);
+    const GArray *history_ids = NULL;
+    if (u != NULL)
+        history_ids = get_year_history (u, year);
+    return history_ids;
+}
+
+void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id){
+    User u = search_user_by_id (user_id, um);
+    add_year_history_id(u, year, history_id);
+}
+
+
 
 /*
     Dá print de um User cujo id é o dado.

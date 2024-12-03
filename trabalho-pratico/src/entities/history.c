@@ -47,6 +47,19 @@ History create_history_from_tokens (char **tokens, int *year){
     return h;
 }
 
+int get_history_day (History h){
+    return h->day;
+}
+int get_history_month (History h){
+    return h->month;
+}
+int get_history_hour (History h){
+    return h->hour_of_day;
+}
+int get_history_listening_time (History h){
+    return h->duration;
+}
+
 int get_history_music (History h){
     return h->music_id;
 }

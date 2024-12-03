@@ -87,14 +87,14 @@ char **parse_line (Parser p, int elems){
 }
 
 //Parse queries vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
-int parse_line_spaces (char *line, char **info){
+int parse_line_spaces (char *line, char **info, int n_tokens){
     int n_token = 0;
     char *token = NULL;
     char *svptr = NULL;
     char *ajudante = strdup (line);
     token = strtok_r (ajudante, " ", &svptr);
     info [n_token++] = strdup (token);
-    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 4){
+    while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < n_tokens){
         info [n_token++] = strdup(token);
     }
     free (ajudante);
@@ -117,7 +117,7 @@ int parse_3_tokens (char *line, char **info){
     return n_token;
 }
 
-int parse_1line_query(Parser p, char **info){
+int parse_1line_query(Parser p, char **info, int n_tokens){
     int n_token = 0;
     size_t n;
     char *line = NULL;
@@ -128,7 +128,10 @@ int parse_1line_query(Parser p, char **info){
                 break;
             case ('1'):
             case ('3'):
-                n_token = parse_line_spaces (line, info);
+            case ('4'):
+            case ('5'):
+            case ('6'):
+                n_token = parse_line_spaces (line, info, n_tokens);
             default:
         }
     }
