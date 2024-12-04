@@ -203,12 +203,17 @@ void free_query2 (Query2 q){
     free (q);
 }
 
+void free_query5 (Query5 q){
+    free (q->user_id);
+    free (q);
+}
+
 void free_query (Query q){
     free (q->query1);
     free_query2 (q->query2);
     free (q->query3);
     free (q->query4);
-    free (q->query5);
+    free_query5 (q->query5);
     free (q->query6);
     free (q);
 }
