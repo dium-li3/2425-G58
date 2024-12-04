@@ -15,12 +15,6 @@
         "master_manager.h": "c",
         "genre.h": "c",
         "strings.h": "c",
-        "array": "c",
-        "deque": "c",
-        "string": "c",
-        "unordered_map": "c",
-        "vector": "c",
-        "string_view": "c",
-        "initializer_list": "c"
+        "utils.h": "c"
     }
 }

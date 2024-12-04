@@ -14,6 +14,11 @@ typedef struct user{
     int index;
 } *User;
 
+
+/*
+    Cria um User, baseado nos tokens recebidos.
+    Devolve NULL caso o user seja sintáticamente inválido.
+*/
 User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids, int index){
     User u = malloc(sizeof (struct user));
     u->id = id;
@@ -47,6 +52,7 @@ User create_user_from_tokens (char **tokens, int index){
     }
     return u;
 }
+
 
 //Devolve o username do utilizador.
 int get_user_id(User u){

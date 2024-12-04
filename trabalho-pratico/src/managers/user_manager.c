@@ -57,7 +57,7 @@ char **get_users_ids (User_Manager um){
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        perror("store_Users(31)");
+        perror("store_Users(34)");
         exit(1);
     }
 
@@ -67,10 +67,12 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
     int i;
     char **tokens;
-    tokens = parse_line(p, USER_ELEMS);
     char *user_id;
+
+    tokens = parse_line(p, USER_ELEMS); //ignorar a 1ª linha do ficheiro
+    free_tokens(tokens, USER_ELEMS);
     for (tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
-        user = create_user_from_tokens(tokens, i);
+        user = create_user_from_tokens(tokens);
         if (user != NULL){
             user_id = strdup(tokens[0]);
             g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
@@ -86,6 +88,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
         }
         else
             error_output (p, out);
+        
         free_tokens(tokens, USER_ELEMS);
     }
     user_manager->users_ids = (char**) array_users_ids->data;

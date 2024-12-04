@@ -42,4 +42,20 @@ int same_string (const char *comp, const char *s1, const char *s2);
  * @return Booleano (1->válida e 0->inválida).
  */
 int valid_duration (char *duration);
+
+
+/**
+ * @brief Calcula a semana de uma dada data decomposta em dia, mês e ano.
+ * 
+ * A semana calculada é a semana de distância ao dia atual (9/9/2024).
+ * 
+ * @param d Dia
+ * 
+ * @param m Mês
+ * 
+ * @param y Ano
+ * 
+ * @return Semana
+ */
+int calc_week(int d, int m, int y);
 #endif

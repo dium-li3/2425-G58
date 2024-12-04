@@ -215,7 +215,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
     const GArray *music_artists = NULL;
     GArray *array_genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
     char **tokens;
-    tokens = parse_line(p, MUSIC_ELEMS);
+
+    tokens = parse_line(p, MUSIC_ELEMS); //ignorar a 1ª linha do ficheiro
+    free_tokens(tokens, MUSIC_ELEMS);
     for (tokens = parse_line(p, MUSIC_ELEMS); tokens != NULL; tokens = parse_line(p, MUSIC_ELEMS)){
         music = create_music_from_tokens(tokens);
         //Validação para saber se realmente guarda a entidade ou não

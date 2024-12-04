@@ -13,6 +13,7 @@ typedef struct history{
     //GArray *artist_ids; 200MB no dataset grande
 } *History;
 
+
 History create_history (int day, int month, int hour, int duration, int music_id){
     History h = malloc (sizeof (struct history));
     h->day = day;
@@ -54,6 +55,18 @@ int get_history_music (History h){
 // void set_artist_ids (History h, GArray *artist_ids){
 //     h->artist_ids = artist_ids;
 // }
+
+int get_history_day(History h){
+    return h->day;
+}
+
+int get_history_month(History h){
+    return h->month;
+}
+
+int get_history_dur(History h){
+    return h->duration;
+}
 
 void free_history (History h){
     // if (h->artist_ids != NULL)
