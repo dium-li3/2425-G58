@@ -10,17 +10,15 @@ typedef struct history{
     int hour_of_day; //char?? ;)
     int duration;
     int music_id;
-    int user_id;
     //GArray *artist_ids; 200MB no dataset grande
 } *History;
 
-History create_history (int day, int month, int hour, int duration, int user_id, int music_id){
+History create_history (int day, int month, int hour, int duration, int music_id){
     History h = malloc (sizeof (struct history));
     h->day = day;
     h->month = month;
     h->hour_of_day = hour;
     h->duration = duration;
-    h->user_id = user_id;
     h->music_id = music_id;
     //h->artist_ids = NULL;
     return h;
@@ -33,7 +31,7 @@ gboolean valid_platform (char *platform){
 
 History create_history_from_tokens (char **tokens, int *year){
     History h = NULL;
-    int day, month, hour_of_day, music_id, duration, user_id;
+    int day, month, hour_of_day, music_id, duration;
     if (valid_duration (tokens[4]) && valid_platform (tokens[5])){
         //timestamp são todas => yyyy/mm/dd hh:mm:ss   nunca têm erros, e são o tokens[3]
         *year = atoi (tokens[3]);
@@ -42,10 +40,9 @@ History create_history_from_tokens (char **tokens, int *year){
         hour_of_day = atoi (tokens[3] + 11);
 
         duration = calc_duration_s (tokens[4]);
-        user_id =  atoi (tokens[1] + 1);
         music_id = atoi (tokens[2] + 1); 
 
-        h = create_history (day, month, hour_of_day, duration, user_id, music_id);
+        h = create_history (day, month, hour_of_day, duration, music_id);
     }
     return h;
 }
