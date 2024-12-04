@@ -18,10 +18,11 @@ typedef struct user *User;
  * válido, o armazena na memória.
  * 
  * @param tokens Array dos campos de informação do CSV.
+ * @param index Índice do utilizador no array do seu gestor.
  * @return Apontador para o novo usuário e NULL caso este seja inválido.
  */
 
-User create_user_from_tokens (char **token);
+User create_user_from_tokens (char **tokens, int index);
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -55,6 +56,8 @@ short get_user_age (User u);
  */
 
 const GArray *get_liked_musics(User u);
+
+int get_user_index(User u);
 
 /**
  * @brief Função que devolve um array de ids de históricos de um dado ano de um utilizador @p u .

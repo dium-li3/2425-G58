@@ -11,6 +11,8 @@
 #include "output.h"
 #include "queries.h"
 #include "utils.h"
+#include "recomendador.h"
+
 
 /*
     Estrutura para armazenar o nº de execuções de uma dada query (n)
@@ -119,8 +121,15 @@ void set_query4(int first_week, int last_week, Query q){
 
 void set_query5(char *user_id, int N, Query q){
     q->query = 5;
-    q->query5->user_id = strdup (user_id);
     q->query5->N_results = N;
+    if (user_id != NULL){
+        free (q->query5->user_id);
+        q->query5->user_id = strdup (user_id);
+    }
+    else{
+        free (q->query5->user_id);
+        q->query5->user_id = NULL;
+    }
 }
 
 void set_query6(int user_id, int year, int N, Query q){
@@ -276,8 +285,38 @@ void answer4(Query q, Output out, Query_stats qs){
     output_empty (out);
 }
 
-void answer5(Query q, Output out, Query_stats qs){
-    output_empty (out);
+void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    if(q->query5->N_results == 0 || !user_exists (atoi (q->query5->user_id + 1), um)) {
+        output_empty(out);
+    } 
+    else {
+        Query5 q5 = q->query5;
+        char *idUtilizadorAlvo = q5->user_id;
+        int **matrizClassificacaoMusicas = get_matrix(hm);
+        char **idsUtilizadores = get_users_ids(um);
+        char **nomesGeneros = get_genre_names(mm);
+        int numUtilizadores = get_total_users(um);
+        int numGeneros = get_total_genres(mm);
+        int numRecomendacoes = q5->N_results;
+        
+        char **arrAnswer;
+
+        arrAnswer = recomendaUtilizadores(idUtilizadorAlvo, matrizClassificacaoMusicas, idsUtilizadores,nomesGeneros,numUtilizadores,numGeneros,numRecomendacoes);
+        
+        for (int i = 0;i<numRecomendacoes;i++) {
+            output_geral(arrAnswer + i,1,out);
+        }
+        
+        free (arrAnswer);
+    }
+  
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+
+    if (qs != NULL) add_query_stats(qs, elapsed, 3);
 }
 
 //Lógica de resposta à query 6

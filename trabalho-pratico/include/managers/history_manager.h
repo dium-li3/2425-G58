@@ -21,6 +21,8 @@ History search_history_by_id(int id, History_Manager history_manager);
 
 void store_History (char *history_path, History_Manager history_man, Art_Manager am, Music_Manager mm, User_Manager um);
 
+int **get_matrix(History_Manager hm);
+
 /**
  * @brief Copia a informação guardada num histórico para outras variaveis.
  * 

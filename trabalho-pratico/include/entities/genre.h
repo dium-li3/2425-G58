@@ -67,6 +67,10 @@ int get_genre_total_likes (Genre gen);
 
 void increment_like(Genre gen, short age);
 
+void add_gen_index (Genre gen, int index);
+
+const char* get_genre_name (Genre gen);
+
 /**
  * @brief Realiza a soma prefixada do array de um gênero.
  *

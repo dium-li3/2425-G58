@@ -105,3 +105,26 @@ int valid_duration (char *duration){
 
     return r;
 }
+
+int calc_week(int d, int m, int y) {
+    int t, leap, week;
+
+    leap = (y%4 == 0)? 1 : 0;
+
+    if(m > 8)
+        t = d + (m-1)*31 - m/2 - 1 + leap; //- 1 + leap é o ajuste por causa dos anos bissextos
+    else if (m > 2)
+        t = d + (m-1)*31 - (m-1)/2 - 2 + leap; //- 2 + leap é o ajuste por causa dos anos bissextos
+    else
+        t = d + (m-1)*31;
+    
+    if(y != 2024) {
+        t = 365 + leap - t;
+        t = t + 365*(2023-y) + (2023-y)/4 + 253; //253 é o número de dias em 2024 até 09/09/2024
+    }
+    else t = 253 - t; //253 é o número de dias em 2024 até 09/09/2024
+
+    week = (t+5)/7;
+
+    return week;
+}

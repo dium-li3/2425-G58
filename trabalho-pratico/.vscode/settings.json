@@ -14,6 +14,7 @@
         "output.h": "c",
         "master_manager.h": "c",
         "genre.h": "c",
-        "strings.h": "c"
+        "strings.h": "c",
+        "utils.h": "c"
     }
 }

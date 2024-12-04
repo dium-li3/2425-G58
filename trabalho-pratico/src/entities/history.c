@@ -13,6 +13,7 @@ typedef struct history{
     //GArray *artist_ids; 200MB no dataset grande
 } *History;
 
+
 History create_history (int day, int month, int hour, int duration, int music_id){
     History h = malloc (sizeof (struct history));
     h->day = day;
@@ -40,7 +41,7 @@ History create_history_from_tokens (char **tokens, int *year){
         hour_of_day = atoi (tokens[3] + 11);
 
         duration = calc_duration_s (tokens[4]);
-        music_id = atoi (tokens[2] + 1);
+        music_id = atoi (tokens[2] + 1); 
 
         h = create_history (day, month, hour_of_day, duration, music_id);
     }
@@ -67,6 +68,18 @@ int get_history_music (History h){
 // void set_artist_ids (History h, GArray *artist_ids){
 //     h->artist_ids = artist_ids;
 // }
+
+int get_history_day(History h){
+    return h->day;
+}
+
+int get_history_month(History h){
+    return h->month;
+}
+
+int get_history_dur(History h){
+    return h->duration;
+}
 
 void free_history (History h){
     // if (h->artist_ids != NULL)

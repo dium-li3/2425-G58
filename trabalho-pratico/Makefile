@@ -32,10 +32,10 @@ EXE2 = programa-testes
 all: $(EXE1) $(EXE2)
 
 # Link the executables
-$(EXE1): $(OBJS)
+$(EXE1): $(OBJS) src/queries/recomendador-linux-x86_64.o
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-$(EXE2): $(OBJS_TEST)
+$(EXE2): $(OBJS_TEST) src/queries/recomendador-linux-x86_64.o
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 # Compile .c files into .o
