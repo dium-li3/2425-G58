@@ -19,8 +19,8 @@
     O índice para uma query do tipo q é q-1.
 */
 typedef struct query_stats {
-    int n[3];
-    double time[3];
+    int n[QUERYTYPES];
+    double time[QUERYTYPES];
 } *Query_stats;
 
 /*
@@ -54,8 +54,8 @@ typedef struct query3{
 } *Query3;
 
 typedef struct query4{
-    int from_week;
-    int to_week;
+    int begin_week;
+    int end_week;
 } *Query4;
 
 typedef struct query5{
@@ -114,8 +114,8 @@ void set_query3(short min, short max, Query q){
 
 void set_query4(int first_week, int last_week, Query q){
     q->query = 4;
-    q->query3->min = first_week;
-    q->query3->max = last_week;
+    q->query4->begin_week = first_week;
+    q->query4->end_week = last_week;
 }
 
 void set_query5(char *user_id, int N, Query q){
@@ -231,7 +231,7 @@ void answer1(Query q, User_Manager um, Art_Manager am, Output out, Query_stats q
         print_art_res_by_id (am, q1->id, out);
     
     clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
     
     if (qs != NULL) add_query_stats(qs, elapsed, 1);
 }
@@ -257,7 +257,7 @@ void answer2(Query q, Art_Manager am, Output out, Query_stats qs){
     }
 
     clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
     if (qs != NULL) add_query_stats(qs, elapsed, 2);
 }
@@ -273,19 +273,29 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     print_all_genres_info (mm, out);
 
     clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
     if (qs != NULL) add_query_stats(qs, elapsed, 3);
 }
 
 void answer4(Query q, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
     output_empty (out);
+
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
+
+    if (qs != NULL) add_query_stats(qs, elapsed, 4);
 }
 
 void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
+
     if(q->query5->N_results == 0 || !user_exists (atoi (q->query5->user_id + 1), um)) {
         output_empty(out);
     } 
@@ -311,13 +321,22 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
     }
 
     clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
-    if (qs != NULL) add_query_stats(qs, elapsed, 3);
+    if (qs != NULL) add_query_stats(qs, elapsed, 5);
 }
 
 void answer6(Query q, Output out, Query_stats qs){
+    struct timespec start, end;
+    double elapsed;
+    clock_gettime(CLOCK_REALTIME, &start);
+
     output_empty (out);
+
+    clock_gettime(CLOCK_REALTIME, &end);
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
+
+    if (qs != NULL) add_query_stats(qs, elapsed, 6);
 }
 
 //Lógica de resposta à query 6
@@ -326,6 +345,7 @@ void answer6(Query q, Output out, Query_stats qs){
 
 Query_stats create_query_stats() {
     Query_stats r = calloc(1, sizeof(struct query_stats));
+
     return r;
 }
 

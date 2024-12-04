@@ -11,7 +11,7 @@
 #include "history_manager.h"
 #include "testagem.h"
 
-#define QUERYTYPES 3
+#define QUERYTYPES 6
 
 typedef struct query_stats *Query_stats;
 
