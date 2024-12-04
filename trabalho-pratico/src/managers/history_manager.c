@@ -59,21 +59,20 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     const GArray *artist_ids;
     tokens = parse_line (p, HISTORY_ELEMS);
 
+
     int row = get_total_users(um);
     int column = get_total_genres(mm);
     hm->mat_size = get_total_users(um);
-    hm->matrix = calloc(row , sizeof(int));
-    for (size_t i = 0; i < row; i++) {
+    hm->matrix = calloc(row , sizeof(int*)); //estava a fazer sizeof(int)...
+    for (int i = 0; i < row; i++) {
         hm->matrix[i] = calloc(column, sizeof(int));
     }
-
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
         if (history != NULL){
             id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);
             music_id = atoi (tokens[2]+1);
-            
             insert_history_by_id (history, id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 

@@ -69,11 +69,11 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     char **tokens;
     tokens = parse_line(p, USER_ELEMS);
     char *user_id;
-    for (tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS),i++){
+    for (tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
         user = create_user_from_tokens(tokens, i);
         if (user != NULL){
             user_id = strdup(tokens[0]);
-            g_array_insert_val(array_users_ids, i, user_id); // armazena o conteúdo do token
+            g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
             liked_musics = get_liked_musics(user);
             if (all_musics_exist(liked_musics, mm)){
                 add_like_genres(liked_musics, mm, get_user_age(user));
@@ -101,6 +101,11 @@ User search_user_by_id(int id, User_Manager user_manager){
     return u;
 }
 
+gboolean user_exists (int id, User_Manager um){
+    User u = search_user_by_id (id, um);
+    return u == NULL ? FALSE : TRUE;
+}
+
 int search_user_index_by_id(int id, User_Manager um){
     User u = search_user_by_id(id,um);
     int index = get_user_index(u);
@@ -121,4 +126,12 @@ void free_user_manager(User_Manager um){
         free (um->users_ids[i]);
     free (um->users_ids);
     free (um);
+}
+
+
+
+
+int get_user_index_from_id (int user_id, User_Manager um){
+    User u = search_user_by_id (user_id, um);
+    return get_user_index (u);
 }

@@ -160,6 +160,9 @@ void store_query_from_token (Query q, char **tokens, int n_tokens){
             case (3):
                 set_query3 ((short) atoi(tokens[1]), (short) atoi(tokens[2]), q);
                 break;
+            case (4):
+                set_query4 (0, 0, q);
+                break;
             case (5):
                 set_query5 (tokens[1], atoi (tokens[2]), q);
                 break;
@@ -271,13 +274,11 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
-
-    if(q->query5->N_results == 0) {
+    if(q->query5->N_results == 0 || !user_exists (atoi (q->query5->user_id + 1), um)) {
         output_empty(out);
     } 
     else {
         Query5 q5 = q->query5;
-
         char *idUtilizadorAlvo = q5->user_id;
         int **matrizClassificacaoMusicas = get_matrix(hm);
         char **idsUtilizadores = get_users_ids(um);
@@ -286,11 +287,10 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
         int numGeneros = get_total_genres(mm);
         int numRecomendacoes = q5->N_results;
         
-
         char **arrAnswer = malloc(numRecomendacoes * sizeof(char *));
 
         arrAnswer = recomendaUtilizadores(idUtilizadorAlvo, matrizClassificacaoMusicas, idsUtilizadores,nomesGeneros,numUtilizadores,numGeneros,numRecomendacoes);
-
+        
         for (int i = 0;i<numRecomendacoes;i++) {
             output_geral(arrAnswer + i,1,out);
         }
