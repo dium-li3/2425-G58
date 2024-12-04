@@ -30,6 +30,7 @@ History_Manager create_history_manager (){
 
 int **get_matrix(History_Manager hm) {
     return hm->matrix;
+}
 
 void insert_history_by_id (History h, int id, History_Manager history_manager){
     g_hash_table_insert(history_manager->histories_by_id, GINT_TO_POINTER(id), h);

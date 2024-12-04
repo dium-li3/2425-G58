@@ -72,7 +72,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     tokens = parse_line(p, USER_ELEMS); //ignorar a 1ª linha do ficheiro
     free_tokens(tokens, USER_ELEMS);
     for (tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
-        user = create_user_from_tokens(tokens);
+        user = create_user_from_tokens(tokens, i);
         if (user != NULL){
             user_id = strdup(tokens[0]);
             g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
