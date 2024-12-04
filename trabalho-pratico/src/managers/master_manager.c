@@ -60,6 +60,15 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
         case (3):
             answer3(q, mm->music_M, out, qs);
             break;
+        case (4):
+            answer4(q, out, qs);
+            break;
+        case (5):
+            answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs);
+            break;
+        case (6):
+            answer6(q, out, qs);
+            break;
         }
         close_output (out);
     }

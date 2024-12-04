@@ -14,6 +14,8 @@ typedef struct music_manager
 {
     GHashTable *musics_by_id;
     GArray *genre_array;
+    char **genre_names;
+    int total_genres;
 } *Music_Manager;
 
 
@@ -22,6 +24,7 @@ Music_Manager create_music_manager()
     Music_Manager mm = malloc(sizeof(struct music_manager));
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
+    mm->genre_names = NULL;
     g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
     return mm;
 }
@@ -42,8 +45,18 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
-//Devolve 1 caso tenha inserido um novo genero de musica.
-gboolean insert_gen(Music m, Music_Manager mus_m, int i)
+
+/*
+    Atribui um índice da matriz ao gênero.
+    Insere o gênero no array do mm (Devolve
+    1 caso tenha inserido um novo genero de
+    musica).
+    Guarda o nome do gênero no array de nomes.
+    Incrementa o número de gẽneros.
+    
+
+*/
+gboolean insert_gen(Music m, Music_Manager mus_m, int index)
 {
     gboolean r = TRUE;
     const char *gen = get_genre(m);
@@ -56,7 +69,8 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int i)
     if (r)
     {
         Genre gen_real = create_gen(gen);
-        g_array_insert_val(mus_m->genre_array, i, gen_real);
+        add_gen_index(gen_real,index);
+        g_array_insert_val(mus_m->genre_array, index, gen_real);       
     }
     
     return r;
@@ -151,6 +165,24 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
+int search_gen_index_by_id(int music_id,Music_Manager mm) {
+  Music m = search_music_by_id(music_id,mm);
+  const char *gen = get_genre(m);
+  int tam = mm->genre_array->len;
+  int index = -1;
+  for (int i = 0;i<tam && index < 0;i++) {
+    if (compare_genre_names(g_array_index(mm->genre_array,Genre,i),gen) == 0) {
+        index = i;
+    }
+  }
+
+  return index;
+}
+
+char **get_genre_names(Music_Manager mm) {
+    return mm->genre_names;
+}
+
 
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
@@ -164,6 +196,10 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     return artists_ids;
 }*/
 
+int get_total_genres(Music_Manager mm) {
+    return mm->total_genres;
+}
+
 
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
     Parser p = open_parser(music_path);
@@ -175,7 +211,9 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
     Output out = open_out("resultados/musics_errors.csv", ';');
     Music music = NULL;
     int i = 0, album_id;
+    char *gen_name;
     const GArray *music_artists = NULL;
+    GArray *array_genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
     char **tokens;
 
     tokens = parse_line(p, MUSIC_ELEMS); //ignorar a 1ª linha do ficheiro
@@ -191,7 +229,11 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
                 add_dur_artists (music_artists ,get_music_duration(music), am);
                 insert_music_by_id(music, mm);
                 if (insert_gen(music, mm, i))
+                {
+                    gen_name = strdup(tokens[5]);
+                    g_array_insert_val(array_genre_names,i,gen_name);
                     i++;
+                }
             }
             else
             {
@@ -204,6 +246,11 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
         }
         free_tokens(tokens, MUSIC_ELEMS);
     }
+
+    mm->genre_names = (char**) array_genre_names->data;
+    mm->total_genres = array_genre_names->len;
+    g_array_free(array_genre_names, FALSE);
+
     close_parser(p);
     close_output(out);
 }
@@ -225,5 +272,8 @@ void free_music_manager(Music_Manager mm)
 {
     g_hash_table_destroy(mm->musics_by_id);
     g_array_free(mm->genre_array, TRUE);
+    for (int i = 0; i < mm->total_genres; i++)
+        free (mm->genre_names[i]);
+    free(mm->genre_names);
     free(mm);
 }

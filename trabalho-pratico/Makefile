@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
-#CFLAGS = -Wall -Werror=discarded-qualifiers -O0 $(shell pkg-config --cflags glib-2.0) -g
-CFLAGS = -Wall -Werror=discarded-qualifiers -O3 $(shell pkg-config --cflags glib-2.0)
+CFLAGS = -Wall -Werror=discarded-qualifiers -O0 $(shell pkg-config --cflags glib-2.0) -g
+#CFLAGS = -Wall -Werror=discarded-qualifiers -O3 $(shell pkg-config --cflags glib-2.0)
 LDFLAGS = $(shell pkg-config --libs glib-2.0)
 
 # Directories
@@ -32,10 +32,10 @@ EXE2 = programa-testes
 all: $(EXE1) $(EXE2)
 
 # Link the executables
-$(EXE1): $(OBJS)
+$(EXE1): $(OBJS) src/queries/recomendador-linux-x86_64.o
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-$(EXE2): $(OBJS_TEST)
+$(EXE2): $(OBJS_TEST) src/queries/recomendador-linux-x86_64.o
 	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 # Compile .c files into .o
