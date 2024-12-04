@@ -143,6 +143,18 @@ void add_disc_duration(Artist a, int duration);
 
 
 /**
+ * @brief Adiciona um tempo de reprodução a um artista.
+ * 
+ * Adiciona @p t na posição @p week do array de semanas de @p a .
+ * 
+ * @param a Artista cujo tempo de reprodução deve ser aumentado.
+ * @param week Semana em que a reprodução ocorreu.
+ * @param t Duração da reprodução em segundos.
+ */
+void add_list_time(Artist a, int week, int t);
+
+
+/**
  * @brief Aumenta em 1 o número de albuns que um artista tem.
  *
  * @param a Artista que vai ter o seu número de albuns incrementado.
