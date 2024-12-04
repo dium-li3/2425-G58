@@ -19,6 +19,12 @@ typedef struct user_manager *User_Manager;
 
 User_Manager create_user_manager();
 
+User search_user_by_id(int id, User_Manager user_manager);
+
+gboolean user_exists (int id, User_Manager um);
+
+int search_user_index_by_id(int id, User_Manager um);
+
 /**
  * @brief Guarda os usuários e contabiliza os likes de cada gênero.
  *
@@ -56,5 +62,9 @@ void print_user_res_by_id (User_Manager um, int id, Output out);
  */
 
 void free_user_manager(User_Manager um);
+
+int get_total_users(User_Manager um);
+
+char **get_users_ids (User_Manager um);
 
 #endif

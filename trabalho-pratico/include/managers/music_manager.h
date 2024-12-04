@@ -7,8 +7,6 @@
 #include "album_manager.h"
 #include "output.h"
 
-typedef struct genre *Genre;
-
 typedef struct music_manager *Music_Manager;
 
 
@@ -130,5 +128,15 @@ void print_all_genres_info(Music_Manager mm, Output out);
  * @param mm Music Manager a ser libertado.
  */
 void free_music_manager(Music_Manager mm);
+
+Music search_music_by_id(int id, Music_Manager music_manager);
+
+int search_gen_index_by_id(int music_id,Music_Manager mm);
+
+int get_total_genres(Music_Manager mm);
+
+char **get_genre_names(Music_Manager mm);
+
+
 
 #endif

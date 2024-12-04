@@ -128,6 +128,9 @@ int parse_1line_query(Parser p, char **info){
                 break;
             case ('1'):
             case ('3'):
+            case ('4'):
+            case ('5'):
+            case ('6'):
                 n_token = parse_line_spaces (line, info);
             default:
         }

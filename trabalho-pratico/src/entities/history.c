@@ -41,7 +41,7 @@ History create_history_from_tokens (char **tokens, int *year){
         hour_of_day = atoi (tokens[3] + 11);
 
         duration = calc_duration_s (tokens[4]);
-        music_id = atoi (tokens[2] + 1);
+        music_id = atoi (tokens[2] + 1); 
 
         h = create_history (day, month, hour_of_day, duration, music_id);
     }

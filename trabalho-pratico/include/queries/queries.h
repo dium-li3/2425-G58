@@ -8,6 +8,7 @@
 #include "user_manager.h"
 #include "artist_manager.h"
 #include "music_manager.h"
+#include "history_manager.h"
 #include "testagem.h"
 
 #define QUERYTYPES 3
@@ -21,6 +22,12 @@ typedef struct query1 *Query1;
 typedef struct query2 *Query2;
 
 typedef struct query3 *Query3;
+
+typedef struct query4 *Query4;
+
+typedef struct query5 *Query5;
+
+typedef struct query6 *Query6;
 
 //Cria uma struct query com espaço para as 3 queries atuais, todas já alocadas mas vazias.
 Query create_query();
@@ -53,6 +60,12 @@ void answer1(Query q, User_Manager um, Art_Manager am, Output out, Query_stats q
 void answer2(Query q, Art_Manager am, Output out, Query_stats qs);
 
 void answer3(Query q, Music_Manager mm, Output out, Query_stats qs);
+
+void answer4(Query q, Output out, Query_stats qs);
+
+void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs);
+
+void answer6(Query q, Output out, Query_stats qs);
 
 Query_stats create_query_stats();
 
