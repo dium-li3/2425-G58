@@ -64,7 +64,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
 
     int row = get_total_users(um);
     int column = get_total_genres(mm);
-    hm->mat_size = get_total_users(um);
+    hm->mat_size = row;
     hm->matrix = calloc(row , sizeof(int*)); //estava a fazer sizeof(int)...
     for (int i = 0; i < row; i++) {
         hm->matrix[i] = calloc(column, sizeof(int));

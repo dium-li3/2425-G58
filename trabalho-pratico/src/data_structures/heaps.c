@@ -16,11 +16,11 @@ typedef struct heap {
 
 
 
-Heap heap_new(size_t n, size_t s, int (*comp)(void *a, void *b), void (*free)(void *a)){
+Heap heap_new(size_t n, int (*comp)(void *a, void *b), void (*free)(void *a)){
     Heap h = calloc(1, sizeof(struct heap));
     
     if(h != NULL) {
-        h->heap = calloc(n, s);
+        h->heap = calloc(n, sizeof(void*));
         h->max = n;
         h->compare = comp;
         h->free_elem = free;
@@ -104,12 +104,12 @@ int heap_add(Heap h, void *x){
 }
 
 
-int heap_remove (Heap h, int i, void **rem) {
-    if(i >= h->size) return 1;
+int heap_remove (Heap h, void **rem) {
+    if(h->size == 0) return 1;
 
-    *rem = h->heap[i];
-    h->heap[i] = h->heap[--h->size];
-    heap_bubbleDown(i, h);
+    *rem = h->heap[0];
+    h->heap[0] = h->heap[--h->size];
+    heap_bubbleDown(0, h);
 
     return 0;
 }
@@ -118,6 +118,16 @@ int heap_remove (Heap h, int i, void **rem) {
 void heap_swap_fst_elem(Heap h, void *new){
     h->heap[0] = new;
     heap_bubbleDown(0, h);
+}
+
+
+void** heap_unwrap_array(Heap h, int *size){
+    void **array = h->heap;
+    *size = h->size;
+
+    free(h);
+    
+    return array;
 }
 
 
@@ -130,25 +140,3 @@ void heap_free(Heap h){
     free(h->heap);
     free(h);
 }
-
-
-
-/*
-    Organiza v de forma a ser uma min-heap, usando o bubbleUp.
-*
-void heapify_slow(int *v, int N) {
-    int p;
-
-    for(p = 0; p < N; p++)
-        bubbleUp(p, v);
-}*/
-
-/*
-    Organiza v de forma a ser uma min-heap, usando o bubbleDown.
-*
-void heapify(int *v, int N) {
-    int i;
-
-    for(i = N/2; i >= 0; i--)
-        bubbleDown(i, v, N);
-}*/
