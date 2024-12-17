@@ -39,13 +39,6 @@ int get_art_id(Artist a){
     return a->id;
 }
 
-int *get_art_id_pointer(Artist a){
-    int *copy = malloc(sizeof(int));
-    *copy = a->id;
-
-    return copy;
-}
-
 const char *get_art_country(Artist a){
     return (a->country);
 }
@@ -61,6 +54,11 @@ const char *get_art_name(Artist a){
 double get_art_recipe_stream (Artist a){
     return a->recipe_per_stream;
 }
+
+int get_max_week(Artist a){
+    return a->weeks->len;
+}
+
 
 const GArray *get_group_id_constituent (Artist a){
     const GArray *id_constituent = NULL;
@@ -98,6 +96,17 @@ int compare_dur (gconstpointer a, gconstpointer b){
         return 1;
     return strcmp ((*aa)->name, (*bb)->name);
 }
+
+
+int compare_listening_time(void *a, void *b, void *week) {
+    Artist aa = (Artist)a, bb = (Artist)b;
+
+    int *w = (int*)week;
+    int ltx = g_array_index(aa->weeks, int, *w), lty = g_array_index(bb->weeks, int, *w); 
+
+    return ltx < lty;
+}
+
 
 Artist create_artist_from_tokens(char **tokens){
     char art_type = get_art_type(tokens[6]);
@@ -165,7 +174,17 @@ void add_disc_duration(Artist a, int duration){
 }
 
 void add_list_time(Artist a, int week, int t){
-    g_array_index(a->weeks, int, week) += t;
+    if(week >= a->weeks->len) g_array_insert_val(a->weeks, week, t);
+    else g_array_index(a->weeks, int, week) += t;
+}
+
+void mark_top10(Artist a, int week){
+    g_array_index(a->weeks, int, week) = -1;
+}
+
+void set_art_max_week(Artist a, int max_week){
+    int x = 0;
+    g_array_insert_val(a->weeks, max_week+1, x);
 }
 
 //Incrementa o número de albuns de um dado artista.

@@ -6,6 +6,7 @@
 #include "parser.h"
 #include "output.h"
 #include "utils.h"
+#include "heaps.h"
 
 #define ARTIST_ELEMS 7
 
@@ -13,6 +14,7 @@ typedef struct art_manager
 {
     GHashTable *art_by_id;
     GArray *art_by_dur;
+    int max_week;
 } *Art_Manager;
 
 Art_Manager create_art_manager()
@@ -93,10 +95,62 @@ void add_listening_time_artists(const GArray *artists, int week, int time, Art_M
 }
 
 
+void set_max_week(Art_Manager am, int mw){
+    am->max_week = mw;
+}
+
+
+
 /*
-    Incrementa o número de albuns de todos os artistas
-    cujos ids estão num array de ids de artistas.
+    Percorre o array de artistas do Art_Manager e calcula o top 10 de uma determinada semana.
 */
+void calc_top10_week(GArray *artists, int week) {
+    int i, count, len = artists->len;
+    Heap h = heap_new(TOP, compare_listening_time, NULL, &week);
+    Artist a = NULL;
+
+    //encher a heap
+    for(i = 0, count = 0; count < TOP && i < len; i++) {
+        a = g_array_index(artists, Artist, i);
+        if(week <= get_max_week(a)) {
+            heap_add(h, a);
+            count++;
+        }
+    }
+
+    //percorrer o resto do array, atualizando o top 10
+    for(; i < len; i++) {
+        a = g_array_index(artists, Artist, i);
+        if(week <= get_max_week(a)) {
+            heap_swap_fst_elem(h, a);
+        }
+    }
+    
+    int size;
+    Artist *array = (Artist*) heap_unwrap_array(h, &size);
+
+    for(i = 0; i < size; i++)
+        mark_top10(array[i], week);
+    
+    free(array);
+}
+
+void calc_top10s(Art_Manager am) {
+    int i, mw = am->max_week, len = am->art_by_dur->len;
+    Artist a = NULL;
+
+    //garantir que todos os artistas têm o array de semanas inicializado a 0 até à max week
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        set_art_max_week(a, mw);
+    }
+
+    for(i = 0; i < mw; i++)
+        calc_top10_week(am->art_by_dur, i);
+}
+
+
+
 void add_1_album_to_artists (const GArray *album_artists, Art_Manager am){
     Artist a = NULL;
 
@@ -130,9 +184,7 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     return a;
 }
 
-/*
-    Dá print do resumo de um artista com um dado id.
-*/
+
 void print_art_res_by_id (Art_Manager am, int id, Output out){
     Artist a = search_artist_by_id(id, am);
     if (a!= NULL)
@@ -211,13 +263,7 @@ void add_recipe_artists (const GArray *artists, Art_Manager am){
     }
 }
 
-/*
-    Guarda num array e numa hashtable todos os artistas
-    que estão num ficheiro cujo path é dado.
-    No final o array ainda não está ordenado.
 
-    Também dá print de algum artista que esteja incorreto.
-*/
 void store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
     if(p == NULL) {

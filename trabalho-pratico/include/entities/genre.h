@@ -15,7 +15,6 @@ typedef struct genre *Genre;
  * @param gen_name String a ser atribuída como nome do gênero.
  * @return Apontador para o novo genêro.
  */
-
 Genre create_gen(const char *gen_name);
 
 /**
@@ -25,7 +24,6 @@ Genre create_gen(const char *gen_name);
  * 
  * @param gen Apontador para o gênero a ser libertado.
  */
-
 void free_genre(Genre *gen);
 
 
@@ -40,7 +38,6 @@ void free_genre(Genre *gen);
  * @param genre String que será usada para a comparação.
  * @return 0 se as strings forem iguais;1, se diferentes.
  */
-
 int compare_genre_names(Genre gen, const char *genre);
 
 /**
@@ -51,7 +48,6 @@ int compare_genre_names(Genre gen, const char *genre);
  * @param gen Genêro cujo total de curtidas será devolvido.
  * @return Total de likes do usuário recebido.
  */
-
 int get_genre_total_likes (Genre gen);
 
 /**
@@ -64,7 +60,6 @@ int get_genre_total_likes (Genre gen);
  * @param gen Gênero fornecedor do array.
  * @param age posição desse array que será incrementada em uma unidade.
  */
-
 void increment_like(Genre gen, short age);
 
 void add_gen_index (Genre gen, int index);
@@ -79,7 +74,6 @@ const char* get_genre_name (Genre gen);
  * 
  * @param gen Gênero cujo array será transformado.
  */
-
 void gen_freq_acum (Genre gen);
 
 /**
@@ -94,7 +88,6 @@ void gen_freq_acum (Genre gen);
  * @param min_age Limite inferior da faixa etária.
  * @param max_age Limite superior da faixa etária.
  */
-
 void update_gen_total_likes (Genre gen, int min_age, int max_age);
 
 /**
@@ -114,7 +107,6 @@ void update_gen_total_likes (Genre gen, int min_age, int max_age);
  * @param b outro gênero que será comparado com @p a.
  * @return Resultado da comparação.
  */
-
 int cmp_like_gen(gconstpointer g1, gconstpointer g2);
 
 
@@ -127,7 +119,6 @@ int cmp_like_gen(gconstpointer g1, gconstpointer g2);
  * @param gen Gênero o qual terá as informações reveladas.
  * @param out Struct usado pelo output.
  */
-
 int print_genre_info(Genre gen, Output out);
 
 #endif

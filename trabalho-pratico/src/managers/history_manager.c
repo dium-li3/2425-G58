@@ -58,7 +58,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
 
-    int id, user_id, music_id, year, week, dur;
+    int id, user_id, music_id, year, week, dur, max_week = -1;
     char **tokens = NULL;
     const GArray *artist_ids;
 
@@ -90,6 +90,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             add_recipe_artists(artist_ids, am);
 
             week = calc_week(get_history_day(history), get_history_month(history), year);
+            if(week > max_week) max_week = week;
             dur = get_history_dur(history);
             add_listening_time_artists(artist_ids, week, dur, am);
         }
@@ -98,6 +99,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
         
         free_tokens(tokens, HISTORY_ELEMS);
     }
+    set_max_week(am, max_week);
     close_parser (p);
     close_output (out);
 }

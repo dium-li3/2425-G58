@@ -10,20 +10,22 @@ typedef struct heap {
     void **heap;
     int size;
     int max;
-    int (*compare)(void*, void*);
+    int (*compare)(void*, void*, void*);
     void (*free_elem)(void*);
+    void *data;
 } *Heap;
 
 
 
-Heap heap_new(size_t n, int (*comp)(void *a, void *b), void (*free)(void *a)){
+Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free)(void *a), void *data){
     Heap h = calloc(1, sizeof(struct heap));
-    
+
     if(h != NULL) {
         h->heap = calloc(n, sizeof(void*));
         h->max = n;
         h->compare = comp;
         h->free_elem = free;
+        h->data = data;
     }
 
     return h;
@@ -34,9 +36,9 @@ int valid_heap(Heap h){
     int i, r = 1, N = h->size;
 
     for(i = 0; i < N/2 && pf(i) < N && r; i++) {
-        r = h->compare(h->heap[i], h->heap[pf(i)]);
+        r = h->compare(h->heap[i], h->heap[pf(i)], h->data);
         
-        if(sf(i) < N && r) r = h->compare(h->heap[i], h->heap[sf(i)]);
+        if(sf(i) < N && r) r = h->compare(h->heap[i], h->heap[sf(i)], h->data);
     }
 
     return r;
@@ -67,9 +69,13 @@ void heap_print(Heap h, void (*print)(void *x)){
 
 
 
+void heap_set_data(Heap h, void *new_data){
+    h->data = new_data;
+}
+
 
 void heap_bubbleUp(int i, Heap h) {
-    while(i > 0 && h->compare(h->heap[i], h->heap[pai(i)])) {
+    while(i > 0 && h->compare(h->heap[i], h->heap[pai(i)], h->data)) {
         swap(h->heap, i, pai(i));
         i = pai(i);
     }
@@ -80,8 +86,8 @@ void heap_bubbleDown(int i, Heap h) {
     int f, N = h->size;
 
     while((f = pf(i)) < N) {
-        if(f+1 < N && h->compare(h->heap[f+1], h->heap[f])) f++;
-        if(h->compare(h->heap[i], h->heap[f])) break;
+        if(f+1 < N && h->compare(h->heap[f+1], h->heap[f], h->data)) f++;
+        if(h->compare(h->heap[i], h->heap[f], h->data)) break;
 
         swap(h->heap, i, f);
         i = f;
@@ -116,8 +122,10 @@ int heap_remove (Heap h, void **rem) {
 
 
 void heap_swap_fst_elem(Heap h, void *new){
-    h->heap[0] = new;
-    heap_bubbleDown(0, h);
+    if(h->compare(h->heap[0], new, h->data) != 0){
+        h->heap[0] = new;
+        heap_bubbleDown(0, h);
+    }
 }
 
 

@@ -21,7 +21,6 @@ typedef struct user *User;
  * @param index Índice do utilizador no array do seu gestor.
  * @return Apontador para o novo usuário e NULL caso este seja inválido.
  */
-
 User create_user_from_tokens (char **tokens, int index);
 
 /**
@@ -32,7 +31,6 @@ User create_user_from_tokens (char **tokens, int index);
  * @param u Usuário cujo id será devolvido.
  * @return Id do usuário recebido.
  */
-
 int get_user_id (User u);
 
 /**
@@ -43,7 +41,6 @@ int get_user_id (User u);
  * @param u Usuário cuja idade será devolvida.
  * @return Idade do usuário recebido.
  */
-
 short get_user_age (User u);
 
 /**
@@ -54,7 +51,6 @@ short get_user_age (User u);
  * @param u Usuário cuja lista de músicas curtidas será devolvida.
  * @return GArray que contém as músicas curtidas por um usuário.
  */
-
 const GArray *get_liked_musics(User u);
 
 int get_user_index(User u);
@@ -67,7 +63,6 @@ int get_user_index(User u);
  * 
  * @param u Usuário que terá suas informações expostas.
  */
-
 void print_user_res(User u, Output out);
 
 /**
@@ -77,7 +72,6 @@ void print_user_res(User u, Output out);
  * 
  * @param u Usuário cujos dados devem ser liberados.
  */
-
 void free_user (User u);
 
 #endif

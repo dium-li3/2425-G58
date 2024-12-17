@@ -9,15 +9,18 @@ typedef struct heap *Heap;
  * A função comp será utilizada para organizar a heap, portanto também determina se esta última será uma max ou min heap.
  * a<b e compare(a,b)==TRUE -> min-heap
  * a>b e compare(a,b)==TRUE -> max-heap
+ * O parámetro @c data da função (que será alimentado com o @p data passado como argumento)
+ * serve para o utilizador poder passar dados necessários à comparação.
  *
  * @param n Número de elementos a pré alocar.
  * @param comp Função de comparação.
  * @param free_elem Deve libertar um elemento da heap. Caso não se pretenda libertar os elementos individuais
  *                  aquando da libertação da heap, este campo deve ser NULL.
+ * @param data Dados úteis a definir pelo utilizador.
  * 
  * @return Apontador para a Heap criada.
  */
-Heap heap_new(size_t n, int (*comp)(void *a, void *b), void (*free_elem)(void *a));
+Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free_elem)(void *a), void *data);
 
 
 /**
@@ -30,6 +33,15 @@ Heap heap_new(size_t n, int (*comp)(void *a, void *b), void (*free_elem)(void *a
  * @param print Deve imprimir apenas o elemento que lhe é passado.
  */
 void heap_print(Heap h, void (*print)(void *x));
+
+
+/**
+ * @brief Atualiza o campo @c data da heap.
+ * 
+ * @param h Heap.
+ * @param new_data Novos dados.
+ */
+void heap_set_data(Heap h, void *new_data);
 
 
 /**
@@ -84,10 +96,10 @@ int heap_remove (Heap h, void **rem);
 /**
  * @brief Substitui o 1º elemento de @p h .
  * 
- * Troca o 1º elemento da Heap com @p new e faz um bubbleDown (tendo em conta a finalidade desta função,
- * @p new será sempre maior que o 1º elemento), de forma a manter a ordenação de @p h .
+ * Caso @p new seja maior que o 1º elemento da heap (caso seja uma min-heap; se for uma max-heap, é caso
+ * seja menor), troca os dois e faz um bubbleDown, de forma a manter a ordenação de @p h .
  * O objetivo desta função é ser usada no algoritmo que determina os k (tamanho da heap) maior elementos
- * de um array.
+ * de um array (max-heap -> k menores).
  * 
  * @param h Heap.
  * @param new Novo elemento.
