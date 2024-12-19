@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 #include "master_manager.h"
 #include "parser.h"
 #include "queries.h"
@@ -36,6 +37,7 @@ int main (int argc, char **argv){
         printf("não incluiste os ficheiros direito.\n");
         return 1;
     }
+    printf("Número de threads disponíveis: %d\n", omp_get_num_procs());
     Query_stats qs = NULL;
     int r = trabalho (argc, argv, qs);
     
