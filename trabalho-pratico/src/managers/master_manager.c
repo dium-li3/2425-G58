@@ -67,7 +67,7 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
             answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs);
             break;
         case (6):
-            answer6(q, out, qs);
+            answer6(q, mm->artist_M, mm->music_M, mm->user_M, mm->hist_M, out, qs);
             break;
         }
         close_output (out);

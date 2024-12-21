@@ -57,8 +57,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
 
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
-
-    int id, user_id, music_id, year, week, dur;
+    int hist_id, user_id, music_id, year, week, dur;
     char **tokens = NULL;
     const GArray *artist_ids;
 
@@ -76,10 +75,10 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
         history = create_history_from_tokens (tokens, &year);
         
         if (history != NULL){
-            id = atoi (tokens[0]+1);
+            hist_id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);
             music_id = atoi (tokens[2]+1);
-            insert_history_by_id (history, id, hm);
+            insert_history_by_id (history, hist_id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 
             artist_ids = get_music_artists_from_id (get_history_music (history), mm);
@@ -89,6 +88,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             */
             add_recipe_artists(artist_ids, am);
 
+            add_year_history_id_to_user (um, user_id, year, hist_id); 
             week = calc_week(get_history_day(history), get_history_month(history), year);
             dur = get_history_dur(history);
             add_listening_time_artists(artist_ids, week, dur, am);
@@ -110,4 +110,13 @@ void free_history_manager (History_Manager hm){
     }
     free(hm->matrix);
     free (hm);
+}
+
+void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
+    History h = search_history_by_id (history_id, hm);
+    *listening_time = get_history_listening_time (h);
+    *music_id = get_history_music (h);
+    *month = get_history_month (h);
+    *day = get_history_day (h);
+    *hour = get_history_hour (h);
 }

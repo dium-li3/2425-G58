@@ -166,15 +166,14 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
 }
 
 int search_gen_index_by_id(int music_id,Music_Manager mm) {
-  Music m = search_music_by_id(music_id,mm);
-  const char *gen = get_genre(m);
-  int tam = mm->genre_array->len;
-  int index = -1;
-  for (int i = 0;i<tam && index < 0;i++) {
-    if (compare_genre_names(g_array_index(mm->genre_array,Genre,i),gen) == 0) {
-        index = i;
+    Music m = search_music_by_id(music_id,mm);
+    const char *gen = get_genre(m);
+    int tam = mm->genre_array->len;
+    int index = -1;
+    for (int i = 0;i<tam && index < 0;i++) {
+        if (strcmp (gen, mm->genre_names[i]) == 0)
+            index = i;
     }
-  }
 
   return index;
 }
@@ -190,11 +189,10 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     return artists_ids; 
 }
 
-/*GArray *get_music_artists_copy_from_id (int id, Music_Manager mm){
+int get_music_album_by_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
-    GArray *artists_ids = get_music_artists_copy (m);
-    return artists_ids;
-}*/
+    return get_music_album (m);
+}
 
 int get_total_genres(Music_Manager mm) {
     return mm->total_genres;

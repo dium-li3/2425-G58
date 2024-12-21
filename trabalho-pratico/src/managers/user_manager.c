@@ -10,7 +10,6 @@
 
 #define USER_ELEMS 8
 
-//g_hash_table_get_keys (user_manager->users_by_id) dá-nos logo todos os ids.
 typedef struct user_manager {
     GHashTable *users_by_id;
     int total_users;
@@ -113,6 +112,19 @@ int search_user_index_by_id(int id, User_Manager um){
     User u = search_user_by_id(id,um);
     int index = get_user_index(u);
     return index;
+}
+
+const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um){
+    User u = search_user_by_id (user_id, um);
+    const GArray *history_ids = NULL;
+    if (u != NULL)
+        history_ids = get_year_history (u, year);
+    return history_ids;
+}
+
+void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id){
+    User u = search_user_by_id (user_id, um);
+    add_year_history_id(u, year, history_id);
 }
 
 /*
