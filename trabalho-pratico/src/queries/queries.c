@@ -535,6 +535,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     else
         output_empty (out);
     free (genres);
+    free (max);
     if (diff_musics != NULL)
         g_hash_table_destroy (diff_musics);
     if (diff_albums != NULL)
