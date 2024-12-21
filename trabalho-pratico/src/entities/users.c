@@ -11,6 +11,7 @@ typedef struct user{
     short age;
     char *country;
     GArray *liked_music_ids;
+    GPtrArray *yearly_history_ids;
     int index;
 } *User;
 
@@ -64,6 +65,7 @@ const GArray *get_liked_musics(User u){
 
 int get_user_index(User u){
     return u->index;
+}
 
 //Devolve o histórico de um dado ano.
 const GArray *get_year_history(User u, int year){

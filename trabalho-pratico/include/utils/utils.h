@@ -58,4 +58,18 @@ int valid_duration (char *duration);
  * @return Semana
  */
 int calc_week(int d, int m, int y);
+
+/**
+ * @brief Calcula o índice onde está o maior valor de um array.
+ * 
+ * @param array Array com elementos >= 0
+ * @param N Número de elementos do array
+ * 
+ * @result Índice do maior elemento do array
+*/
+int array_max (int array[], int N);
+
+//Compara 2 inteiros.
+gint compare_g_int (gconstpointer p1, gconstpointer p2, void*);
+
 #endif

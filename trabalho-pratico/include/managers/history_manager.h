@@ -28,10 +28,10 @@ int **get_matrix(History_Manager hm);
  * 
  * @param history_id id do histórico cuja informação queremos.
  * @param listening_time apontador para onde vamos guardar a duração guardado pelo histórico.
- * @param music_id apontador para onde vamos gaurdar o id da música à qual o histórico faz referência. 
- * @param month apontador para onde vamos gaurdar o mês no qual o histórico aconteceu.
- * @param day apontador para onde vamos gaurdar o dia no qual o histórico aconteceu.
- * @param hour apontador para onde vamos gaurdar a hora do dia na qual o histórico aconteceu.
+ * @param music_id apontador para onde vamos guardar o id da música à qual o histórico faz referência. 
+ * @param month apontador para onde vamos guardar o mês no qual o histórico aconteceu.
+ * @param day apontador para onde vamos guardar o dia no qual o histórico aconteceu.
+ * @param hour apontador para onde vamos guardar a hora do dia na qual o histórico aconteceu.
  * @param hm Gestor que contém todos os históricos.
 */
 void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
