@@ -57,7 +57,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
 
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
-    int hist_id, user_id,music_id, year;
+    int hist_id, user_id, music_id, year, week, dur;
     char **tokens = NULL;
     const GArray *artist_ids;
 
@@ -89,6 +89,9 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             add_recipe_artists(artist_ids, am);
 
             add_year_history_id_to_user (um, user_id, year, hist_id); 
+            week = calc_week(get_history_day(history), get_history_month(history), year);
+            dur = get_history_dur(history);
+            add_listening_time_artists(artist_ids, week, dur, am);
         }
         else
             error_output (p, out);

@@ -17,9 +17,10 @@ typedef struct artist{
     int disc_duration;
     int n_albums;
     double total_recipe;
+    GArray *weeks;
 } *Artist;
 
-Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char type){
+Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char type, GArray *w){
     Artist a = malloc(sizeof(struct artist));
     a->id = id;
     a->name = strdup(name);
@@ -30,6 +31,7 @@ Artist create_art(int id, char *name, double rps, GArray *idc, char *coun, char 
     a->disc_duration = 0;
     a->n_albums = 0;
     a->total_recipe = 0;
+    a->weeks = w;
     return a;
 }
 
@@ -113,7 +115,9 @@ Artist create_artist_from_tokens(char **tokens){
     {
         int id = atoi(tokens[0] + 1);
         double recipe_per_stream = strtod(tokens[3], NULL);
-        a = create_art(id, tokens[1], recipe_per_stream, id_constituent, tokens[5], art_type);
+        GArray *weeks = g_array_sized_new(FALSE, TRUE, sizeof(int), 400);
+
+        a = create_art(id, tokens[1], recipe_per_stream, id_constituent, tokens[5], art_type, weeks);
     }
     else if (id_constituent != NULL)
         g_array_free(id_constituent, TRUE);
@@ -160,6 +164,10 @@ void add_disc_duration(Artist a, int duration){
     a->disc_duration += duration;
 }
 
+void add_list_time(Artist a, int week, int t){
+    g_array_index(a->weeks, int, week) += t;
+}
+
 //Incrementa o número de albuns de um dado artista.
 void add_1_album (Artist a){
 //    if (a->type == 'I')
@@ -187,5 +195,6 @@ void free_art(Artist a){
     if (a->id_constituent != NULL)
         g_array_free(a->id_constituent, TRUE);
     free(a->country);
+    g_array_free(a->weeks, TRUE);
     free(a);
 }
