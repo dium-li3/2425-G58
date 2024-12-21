@@ -63,6 +63,12 @@ int get_history_music (History h){
     return h->music_id;
 }
 
+
+
+int get_history_dur(History h){
+    return h->duration;
+}
+
 void free_history (History h){
     // if (h->artist_ids != NULL)
     //     g_array_free(h->artist_ids, TRUE);

@@ -393,6 +393,7 @@ void max_in_hash(gpointer id, gpointer dur, gpointer user_data) {
         (max_par)->dur = listening_time;
         (max_par)->id = GPOINTER_TO_INT (id);
     }
+}
 
 
 void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History_Manager hm, Output out, Query_stats qs){
@@ -493,7 +494,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
 
         g_ptr_array_sort (diff_artists, compare_fav_art_durations);
         favorite_artists = calloc (q6->N_artists, sizeof (char**));
-        for (i = 0; i < q6->N_artists && i < artists_ids->len && diff_artists->pdata[i] != NULL; i++){
+        for (i = 0; i < q6->N_artists && i < diff_artists->len && diff_artists->pdata[i] != NULL; i++){
             art_info = (Fav_art_info)g_ptr_array_index (diff_artists, i);
 
             favorite_artists [i] = calloc (3, sizeof (char *));
@@ -530,10 +531,10 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
 
         output_geral (output_tokens, 7, out);
 
-        for (i = 0; i < q6->N_artists && i < artists_ids->len; i++)
+        for (i = 0; i < q6->N_artists && i < diff_artists->len; i++)
             output_geral (favorite_artists[i], 3, out);
 
-        for (i = 0; i < q6->N_artists && i < artists_ids->len; i++){
+        for (i = 0; i < q6->N_artists && i < diff_artists->len; i++){
             for (j = 0; j < 3; j++)
                 free (favorite_artists[i][j]);
             free (favorite_artists [i]);
@@ -552,9 +553,9 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     g_ptr_array_free (diff_artists, TRUE);
 
     clock_gettime(CLOCK_REALTIME, &end);
-    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e6;
+    elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
-    if (qs != NULL) add_query_stats(qs, elapsed, 3);
+    if (qs != NULL) add_query_stats(qs, elapsed, 6);
 }
 
 Query_stats create_query_stats() {
