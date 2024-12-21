@@ -74,7 +74,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     free_tokens(tokens, HISTORY_ELEMS);
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
-        
+
         if (history != NULL){
             id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);

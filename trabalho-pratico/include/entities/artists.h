@@ -70,13 +70,14 @@ double get_art_recipe_stream (Artist a);
 
 
 /**
- * @brief Devolve a semana mais distante do 9/9/2024 onde o artista tem tempo de reprodução.
+ * @brief Devolve o tempo de reprodução de um artista numa determinada semana.
  * 
  * @param a Artista.
+ * @param week Semana.
  * 
- * @return Semana mais distante.
+ * @return Tempo de reprodução.
  */
-int get_max_week(Artist a);
+int get_week_listening_time(Artist a, int week);
 
 
 //Devolve um array com os ids dos artistas que fazem parte de um grupo.
@@ -128,7 +129,7 @@ int compare_dur (gconstpointer a, gconstpointer b);
  * @param b Artista
  * @param week Semana em questão
  * 
- * @return TRUE -> a<b ou FALSE -> a>=b
+ * @return TRUE -> a<b ou FALSE -> a>b
  */
 int compare_listening_time(void *a, void *b, void *week);
 
@@ -189,12 +190,23 @@ void mark_top10(Artist a, int week);
  * @brief Insere em max_week+1 um 0.
  * 
  * Esta função é usada para garantir que todos os artistas têm um registo até à semana mais distante.
- * (Erro do valgrind de conditional jump or move depends on uninitialized values por causa do arrays da glib...)
+ * (Erro do valgrind de conditional jump or move depends on uninitialized values por causa dos GArrays...)
  * 
  * @param a Artista.
  * @param max_week Semana mais distante em que ocorreu um histórico.
  */
 void set_art_max_week(Artist a, int max_week);
+
+
+/**
+ * @brief Calcula o array de frequências acumuladas de top 10 de um artista.
+ * 
+ * O array @c weeks , que continha os tempos de reprodução e as semanas em que o artista figurou no top 10
+ * marcadas com -1, passa a ter as frequências acumuladas das aparições do artista no top 10.
+ * 
+ * @param a Artista.
+ */
+void acc_freq_top10_1art(Artist a);
 
 
 /**

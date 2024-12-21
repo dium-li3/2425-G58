@@ -109,21 +109,19 @@ void calc_top10_week(GArray *artists, int week) {
     Heap h = heap_new(TOP, compare_listening_time, NULL, &week);
     Artist a = NULL;
 
-    //encher a heap
+    //encher a heap com os artistas que têm tempo de reprodução nesta semana
     for(i = 0, count = 0; count < TOP && i < len; i++) {
         a = g_array_index(artists, Artist, i);
-        if(week <= get_max_week(a)) {
+        if(get_week_listening_time(a, week) > 0) {
             heap_add(h, a);
             count++;
         }
     }
 
-    //percorrer o resto do array, atualizando o top 10
+    //percorrer o resto do array, atualizando o top 10 se aparecer algum artista com tempo de reprodução
     for(; i < len; i++) {
         a = g_array_index(artists, Artist, i);
-        if(week <= get_max_week(a)) {
-            heap_swap_fst_elem(h, a);
-        }
+        if(get_week_listening_time(a, week) > 0) heap_swap_fst_elem(h, a);
     }
     
     int size;
@@ -147,6 +145,17 @@ void calc_top10s(Art_Manager am) {
 
     for(i = 0; i < mw; i++)
         calc_top10_week(am->art_by_dur, i);
+}
+
+
+void acc_freq_top10s(Art_Manager am) {
+    int i, len = am->art_by_dur->len;
+    Artist a = NULL;
+
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        acc_freq_top10_1art(a);
+    }
 }
 
 

@@ -142,6 +142,14 @@ void calc_top10s(Art_Manager am);
 
 
 /**
+ * @brief Calcula as frequências acumuladas de top 10 de todos os artistas.
+ * 
+ * @param am Contém o array com todos os artistas.
+ */
+void acc_freq_top10s(Art_Manager am);
+
+
+/**
  * @brief Incrementa o nº de álbuns de todos os artistas cujos IDs estão no array.
  * 
  * @param album_artists Array com os IDs dos artistas cujo número de álbuns deve ser incrementado.
