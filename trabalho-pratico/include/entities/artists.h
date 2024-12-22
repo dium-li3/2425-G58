@@ -75,7 +75,7 @@ double get_art_recipe_stream (Artist a);
  * @param a Artista.
  * @param week Semana.
  * 
- * @return Tempo de reprodução.
+ * @return -1 se @p week é fora do array do artista ou o tempo de reprodução caso @c week<a->weeks->len
  */
 int get_week_listening_time(Artist a, int week);
 
@@ -98,6 +98,16 @@ void print_art_res(Artist a, Output out);
 
 
 void print_art_info(Artist a, Output out);
+
+
+/**
+ * @brief Função auxiliar para imprimir o artista com mais tops 10.
+ * 
+ * @param a Artista.
+ * @param top_count Nº de tops.
+ * @param out Ficheiro de resposta.
+ */
+void print_top_count_art(Artist a, int top_count, Output out);
 
 
 /**
@@ -207,6 +217,16 @@ void set_art_max_week(Artist a, int max_week);
  * @param a Artista.
  */
 void acc_freq_top10_1art(Artist a);
+
+
+/**
+ * @brief Devolve o nº de tops total de um artista.
+ * 
+ * @param a Artista.
+ * 
+ * @return Nº total de tops.
+ */
+int get_art_max_top(Artist a);
 
 
 /**

@@ -16,6 +16,13 @@
         "genre.h": "c",
         "strings.h": "c",
         "utils.h": "c",
-        "omp.h": "c"
+        "omp.h": "c",
+        "array": "c",
+        "deque": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "string_view": "c",
+        "initializer_list": "c"
     }
 }

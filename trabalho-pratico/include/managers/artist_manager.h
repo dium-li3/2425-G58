@@ -131,6 +131,16 @@ void set_max_week(Art_Manager am, int mw);
 
 
 /**
+ * @brief Devolve a semana máxima em que houve históricos.
+ * 
+ * @param am Contém a semana máxima.
+ * 
+ * @return Semana máxima.
+ */
+int get_max_week(Art_Manager am);
+
+
+/**
  * @brief Calcula os top 10 de todas as semanas.
  * 
  * Os artistas que compõem o top 10 de uma semana são marcados com -1 na posição correspondente
@@ -147,6 +157,19 @@ void calc_top10s(Art_Manager am);
  * @param am Contém o array com todos os artistas.
  */
 void acc_freq_top10s(Art_Manager am);
+
+
+/**
+ * @brief Encontra o artista com mais tops 10 num dado intervalo de semanas.
+ * 
+ * @param begin_week Começo do intervalo.
+ * @param end_week Fim do intervalo.
+ * @param am Contém o array com todos os artistas.
+ * @param top_count Apontador para guardar o número de tops do artista em questão.
+ * 
+ * @return ID do artista com mais tops.
+ */
+int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *top_count);
 
 
 /**
@@ -197,6 +220,17 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
  * do array. 
  */
 void print_N_art_info (Art_Manager am, int N, Output out);
+
+
+/**
+ * @brief Imprime para um ficheiro de resposta a informação do artista com mais top 10s.
+ * 
+ * @param art_id Artista com mais tops.
+ * @param top_count Nº de tops de @p art_id .
+ * @param am Contém a tabela de hash com todos os artistas.
+ * @param out Ficheiro de resposta.
+ */
+void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output out);
 
 
 /**

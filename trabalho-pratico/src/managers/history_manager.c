@@ -58,7 +58,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
 
-    int id, user_id, music_id, year, week, dur, max_week = -1;
+    int id, user_id, year, week, dur, max_week = -1;
     char **tokens = NULL;
     const GArray *artist_ids;
 
@@ -78,11 +78,10 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
         if (history != NULL){
             id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);
-            music_id = atoi (tokens[2]+1);
             insert_history_by_id (history, id, hm);
-            fill_matrix(user_id, music_id, um, mm, hm);
+            fill_matrix(user_id, get_history_music(history), um, mm, hm);
 
-            artist_ids = get_music_artists_from_id (get_history_music (history), mm);
+            artist_ids = get_music_artists_from_id (get_history_music(history), mm);
             /*
             artist_ids = get_music_artists_copy_from_id (get_history_music (history), mm);
             set_artist_ids (history, artist_ids);

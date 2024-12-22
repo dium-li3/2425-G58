@@ -92,7 +92,7 @@ int parse_line_spaces (char *line, char **info){
     char *token = NULL;
     char *svptr = NULL;
     char *ajudante = strdup (line);
-    token = strtok_r (ajudante, " ", &svptr);
+    token = strtok_r (ajudante, " \n", &svptr);
     info [n_token++] = strdup (token);
     while ((token = strtok_r (NULL, " \"\n", &svptr)) != NULL && n_token < 4){
         info [n_token++] = strdup(token);

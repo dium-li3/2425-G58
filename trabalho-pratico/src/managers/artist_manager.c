@@ -99,6 +99,10 @@ void set_max_week(Art_Manager am, int mw){
     am->max_week = mw;
 }
 
+int get_max_week(Art_Manager am){
+    return am->max_week;
+}
+
 
 
 /*
@@ -134,14 +138,14 @@ void calc_top10_week(GArray *artists, int week) {
 }
 
 void calc_top10s(Art_Manager am) {
-    int i, mw = am->max_week, len = am->art_by_dur->len;
-    Artist a = NULL;
+    int i, mw = am->max_week; //len = am->art_by_dur->len;
+    /*Artist a = NULL;
 
     //garantir que todos os artistas têm o array de semanas inicializado a 0 até à max week
     for(i = 0; i < len; i++) {
         a = g_array_index(am->art_by_dur, Artist, i);
         set_art_max_week(a, mw);
-    }
+    }*/
 
     for(i = 0; i < mw; i++)
         calc_top10_week(am->art_by_dur, i);
@@ -156,6 +160,37 @@ void acc_freq_top10s(Art_Manager am) {
         a = g_array_index(am->art_by_dur, Artist, i);
         acc_freq_top10_1art(a);
     }
+}
+
+
+int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *top_count) {
+    int i, len = am->art_by_dur->len, ntops_begin, ntops_end, top_count_temp, art_id, id_temp;
+    *top_count = 0;
+    Artist a = NULL;
+
+    art_id = id_temp = get_art_id(g_array_index(am->art_by_dur, Artist, 0));
+
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        ntops_begin = (begin_week-1 < 0) ? get_week_listening_time(a, 0) : get_week_listening_time(a, begin_week-1);
+        ntops_end = get_week_listening_time(a, end_week);
+        
+        if(ntops_begin != -1) {
+            if(ntops_end == -1) ntops_end = get_art_max_top(a);
+            top_count_temp = ntops_end - ntops_begin;
+            
+            if(top_count_temp == *top_count) {
+                id_temp = get_art_id(a);
+                if(id_temp < art_id) art_id = id_temp;
+            }
+            else if(top_count_temp > *top_count) {
+                art_id = get_art_id(a);
+                *top_count = top_count_temp;
+            }
+        }
+    }
+
+    return art_id;
 }
 
 
@@ -228,6 +263,13 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
             N--;
         }
     }
+}
+
+
+void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output out) {
+    Artist a = search_artist_by_id(art_id, am);
+
+    print_top_count_art(a, top_count, out);
 }
 
 

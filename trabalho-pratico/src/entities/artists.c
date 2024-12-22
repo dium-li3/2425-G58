@@ -56,7 +56,7 @@ double get_art_recipe_stream (Artist a){
 }
 
 int get_week_listening_time(Artist a, int week) {
-    return g_array_index(a->weeks, int, week);
+    return (week >= a->weeks->len) ? -1 : g_array_index(a->weeks, int, week);
 }
 
 
@@ -104,7 +104,7 @@ int compare_listening_time(void *a, void *b, void *week) {
     
     int ltx = g_array_index(aa->weeks, int, *w), lty = g_array_index(bb->weeks, int, *w); 
 
-    return (ltx != lty) ? ltx < lty : aa->id > bb->id; //desempate por ids: o id mais baixo é o maior
+    return (ltx != lty) ? (ltx < lty) : (aa->id > bb->id); //desempate por ids: o id mais baixo é o maior
 }
 
 
@@ -169,6 +169,17 @@ void print_art_info(Artist a,Output out){
     free_tokens (infos, 4);
 }
 
+void print_top_count_art(Artist a, int top_count, Output out){
+    char **infos = calloc (3, sizeof(char *));
+    infos[0] = calloc (12, sizeof (char));
+    snprintf (infos[0], 12, "A%07d", a->id);
+    infos[1] = get_art_type_str (a);
+    infos[2] = calloc (11, sizeof (char));
+    snprintf(infos[2], 11, "%d", top_count);
+    output_geral (infos, 3, out);
+    free_tokens (infos, 3);
+}
+
 void add_disc_duration(Artist a, int duration){
     a->disc_duration += duration;
 }
@@ -194,6 +205,10 @@ void acc_freq_top10_1art(Artist a) {
         g_array_index(a->weeks, int, i) = (g_array_index(a->weeks, int, i) == -1) ? ++acc : acc;
 }
 
+int get_art_max_top(Artist a) {
+    return g_array_index(a->weeks, int, a->weeks->len-1);
+}
+
 //Incrementa o número de albuns de um dado artista.
 void add_1_album (Artist a){
 //    if (a->type == 'I')
@@ -217,10 +232,6 @@ void add_percentage_recipe (Artist a, double recipe){
 }
 
 void free_art(Artist a){
-    if(a->id == 3542)
-        for(int i = 0; i < a->weeks->len; i++)
-            printf("%d - %d\n", i, g_array_index(a->weeks, int, i));
-
     free(a->name);
     if (a->id_constituent != NULL)
         g_array_free(a->id_constituent, TRUE);
