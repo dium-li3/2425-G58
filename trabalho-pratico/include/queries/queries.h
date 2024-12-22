@@ -53,7 +53,7 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
 
 void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs);
 
-void answer6(Query q, Output out, Query_stats qs);
+void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History_Manager hm, Output out, Query_stats qs);
 
 Query_stats create_query_stats();
 

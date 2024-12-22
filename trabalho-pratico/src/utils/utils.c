@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <glib.h>
 //#include <regex.h>
 #include "utils.h"
 
@@ -126,4 +127,24 @@ int calc_week(int d, int m, int y) {
     week = (t+4)/7;
 
     return week;
+}
+
+int array_max (int array[], int N){
+    int i, r = 0;
+    for (i = 1; i < N; i++)
+        if (array[i] > array[r])
+            r = i;
+    return r;
+}
+
+gint compare_g_int (gconstpointer p1, gconstpointer p2, void*){
+    int r = 0;
+    int *pv1 = (int*) p1;
+    int *pv2 = (int*) p2;
+    if (pv1 > pv2)
+        r = -1;
+    else if (pv1 < pv2)
+        r = 1;
+    else r = 0;
+    return r;
 }

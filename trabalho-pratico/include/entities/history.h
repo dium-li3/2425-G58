@@ -18,14 +18,54 @@ typedef struct history *History;
 */
 History create_history_from_tokens (char **tokens, int *year);
 
+/**
+ * @brief Devolve o dia do mês ao qual um histórico se refere.
+ * 
+ * @param h histórico que contém a informação.
+ * 
+ * @result Dia do mês em que o histórico foi gravado.
+*/
+
+int get_history_day (History h);
 
 /**
- * @brief Devolve o id da música à qual o histórico faz referencia.
+ * @brief Devolve o mês ao qual um histórico se refere.
  * 
- * @param h Histórico que contém o id da música que queremos.
+ * @param h histórico que contém a informação.
  * 
- * @return Id da música.
+ * @result Mês em que o histórico foi gravado.
 */
+
+int get_history_month (History h);
+
+/**
+ * @brief Devolve a hora à qual um histórico se refere.
+ * 
+ * @param h histórico que contém a informação.
+ * 
+ * @result Hora do dia à qual o histórico se refere.
+*/
+
+int get_history_hour (History h);
+
+/**
+ * @brief Devolve quanto um user ouviu uma música segundo um histórico, em segundos.
+ * 
+ * @param h histórico que contém a informação.
+ * 
+ * @result Duração, em segundos, da audição de uma música por um utilizador.
+*/
+
+int get_history_listening_time (History h);
+
+/**
+ * @brief Devolve o id da música à qual o histórico faz referência.
+ * 
+ * @param h histórico que contém a informação.
+ * 
+ * @result id da música à qual o histórico faz referência.
+*/
+
 int get_history_music (History h);
 
 
