@@ -31,13 +31,19 @@ Master_Manager create_master_manager(){
     return e;
 }
 
-void store_Entities(char **entity_paths, Master_Manager entity_M){
-    store_Artists(entity_paths[2], entity_M->artist_M);
-    store_Album (entity_paths[3], entity_M->album_M, entity_M->artist_M);
-    store_Musics(entity_paths[1], entity_M->music_M, entity_M->artist_M, entity_M->album_M);
-    order_duration (entity_M->artist_M);
-    store_Users(entity_paths[0], entity_M->user_M, entity_M->music_M);
-    store_History(entity_paths[4], entity_M->hist_M, entity_M->artist_M, entity_M->music_M, entity_M->user_M);
+void store_Entities(char **entity_paths, Master_Manager master_M){
+    store_Artists(entity_paths[2], master_M->artist_M);
+    
+    store_Album (entity_paths[3], master_M->album_M, master_M->artist_M);
+    
+    store_Musics(entity_paths[1], master_M->music_M, master_M->artist_M, master_M->album_M);
+    order_duration (master_M->artist_M);
+    
+    store_Users(entity_paths[0], master_M->user_M, master_M->music_M);
+    
+    store_History(entity_paths[4], master_M->hist_M, master_M->artist_M, master_M->music_M, master_M->user_M);
+    calc_top10s(master_M->artist_M);
+    acc_freq_top10s(master_M->artist_M);
 }
 
 
@@ -61,7 +67,7 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
             answer3(q, mm->music_M, out, qs);
             break;
         case (4):
-            answer4(q, out, qs);
+            answer4(q, out, qs, mm->artist_M);
             break;
         case (5):
             answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs);

@@ -57,13 +57,13 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
 
     Output out = open_out("resultados/history_errors.csv", ';');
     History history = NULL;
-    int hist_id, user_id, music_id, year, week, dur;
+    int hist_id, user_id, music_id, year, week, dur, max_week = -1;
     char **tokens = NULL;
     const GArray *artist_ids;
 
     int row = get_total_users(um);
     int column = get_total_genres(mm);
-    hm->mat_size = get_total_users(um);
+    hm->mat_size = row;
     hm->matrix = calloc(row , sizeof(int*)); //estava a fazer sizeof(int)...
     for (int i = 0; i < row; i++) {
         hm->matrix[i] = calloc(column, sizeof(int));
@@ -73,7 +73,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     free_tokens(tokens, HISTORY_ELEMS);
     for (tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
         history = create_history_from_tokens (tokens, &year);
-        
+
         if (history != NULL){
             hist_id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);
@@ -81,15 +81,13 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             insert_history_by_id (history, hist_id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 
-            artist_ids = get_music_artists_from_id (get_history_music (history), mm);
-            /*
-            artist_ids = get_music_artists_copy_from_id (get_history_music (history), mm);
-            set_artist_ids (history, artist_ids);
-            */
+            artist_ids = get_music_artists_from_id (get_history_music(history), mm);
             add_recipe_artists(artist_ids, am);
-
             add_year_history_id_to_user (um, user_id, year, hist_id); 
+            
+          
             week = calc_week(get_history_day(history), get_history_month(history), year);
+            if(week > max_week) max_week = week;
             dur = get_history_dur(history);
             add_listening_time_artists(artist_ids, week, dur, am);
         }
@@ -98,6 +96,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
         
         free_tokens(tokens, HISTORY_ELEMS);
     }
+    set_max_week(am, max_week);
     close_parser (p);
     close_output (out);
 }

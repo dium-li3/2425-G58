@@ -16,7 +16,6 @@ typedef struct user_manager *User_Manager;
  * 
  * @return Apontador para o gestor criado.
  */
-
 User_Manager create_user_manager();
 
 User search_user_by_id(int id, User_Manager user_manager);
@@ -36,7 +35,6 @@ int search_user_index_by_id(int id, User_Manager um);
  * @param user_manager gestor cuja hash table receberá os usuários.
  * @param music_manager gestor proprietário do array de gêneros.
  */
-
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
 
 /**
@@ -75,7 +73,6 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
  * @param id id do usuário a ser expostos.
  * @param out Struct usado pelo output.
  */
-
 void print_user_res_by_id (User_Manager um, int id, Output out);
 
 
@@ -86,7 +83,6 @@ void print_user_res_by_id (User_Manager um, int id, Output out);
  * 
  * @param um Gestor cujos dados devem ser liberados.
  */
-
 void free_user_manager(User_Manager um);
 
 int get_total_users(User_Manager um);

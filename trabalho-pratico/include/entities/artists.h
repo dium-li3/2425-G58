@@ -3,10 +3,11 @@
 
 #include <glib.h>
 #include <stdio.h>
-
 #include "output.h"
 
+
 typedef struct artist *Artist;
+
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -16,8 +17,8 @@ typedef struct artist *Artist;
  * @param a Artista cujo id será devolvido.
  * @return Id do artista.
  */
-
 int get_art_id(Artist a);
+
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -27,8 +28,8 @@ int get_art_id(Artist a);
  * @param a Artista cujo país será devolvido.
  * @return País do artista .
  */
-
 const char *get_art_country(Artist a);
+
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -38,8 +39,8 @@ const char *get_art_country(Artist a);
  * @param a Artista cujo tempo de discografia será devolvido.
  * @return Tempo de discografia o país do artista recebido.
  */
-
 int get_disc_duration(Artist a);
+
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -49,8 +50,8 @@ int get_disc_duration(Artist a);
  * @param a Artista cujo nome será devolvido.
  * @return Devolve o nome do artista recebido.
  */
-
 const char *get_art_name(Artist a);
+
 
 /**
  * @brief Dada uma string com o tipo do artista, devolve o caracter que o representa.
@@ -62,14 +63,26 @@ const char *get_art_name(Artist a);
  * @param a Artista cujo tipo será devolvido.
  * @return Devolve o tipo do artista recebido.
  */
-
 char get_art_type_from_art(Artist a);
 
 
 double get_art_recipe_stream (Artist a);
 
+
+/**
+ * @brief Devolve o tempo de reprodução de um artista numa determinada semana.
+ * 
+ * @param a Artista.
+ * @param week Semana.
+ * 
+ * @return -1 se @p week é fora do array do artista ou o tempo de reprodução caso @c week<a->weeks->len
+ */
+int get_week_listening_time(Artist a, int week);
+
+
 //Devolve um array com os ids dos artistas que fazem parte de um grupo.
 const GArray *get_group_id_constituent (Artist a);
+
 
 /**
  * @brief Função que "printa" um artista.
@@ -81,14 +94,21 @@ const GArray *get_group_id_constituent (Artist a);
  * @param separador Carácter que vai separar os outputs de uma mesma linha.
  * @param out Struct usado pelo output.
  */
-
-/*
-    Escreve num ficheiro de output um resumo
-    do artista, útil para a query 1.
-*/
 void print_art_res(Artist a, Output out);
 
+
 void print_art_info(Artist a, Output out);
+
+
+/**
+ * @brief Função auxiliar para imprimir o artista com mais tops 10.
+ * 
+ * @param a Artista.
+ * @param top_count Nº de tops.
+ * @param out Ficheiro de resposta.
+ */
+void print_top_count_art(Artist a, int top_count, Output out);
+
 
 /**
  * @brief Função usada de base para ordenar o array de artistas do @b artist_manager
@@ -107,8 +127,22 @@ void print_art_info(Artist a, Output out);
  * @param b outro artista que será comparado com @p a.
  * @return Resultado da comparação.
  */
-
 int compare_dur (gconstpointer a, gconstpointer b);
+
+
+/**
+ * @brief Compara o tempo de reprodução de @p a e @p b na semana dada por @p week .
+ * 
+ * Função para ser usada na organização das heaps.
+ * 
+ * @param a Artista
+ * @param b Artista
+ * @param week Semana em questão
+ * 
+ * @return TRUE -> a<b ou FALSE -> a>b
+ */
+int compare_listening_time(void *a, void *b, void *week);
+
 
 /**
  * @brief Cria um artista se todas as suas informações forem válidas.
@@ -125,8 +159,8 @@ int compare_dur (gconstpointer a, gconstpointer b);
  * um artista.
  * @return Apontador para o artista criado.
  */
-
 Artist create_artist_from_tokens(char **tokens);
+
 
 /**
  * @brief Adiciona uma duração ao tempo de discografia de um artista individual.
@@ -138,7 +172,6 @@ Artist create_artist_from_tokens(char **tokens);
  * @param a Artista cuja discografia será incrementada.
  * @param duration Valor a incrementar na discografia.
  */
-
 void add_disc_duration(Artist a, int duration);
 
 
@@ -155,11 +188,54 @@ void add_list_time(Artist a, int week, int t);
 
 
 /**
+ * @brief Põe a posição @p week do array weeks do artista a -1.
+ * 
+ * @param a Artista a marcar.
+ * @param week Semana em que o artista esteve no top 10.
+ */
+void mark_top10(Artist a, int week);
+
+
+/**
+ * @brief Insere em max_week+1 um 0.
+ * 
+ * Esta função é usada para garantir que todos os artistas têm um registo até à semana mais distante.
+ * (Erro do valgrind de conditional jump or move depends on uninitialized values por causa dos GArrays...)
+ * 
+ * @param a Artista.
+ * @param max_week Semana mais distante em que ocorreu um histórico.
+ */
+void set_art_max_week(Artist a, int max_week);
+
+
+/**
+ * @brief Calcula o array de frequências acumuladas de top 10 de um artista.
+ * 
+ * O array @c weeks , que continha os tempos de reprodução e as semanas em que o artista figurou no top 10
+ * marcadas com -1, passa a ter as frequências acumuladas das aparições do artista no top 10.
+ * 
+ * @param a Artista.
+ */
+void acc_freq_top10_1art(Artist a);
+
+
+/**
+ * @brief Devolve o nº de tops total de um artista.
+ * 
+ * @param a Artista.
+ * 
+ * @return Nº total de tops.
+ */
+int get_art_max_top(Artist a);
+
+
+/**
  * @brief Aumenta em 1 o número de albuns que um artista tem.
  *
  * @param a Artista que vai ter o seu número de albuns incrementado.
 */
 void add_1_album (Artist a);
+
 
 /*
  * @brief Adiciona a receita inteira que um artista recebe por música ouvida ao seu total ganho.
@@ -167,6 +243,7 @@ void add_1_album (Artist a);
  * @param a Artista ao qual se vai aumentar a receita total.
 */
 void add_recipe (Artist a);
+
 
 /**
  * @brief Adiciona uma percentagem de outra receita por stream a um Artista.
@@ -176,6 +253,7 @@ void add_recipe (Artist a);
  * @param percentage valor a ser somado à receita total.
 */
 void add_percentage_recipe (Artist a, double percentage);
+
 
 /**
  * @brief Libera a memória ocupada por um registo de artista.

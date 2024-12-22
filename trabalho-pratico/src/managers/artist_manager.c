@@ -6,6 +6,7 @@
 #include "parser.h"
 #include "output.h"
 #include "utils.h"
+#include "heaps.h"
 
 #define ARTIST_ELEMS 7
 
@@ -13,6 +14,7 @@ typedef struct art_manager
 {
     GHashTable *art_by_id;
     GArray *art_by_dur;
+    int max_week;
 } *Art_Manager;
 
 Art_Manager create_art_manager()
@@ -93,10 +95,106 @@ void add_listening_time_artists(const GArray *artists, int week, int time, Art_M
 }
 
 
+void set_max_week(Art_Manager am, int mw){
+    am->max_week = mw;
+}
+
+int get_max_week(Art_Manager am){
+    return am->max_week;
+}
+
+
+
 /*
-    Incrementa o número de albuns de todos os artistas
-    cujos ids estão num array de ids de artistas.
+    Percorre o array de artistas do Art_Manager e calcula o top 10 de uma determinada semana.
 */
+void calc_top10_week(GArray *artists, int week) {
+    int i, count, len = artists->len;
+    Heap h = heap_new(TOP, compare_listening_time, NULL, &week);
+    Artist a = NULL;
+
+    //encher a heap com os artistas que têm tempo de reprodução nesta semana
+    for(i = 0, count = 0; count < TOP && i < len; i++) {
+        a = g_array_index(artists, Artist, i);
+        if(get_week_listening_time(a, week) > 0) {
+            heap_add(h, a);
+            count++;
+        }
+    }
+
+    //percorrer o resto do array, atualizando o top 10 se aparecer algum artista com tempo de reprodução
+    for(; i < len; i++) {
+        a = g_array_index(artists, Artist, i);
+        if(get_week_listening_time(a, week) > 0) heap_swap_fst_elem(h, a);
+    }
+    
+    int size;
+    Artist *array = (Artist*) heap_unwrap_array(h, &size);
+
+    for(i = 0; i < size; i++)
+        mark_top10(array[i], week);
+    
+    free(array);
+}
+
+void calc_top10s(Art_Manager am) {
+    int i, mw = am->max_week; //len = am->art_by_dur->len;
+    /*Artist a = NULL;
+
+    //garantir que todos os artistas têm o array de semanas inicializado a 0 até à max week
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        set_art_max_week(a, mw);
+    }*/
+
+    for(i = 0; i < mw; i++)
+        calc_top10_week(am->art_by_dur, i);
+}
+
+
+void acc_freq_top10s(Art_Manager am) {
+    int i, len = am->art_by_dur->len;
+    Artist a = NULL;
+
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        acc_freq_top10_1art(a);
+    }
+}
+
+
+int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *top_count) {
+    int i, len = am->art_by_dur->len, ntops_begin, ntops_end, top_count_temp, art_id, id_temp;
+    *top_count = 0;
+    Artist a = NULL;
+
+    art_id = id_temp = get_art_id(g_array_index(am->art_by_dur, Artist, 0));
+
+    for(i = 0; i < len; i++) {
+        a = g_array_index(am->art_by_dur, Artist, i);
+        ntops_begin = (begin_week-1 < 0) ? get_week_listening_time(a, 0) : get_week_listening_time(a, begin_week-1);
+        ntops_end = get_week_listening_time(a, end_week);
+        
+        if(ntops_begin != -1) {
+            if(ntops_end == -1) ntops_end = get_art_max_top(a);
+            top_count_temp = ntops_end - ntops_begin;
+            
+            if(top_count_temp == *top_count) {
+                id_temp = get_art_id(a);
+                if(id_temp < art_id) art_id = id_temp;
+            }
+            else if(top_count_temp > *top_count) {
+                art_id = get_art_id(a);
+                *top_count = top_count_temp;
+            }
+        }
+    }
+
+    return art_id;
+}
+
+
+
 void add_1_album_to_artists (const GArray *album_artists, Art_Manager am){
     Artist a = NULL;
 
@@ -130,9 +228,7 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     return a;
 }
 
-/*
-    Dá print do resumo de um artista com um dado id.
-*/
+
 void print_art_res_by_id (Art_Manager am, int id, Output out){
     Artist a = search_artist_by_id(id, am);
     if (a!= NULL)
@@ -167,6 +263,13 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
             N--;
         }
     }
+}
+
+
+void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output out) {
+    Artist a = search_artist_by_id(art_id, am);
+
+    print_top_count_art(a, top_count, out);
 }
 
 
@@ -211,13 +314,7 @@ void add_recipe_artists (const GArray *artists, Art_Manager am){
     }
 }
 
-/*
-    Guarda num array e numa hashtable todos os artistas
-    que estão num ficheiro cujo path é dado.
-    No final o array ainda não está ordenado.
 
-    Também dá print de algum artista que esteja incorreto.
-*/
 void store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
     if(p == NULL) {

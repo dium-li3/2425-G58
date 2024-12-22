@@ -149,7 +149,10 @@ char get_separador (Query q){
 }
 
 void store_query_from_token (Query q, char **tokens, int n_tokens){
-    int N = 0, first = 0, last = 0;
+    int N = 0;
+    int begin, end;
+    int day, month, year;
+
     if (tokens[0] != NULL){
         
         if (strlen (tokens[0]) > 1)
@@ -169,9 +172,17 @@ void store_query_from_token (Query q, char **tokens, int n_tokens){
                 set_query3 ((short) atoi(tokens[1]), (short) atoi(tokens[2]), q);
                 break;
             case (4):
-                //first = calcula semana + afastada de 0
-                //last = calcula semana + proxima de 0
-                set_query4 (first, last, q);
+                begin = end = -1;
+                
+                if (tokens[1] != NULL && tokens[2] != NULL){
+                    sscanf (tokens[2], "%d/%d/%d", &year, &month, &day);
+                    begin = calc_week (day, month, year);
+                    
+                    sscanf (tokens[1], "%d/%d/%d", &year, &month, &day);
+                    end = calc_week (day, month, year);
+                }
+
+                set_query4 (begin, end, q);
                 break;
             case (5):
                 set_query5 (tokens[1], atoi (tokens[2]), q);
@@ -281,13 +292,22 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     if (qs != NULL) add_query_stats(qs, elapsed, 3);
 }
 
-void answer4(Query q, Output out, Query_stats qs){
+void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
-    
-    output_empty (out);
 
+    
+    int mw = get_max_week(am), art_id, top_count;
+    
+    if(q->query4->begin_week > mw) output_empty (out);
+    else {
+        art_id = find_most_freq_top_art(q->query4->begin_week, q->query4->end_week, am, &top_count);
+        if(top_count == 0) output_empty(out);
+        else print_most_freq_top_art(art_id, top_count, am, out);
+    }
+    
+    
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
