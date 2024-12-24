@@ -43,15 +43,6 @@ int get_user_id (User u);
  */
 short get_user_age (User u);
 
-/**
- * @brief Função desenvolvida para satisfazer o encapsulamento.
- *
- * Função necessária à componente de encapsulamento. 
- * 
- * @param u Usuário cuja lista de músicas curtidas será devolvida.
- * @return GArray que contém as músicas curtidas por um usuário.
- */
-const GArray *get_liked_musics(User u);
 
 int get_user_index(User u);
 

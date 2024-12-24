@@ -1,3 +1,5 @@
+#define _GNU_SOURCE and #define _POSIC_C_SOURCE 1999309L
+
 #include <stdio.h>
 #include <time.h>
 
@@ -30,6 +32,92 @@ Master_Manager create_master_manager(){
     e->hist_M = create_history_manager();
     return e;
 }
+
+/* COM TEMPOS
+void store_Entities(char **entity_paths, Master_Manager master_M){
+    struct timespec startart, endart;
+    double elapsedart;
+    clock_gettime(CLOCK_REALTIME, &startart);
+    
+    store_Artists(entity_paths[2], master_M->artist_M);
+    
+    clock_gettime(CLOCK_REALTIME, &endart);
+    elapsedart = (endart.tv_sec - startart.tv_sec) + (endart.tv_nsec - startart.tv_nsec)/1e9;
+    printf("Store Artists: %lfs\n", elapsedart);
+
+
+
+    struct timespec startalb, endalb;
+    double elapsedalb;
+    clock_gettime(CLOCK_REALTIME, &startalb);
+
+    store_Album (entity_paths[3], master_M->album_M, master_M->artist_M);
+    
+    clock_gettime(CLOCK_REALTIME, &endalb);
+    elapsedalb = (endalb.tv_sec - startalb.tv_sec) + (endalb.tv_nsec - startalb.tv_nsec)/1e9;
+    printf("Store Albums: %lfs\n", elapsedalb);
+
+
+
+    struct timespec startmus, endmus;
+    double elapsedmus;
+    clock_gettime(CLOCK_REALTIME, &startmus);
+
+    store_Musics(entity_paths[1], master_M->music_M, master_M->artist_M, master_M->album_M);
+    
+    clock_gettime(CLOCK_REALTIME, &endmus);
+    elapsedmus = (endmus.tv_sec - startmus.tv_sec) + (endmus.tv_nsec - startmus.tv_nsec)/1e9;
+    printf("Store Musics: %lfs\n", elapsedmus);
+    
+
+    
+    struct timespec startord, endord;
+    double elapsedord;
+    clock_gettime(CLOCK_REALTIME, &startord);
+
+    order_duration (master_M->artist_M);
+
+    clock_gettime(CLOCK_REALTIME, &endord);
+    elapsedord = (endord.tv_sec - startord.tv_sec) + (endord.tv_nsec - startord.tv_nsec)/1e9;
+    printf("Order Artists: %lfs\n", elapsedord);
+
+
+    
+    struct timespec startusr, endusr;
+    double elapsedusr;
+    clock_gettime(CLOCK_REALTIME, &startusr);
+
+    store_Users(entity_paths[0], master_M->user_M, master_M->music_M);
+
+    clock_gettime(CLOCK_REALTIME, &endusr);
+    elapsedusr = (endusr.tv_sec - startusr.tv_sec) + (endusr.tv_nsec - startusr.tv_nsec)/1e9;
+    printf("Store Users: %lfs\n", elapsedusr);
+
+
+    
+    struct timespec starthis, endhis;
+    double elapsedhis;
+    clock_gettime(CLOCK_REALTIME, &starthis);
+
+    store_History(entity_paths[4], master_M->hist_M, master_M->artist_M, master_M->music_M, master_M->user_M);
+    
+    clock_gettime(CLOCK_REALTIME, &endhis);
+    elapsedhis = (endhis.tv_sec - starthis.tv_sec) + (endhis.tv_nsec - starthis.tv_nsec)/1e9;
+    printf("Store Hist: %lfs\n", elapsedhis);
+    
+
+
+    struct timespec starttop, endtop;
+    double elapsedtop;
+    clock_gettime(CLOCK_REALTIME, &starttop);
+
+    calc_top10s(master_M->artist_M);
+    acc_freq_top10s(master_M->artist_M);
+
+    clock_gettime(CLOCK_REALTIME, &endtop);
+    elapsedtop = (endtop.tv_sec - starttop.tv_sec) + (endtop.tv_nsec - starttop.tv_nsec)/1e9;
+    printf("Top 10s: %lfs\n", elapsedtop);
+}*/
 
 void store_Entities(char **entity_paths, Master_Manager master_M){
     store_Artists(entity_paths[2], master_M->artist_M);

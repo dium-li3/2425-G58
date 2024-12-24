@@ -10,7 +10,6 @@ typedef struct user{
     char *last_name;
     short age;
     char *country;
-    GArray *liked_music_ids;
     GPtrArray *yearly_history_ids;
     int index;
 } *User;
@@ -20,7 +19,7 @@ typedef struct user{
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-User create_user (int id, char *email, char *fn, char *ln, short age, char *c, GArray *lmids, int index){
+User create_user (int id, char *email, char *fn, char *ln, short age, char *c, int index){
 
     GArray *year;
     User u = malloc(sizeof (struct user));
@@ -30,7 +29,6 @@ User create_user (int id, char *email, char *fn, char *ln, short age, char *c, G
     u->last_name = strdup (ln);
     u->age = age;
     u->country = strdup (c);
-    u->liked_music_ids = lmids;
     u->index = index;
   
     u->yearly_history_ids = g_ptr_array_sized_new (7);
@@ -57,10 +55,6 @@ int *get_user_id_pointer (User u){
 
 short get_user_age (User u){
     return u->age;
-}
-
-const GArray *get_liked_musics(User u){
-    return u->liked_music_ids;
 }
 
 int get_user_index(User u){
@@ -120,12 +114,11 @@ void free_user(User u){
     free(u->first_name);
     free(u->last_name);
     free(u->country);
-    if (u->liked_music_ids != NULL)
-        g_array_free(u->liked_music_ids, TRUE);
 
     for (int i = 0; i < u->yearly_history_ids->len; i++)
         g_array_free (u->yearly_history_ids->pdata[i], TRUE);
     g_ptr_array_free (u->yearly_history_ids, TRUE);
+    
     free(u);
 }
 
@@ -187,13 +180,11 @@ User create_user_from_tokens (char **tokens, int index){
     int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
     int id;
     int age;
-    GArray *liked_musics = NULL;
     User u = NULL;
     if (valid){ //store
         id = atoi (tokens[0]+1);
         age = read_date_to_age (tokens[4]);
-        liked_musics = store_list (tokens[7]);
-        u = create_user (id, tokens[1], tokens[2], tokens[3], age, tokens[5], liked_musics, index);
+        u = create_user (id, tokens[1], tokens[2], tokens[3], age, tokens[5], index);
     }
     return u;
 }

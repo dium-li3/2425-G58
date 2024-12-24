@@ -62,7 +62,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
 
     Output out = open_out("resultados/users_errors.csv", ';');
     User user = NULL;
-    const GArray *liked_musics = NULL;
+    GArray *liked_musics = NULL;
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
     int i;
     char **tokens;
@@ -75,7 +75,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
         if (user != NULL){
             user_id = strdup(tokens[0]);
             g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
-            liked_musics = get_liked_musics(user);
+            liked_musics = store_list (tokens[7]);
             if (all_musics_exist(liked_musics, mm)){
                 add_like_genres(liked_musics, mm, get_user_age(user));
                 insert_user_by_id (user, user_manager);
@@ -84,6 +84,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
                 free_user(user);
                 error_output (p, out);
             }
+            g_array_free(liked_musics, TRUE);
         }
         else
             error_output (p, out);
