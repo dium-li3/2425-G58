@@ -35,6 +35,14 @@ ssize_t get_nRead (Parser p){
     return p->nRead;
 }
 
+long get_file_pos(Parser p){
+    return ftell(p->fp);
+}
+
+void set_file_pos(Parser p, long new_fp){
+    fseek(p->fp, new_fp, SEEK_SET);
+}
+
 void go_back_1line (Parser p){
     fseek (p->fp, -(p->nRead), SEEK_CUR);
 }

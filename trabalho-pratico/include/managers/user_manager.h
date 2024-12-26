@@ -64,13 +64,13 @@ const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager 
 void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id);
 
 /**
- * @brief Recebe o id de um usuário e expõe as suas informações.
+ * @brief Recebe o id de um usuário e imprime as suas informações.
  *
- * Busca o usuário na hash table do gestor de usuários e expõe os dados daquele,
- * separados por um caractér guardado no Output.
+ * Busca o usuário na hash table do gestor de usuários e imprime os dados daquele,
+ * separados por um caractér guardado no Output. Caso o utilizador não exista, imprime apenas \n.
  * 
  * @param um Gestor que fornece a hash table de usuários.
- * @param id id do usuário a ser expostos.
+ * @param id id do usuário a ser imprimido.
  * @param out Struct usado pelo output.
  */
 void print_user_res_by_id (User_Manager um, int id, Output out);

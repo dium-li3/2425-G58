@@ -19,9 +19,11 @@ typedef struct user *User;
  * 
  * @param tokens Array dos campos de informação do CSV.
  * @param index Índice do utilizador no array do seu gestor.
+ * @param file_pos Posição do utilizador no ficheiro CSV.
+ * 
  * @return Apontador para o novo usuário e NULL caso este seja inválido.
  */
-User create_user_from_tokens (char **tokens, int index);
+User create_user_from_tokens (char **tokens, int index, long file_pos);
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -45,6 +47,7 @@ short get_user_age (User u);
 
 
 int get_user_index(User u);
+
 
 /**
  * @brief Função que devolve um array de ids de históricos de um dado ano de um utilizador @p u .
@@ -75,14 +78,17 @@ const GArray *get_year_history(User u, int year);
 void add_year_history_id(User u, int year, int history_id);
 
 /**
- * @brief Expoẽ as informações de um usuário.
+ * @brief Imprime as informações de um usuário.
  *
- * Revela as informações de um usuário, separadas por
- * um caractér guardado no @p out.
+ * Imprime as informações de um usuário, separadas por
+ * um caractér guardado no @p out .
+ * Os vários campos não são guardados em @p u , mas são obtidos usando a posição no ficheiro que @p u guarda.
  * 
- * @param u Usuário que terá suas informações expostas.
+ * @param u Usuário que terá suas informações imprimidas.
+ * @param out Ficheiro de resposta.
+ * @param p Ficheiro CSV dos utilizadores.
  */
-void print_user_res(User u, Output out);
+void print_user_res(User u, Output out, Parser p);
 
 /**
  * @brief Libera a memória ocupada por um registo de usuário.

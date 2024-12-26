@@ -7,6 +7,8 @@
 #include "album_manager.h"
 #include "output.h"
 
+#define MUSIC_ELEMS 7 //devia ser 8, mas assim ignora as lyrics
+
 typedef struct music_manager *Music_Manager;
 
 

@@ -14,6 +14,7 @@ typedef struct user_manager {
     GHashTable *users_by_id;
     int total_users;
     char **users_ids;
+    char *user_file_path;
 } *User_Manager;
 
 
@@ -56,22 +57,25 @@ char **get_users_ids (User_Manager um){
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        perror("store_Users(34)");
+        perror("store_Users(57)");
         exit(1);
     }
+
+    user_manager->user_file_path = strdup(user_path);
 
     Output out = open_out("resultados/users_errors.csv", ';');
     User user = NULL;
     GArray *liked_musics = NULL;
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
     int i;
+    long file_pos;
     char **tokens;
     char *user_id;
 
     tokens = parse_line(p, USER_ELEMS); //ignorar a 1ª linha do ficheiro
     free_tokens(tokens, USER_ELEMS);
-    for (tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
-        user = create_user_from_tokens(tokens, i);
+    for (file_pos = get_file_pos(p), tokens = parse_line(p, USER_ELEMS), i = 0; tokens != NULL; tokens = parse_line(p, USER_ELEMS)){
+        user = create_user_from_tokens(tokens, i, file_pos);
         if (user != NULL){
             user_id = strdup(tokens[0]);
             g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
@@ -90,6 +94,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
             error_output (p, out);
         
         free_tokens(tokens, USER_ELEMS);
+        file_pos = get_file_pos(p);
     }
     user_manager->users_ids = (char**) array_users_ids->data;
     user_manager->total_users = array_users_ids->len;
@@ -133,7 +138,11 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
 */
 void print_user_res_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
-    print_user_res(u, out);
+    Parser p = open_parser(um->user_file_path);
+
+    print_user_res(u, out, p);
+
+    close_parser(p);
 }
 
 void free_user_manager(User_Manager um){
@@ -141,6 +150,7 @@ void free_user_manager(User_Manager um){
     for (int i = 0; i < um->total_users; i++)
         free (um->users_ids[i]);
     free (um->users_ids);
+    free(um->user_file_path);
     free (um);
 }
 

@@ -31,6 +31,23 @@ void close_parser(Parser p);
 ssize_t get_nRead (Parser p);
 
 /**
+ * @brief Devole a posição atual no ficheiro.
+ * 
+ * @param p Parser.
+ * 
+ * @return Posição no ficheiro. 
+ */
+long get_file_pos(Parser p);
+
+/**
+ * @brief Muda a posição no ficheiro de @p p .
+ * 
+ * @param p Parser cuja posição deve ser modificada.
+ * @param new_fp Nova posição a definir.
+ */
+void set_file_pos(Parser p, long new_fp);
+
+/**
  * @brief Volta uma linha atrás no ficheiro que o parser tem aberto.
  * 
  * @param p Estrutura que se mantém a par de um ficheiro aberto. 
