@@ -8,8 +8,6 @@
 #include "album_manager.h"
 #include "utils.h"
 
-#define MUSIC_ELEMS 8
-
 typedef struct music_manager
 {
     GHashTable *musics_by_id;
