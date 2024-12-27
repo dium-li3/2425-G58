@@ -65,7 +65,13 @@ const char *get_art_name(Artist a);
  */
 char get_art_type_from_art(Artist a);
 
-
+/**
+ * @brief Devolve o valor que um artista @p a ganha sempre que a sua música é ouvida.
+ * 
+ * @param a Artista
+ * 
+ * @return Receita por música ouvida.
+ */
 double get_art_recipe_stream (Artist a);
 
 
@@ -79,8 +85,15 @@ double get_art_recipe_stream (Artist a);
  */
 int get_week_listening_time(Artist a, int week);
 
-
-//Devolve um array com os ids dos artistas que fazem parte de um grupo.
+/**
+ * @brief Devolve um array com os ids dos artistas que fazem parte do grupo de @p a .
+ * 
+ * Só devolve algo se o artista @p a for um grupo, caso contrário devolve NULL.
+ * 
+ * @param a Artista
+ * 
+ * @return Array de ids de artistas.
+ */
 const GArray *get_group_id_constituent (Artist a);
 
 
@@ -96,7 +109,15 @@ const GArray *get_group_id_constituent (Artist a);
  */
 void print_art_res(Artist a, Output out);
 
-
+/**
+ * @brief Escreve num dado ficheiro de output @p out certas informações de um artista @p a .
+ * 
+ * Em base funciona da merma forma que a função print_art_res() mas dá print de um
+ * grupo de valores diferentes do artista.
+ * 
+ * @param a Artista
+ * @param out Estrutura que se mantém a par do ficheiro de output.
+ */
 void print_art_info(Artist a, Output out);
 
 

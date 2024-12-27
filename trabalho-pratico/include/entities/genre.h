@@ -62,8 +62,25 @@ int get_genre_total_likes (Genre gen);
  */
 void increment_like(Genre gen, short age);
 
+/**
+ * @brief Atualiza um campo interno do género @p gen para ter o valor @p index .
+ * 
+ * Isto mais tarde permitirá que saibamos a posição deste género @p gen no array de 
+ * géneros sem ter de percorrer o array e sim apenas pesquisando por ele
+ * diretamente na hashtable.
+ * 
+ * @param gen Género
+ * @param index Índice do género @p gen no array
+ */
 void add_gen_index (Genre gen, int index);
 
+/**
+ * @brief Devolve o nome de um dado Género.
+ * 
+ * @param gen Género
+ * 
+ * @return Nome do género
+ */
 const char* get_genre_name (Genre gen);
 
 /**

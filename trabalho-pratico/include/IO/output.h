@@ -6,14 +6,47 @@
 
 typedef struct output *Output;
 
+/**
+ * @brief Cria um Output com um caminho @p path para um ficheiro e um caractér 
+ * @p separador que vai separar cada elemento que o output for dar print de uma só vez.
+ * 
+ * @param path Caminho para um ficheiro
+ * @param separador Caractér que separa o que está a ser escrito numa mesma linha
+ * 
+ * @return Estrutura de output 
+ */
 Output open_out (char *path, char separador);
 
+/**
+ * @brief Liberta o espaço ocupado pela estrutura do output @p out .
+ * 
+ * @param out Output
+ */
 void close_output(Output out);
 
+/**
+ * @brief Escreve uma linha vazia no ficheiro de output.
+ * 
+ * @param out Output
+ */
 void output_empty (Output out);
 
+/**
+ * @brief Escreve um dado número @p n_infos de elementos de @p infos no ficheiro de output,
+ * cada elemento separado por um caractér separador guardado pelo output @p out .
+ * 
+ * @param infos 'Lista' de elementos
+ * @param n_infos Número de elementos
+ * @param out Output
+ */
 void output_geral (char **infos, int n_infos,Output out);
 
+/**
+ * @brief Escreve uma linha de um ficheiro CSV num ficheiro de erros.
+ * 
+ * @param p Ficheiro CSV
+ * @param out Ficheiro de erros
+ */
 void error_output (Parser p, Output out);
 
 

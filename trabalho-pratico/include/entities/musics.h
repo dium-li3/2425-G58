@@ -64,9 +64,13 @@ int get_music_duration(Music m);
  */
 const GArray *get_music_artists (Music m);
 
-
-//GArray *get_music_artists_copy(Music m);
-
+/**
+ * @brief Devolve o id do album ao qual a música @p m pertence.
+ * 
+ * @param m Música
+ * 
+ * @return Id do album ao qual pertence. 
+ */
 int get_music_album (Music m);
 
 /**
