@@ -3,12 +3,20 @@
 
 typedef struct album *Album;
 
-/*
-    Cria um album com um dado título.
-*/
+/**
+ * @brief Cria um album com um dado título @p title .
+ * 
+ * @param title Título a guardar no album.
+ * 
+ * @return Album 
+ */
 Album create_album_from_tokens (char* title);
 
-//Liberta o espaço usado por um album.
+/**
+ * @brief Liberta o espaço usado por um dado album @p album .
+ * 
+ * @param album Album
+ */
 void free_album (Album album);
 
 #endif

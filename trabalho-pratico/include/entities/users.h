@@ -45,7 +45,17 @@ int get_user_id (User u);
  */
 short get_user_age (User u);
 
-
+/**
+ * @brief Devolve a posição de um dado utilizador @p u no array de strings de ids do seu manager.
+ * 
+ * Isto permite-nos saber a posição deste utilizador @p u no array de 
+ * de strings de ids sem ter de percorrer o dito array e sim apenas pesquisando pelo
+ * utilizador @p u diretamente na hashtable.
+ * 
+ * @param u Utilizador
+ * 
+ * @return Índice do utlizador @p u no array
+ */
 int get_user_index(User u);
 
 
@@ -74,7 +84,6 @@ const GArray *get_year_history(User u, int year);
  * @param year ano em que o histórico aconteceu, dá-nos o índice do histórico no array de anos.
  * @param history_id id do histórico a guardar no utilizador.
 */
-
 void add_year_history_id(User u, int year, int history_id);
 
 /**

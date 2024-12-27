@@ -19,7 +19,7 @@ typedef struct history *History;
 History create_history_from_tokens (char **tokens, int *year);
 
 /**
- * @brief Devolve o dia do mês ao qual um histórico se refere.
+ * @brief Devolve o dia do mês ao qual um histórico @p h se refere.
  * 
  * @param h histórico que contém a informação.
  * 
@@ -109,7 +109,7 @@ int get_history_dur(History h);
 
 
 /**
- * @brief Liberta o espaço usado por um histórico.
+ * @brief Liberta o espaço usado por um histórico @p h .
  * 
  * @param h Pointer para o struct history a ser libertado.
 */
