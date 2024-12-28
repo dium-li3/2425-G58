@@ -58,7 +58,6 @@ short get_user_age (User u);
  */
 int get_user_index(User u);
 
-
 /**
  * @brief Função que devolve um array de ids de históricos de um dado ano de um utilizador @p u .
  * 

@@ -5,9 +5,7 @@
 #include <stdio.h>
 #include "output.h"
 
-
 typedef struct artist *Artist;
-
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -19,7 +17,6 @@ typedef struct artist *Artist;
  */
 int get_art_id(Artist a);
 
-
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
  *
@@ -29,7 +26,6 @@ int get_art_id(Artist a);
  * @return País do artista .
  */
 const char *get_art_country(Artist a);
-
 
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
@@ -41,7 +37,6 @@ const char *get_art_country(Artist a);
  */
 int get_disc_duration(Artist a);
 
-
 /**
  * @brief Função desenvolvida para satisfazer o encapsulamento.
  *
@@ -51,7 +46,6 @@ int get_disc_duration(Artist a);
  * @return Devolve o nome do artista recebido.
  */
 const char *get_art_name(Artist a);
-
 
 /**
  * @brief Dada uma string com o tipo do artista, devolve o caracter que o representa.
@@ -74,7 +68,6 @@ char get_art_type_from_art(Artist a);
  */
 double get_art_recipe_stream (Artist a);
 
-
 /**
  * @brief Devolve o tempo de reprodução de um artista numa determinada semana.
  * 
@@ -95,7 +88,6 @@ int get_week_listening_time(Artist a, int week);
  * @return Array de ids de artistas.
  */
 const GArray *get_group_id_constituent (Artist a);
-
 
 /**
  * @brief Função que "printa" um artista.
@@ -120,7 +112,6 @@ void print_art_res(Artist a, Output out);
  */
 void print_art_info(Artist a, Output out);
 
-
 /**
  * @brief Função auxiliar para imprimir o artista com mais tops 10.
  * 
@@ -129,7 +120,6 @@ void print_art_info(Artist a, Output out);
  * @param out Ficheiro de resposta.
  */
 void print_top_count_art(Artist a, int top_count, Output out);
-
 
 /**
  * @brief Função usada de base para ordenar o array de artistas do @b artist_manager
@@ -150,7 +140,6 @@ void print_top_count_art(Artist a, int top_count, Output out);
  */
 int compare_dur (gconstpointer a, gconstpointer b);
 
-
 /**
  * @brief Compara o tempo de reprodução de @p a e @p b na semana dada por @p week .
  * 
@@ -163,7 +152,6 @@ int compare_dur (gconstpointer a, gconstpointer b);
  * @return TRUE -> a<b ou FALSE -> a>b
  */
 int compare_listening_time(void *a, void *b, void *week);
-
 
 /**
  * @brief Cria um artista se todas as suas informações forem válidas.
@@ -182,7 +170,6 @@ int compare_listening_time(void *a, void *b, void *week);
  */
 Artist create_artist_from_tokens(char **tokens);
 
-
 /**
  * @brief Adiciona uma duração ao tempo de discografia de um artista individual.
  *
@@ -195,7 +182,6 @@ Artist create_artist_from_tokens(char **tokens);
  */
 void add_disc_duration(Artist a, int duration);
 
-
 /**
  * @brief Adiciona um tempo de reprodução a um artista.
  * 
@@ -207,7 +193,6 @@ void add_disc_duration(Artist a, int duration);
  */
 void add_list_time(Artist a, int week, int t);
 
-
 /**
  * @brief Põe a posição @p week do array weeks do artista a -1.
  * 
@@ -215,7 +200,6 @@ void add_list_time(Artist a, int week, int t);
  * @param week Semana em que o artista esteve no top 10.
  */
 void mark_top10(Artist a, int week);
-
 
 /**
  * @brief Insere em max_week+1 um 0.
@@ -228,7 +212,6 @@ void mark_top10(Artist a, int week);
  */
 void set_art_max_week(Artist a, int max_week);
 
-
 /**
  * @brief Calcula o array de frequências acumuladas de top 10 de um artista.
  * 
@@ -239,7 +222,6 @@ void set_art_max_week(Artist a, int max_week);
  */
 void acc_freq_top10_1art(Artist a);
 
-
 /**
  * @brief Devolve o nº de tops total de um artista.
  * 
@@ -249,7 +231,6 @@ void acc_freq_top10_1art(Artist a);
  */
 int get_art_max_top(Artist a);
 
-
 /**
  * @brief Aumenta em 1 o número de albuns que um artista tem.
  *
@@ -257,14 +238,12 @@ int get_art_max_top(Artist a);
 */
 void add_1_album (Artist a);
 
-
 /*
  * @brief Adiciona a receita inteira que um artista recebe por música ouvida ao seu total ganho.
  *
  * @param a Artista ao qual se vai aumentar a receita total.
 */
 void add_recipe (Artist a);
-
 
 /**
  * @brief Adiciona uma percentagem de outra receita por stream a um Artista.
@@ -274,7 +253,6 @@ void add_recipe (Artist a);
  * @param percentage valor a ser somado à receita total.
 */
 void add_percentage_recipe (Artist a, double percentage);
-
 
 /**
  * @brief Libera a memória ocupada por um registo de artista.

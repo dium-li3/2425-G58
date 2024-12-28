@@ -4,9 +4,7 @@
 #include "parser.h"
 #include "queries.h"
 
-
 typedef struct master_manager *Master_Manager;
-
 
 /**
  * @brief Aloca memória para um Master Manager, i.e., para cada um dos gestores que o Master Manager contém.
@@ -14,7 +12,6 @@ typedef struct master_manager *Master_Manager;
  * @return Apontador para a estrutura do Master Manager.
  */
 Master_Manager create_master_manager();
-
 
 /**
  * @brief Armazena a informação das entidades.
@@ -28,7 +25,6 @@ Master_Manager create_master_manager();
  */
 void store_Entities (char **entity_paths, Master_Manager master_M);
 
-
 /**
  * @brief Responde a todas as queries.
  * 
@@ -39,7 +35,6 @@ void store_Entities (char **entity_paths, Master_Manager master_M);
  * @param qs Contém os tempos de execução e nº total de execuções para cada tipo de query.
  */
 void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs);
-
 
 /**
  * @brief Liberta a memória alocada para um Master Manager, i.e., liberta todos os gestores.

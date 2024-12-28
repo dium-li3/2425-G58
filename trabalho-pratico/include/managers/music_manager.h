@@ -21,7 +21,6 @@ typedef struct music_manager *Music_Manager;
  */
 Music_Manager create_music_manager();
 
-
 /**
  * @brief Adidiona likes ao género de cada música.
  *
@@ -33,7 +32,6 @@ Music_Manager create_music_manager();
  * @param age Idade do utilizador. 
  */
 void add_like_genres (const GArray *musics, Music_Manager mm, short age);
-
 
 /**
  * @brief Transforma todos os arrays de likes dos géneros do Music Manager em arrays de likes acumulados.

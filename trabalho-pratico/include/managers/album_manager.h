@@ -18,7 +18,6 @@ typedef struct album_manager *Album_Manager;
  * 
  * @return Gestor de álbuns.
 */
-
 Album_Manager create_album_manager ();
 
 /**
@@ -28,7 +27,6 @@ Album_Manager create_album_manager ();
  * 
  * @param am gestor cujo struct e tabela serão destruídos.
 */
-
 void free_album_manager (Album_Manager am);
 
 /**
@@ -41,7 +39,6 @@ void free_album_manager (Album_Manager am);
  * @param id Identificador único do álbum a ser adicionado, usado como chave para a tabela.
  * @param album_manager gestor cuja tabela terá um novo artista a ela adicionado.
 */
-
 void insert_album_by_id (Album al, int id, Album_Manager album_manager);
 
 /**
@@ -50,14 +47,13 @@ void insert_album_by_id (Album al, int id, Album_Manager album_manager);
  * Se relaciona com a função @b search_album_by_id, que dado um @p id e um gestor @p am, devolve o
  * álbum cujo @p id se especifica, caso este esteja presente no gestor, ou @b NULL, caso contrário.
  * Sabendo disso, o que a função @b album_exists faz resume-se a invocar a @b search_album_by_id,
- * com os parâmetros que esta necessita, e verificar se o retorno da chamada é nulo (neste caso
+ * com os parâmetros que esta necessita, e verifica se o retorno da chamada é nulo (neste caso
  * simbolizando que o @p id dado não é chave de nenhuma entrada da tabela @p am).
  * 
  * @param id Identificador único do álbum a ser procurado na tabela.
- * @param id Gestor cuja tabela será revistada a procura do @p id.
+ * @param am Gestor cuja tabela será revistada a procura do @p id.
  * @return Devolve @p TRUE se a tabela contiver o @p id; @b FALSE, caso contrário.
 */
-
 gboolean album_exists (int id, Album_Manager am);
 
 /**
@@ -75,7 +71,6 @@ gboolean album_exists (int id, Album_Manager am);
  *
  * @param art_man Contém a hash table dos artistas que terão seu número de álbuns incrementado.
  */
-
 void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man);
 
 #endif

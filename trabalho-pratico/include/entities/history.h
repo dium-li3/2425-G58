@@ -5,7 +5,6 @@
 
 typedef struct history *History;
 
-
 /**
  * @brief Dados tokens, processa a informação contida neles
  * e coloca-a num struct history.
@@ -25,7 +24,6 @@ History create_history_from_tokens (char **tokens, int *year);
  * 
  * @return Dia do mês em que o histórico foi gravado.
 */
-
 int get_history_day (History h);
 
 /**
@@ -35,7 +33,6 @@ int get_history_day (History h);
  * 
  * @return Mês em que o histórico foi gravado.
 */
-
 int get_history_month (History h);
 
 /**
@@ -45,7 +42,6 @@ int get_history_month (History h);
  * 
  * @return Hora do dia à qual o histórico se refere.
 */
-
 int get_history_hour (History h);
 
 /**
@@ -55,7 +51,6 @@ int get_history_hour (History h);
  * 
  * @return Duração, em segundos, da audição de uma música por um utilizador.
 */
-
 int get_history_listening_time (History h);
 
 /**
@@ -65,7 +60,6 @@ int get_history_listening_time (History h);
  * 
  * @return id da música à qual o histórico faz referência.
 */
-
 int get_history_music (History h);
 
 
@@ -77,7 +71,6 @@ int get_history_music (History h);
 */
 void set_artist_ids (History h, GArray *artist_ids);
 
-
 /**
  * @brief Devolve o dia de um histórico.
  * 
@@ -86,7 +79,6 @@ void set_artist_ids (History h, GArray *artist_ids);
  * @return Dia.
  */
 int get_history_day(History h);
-
 
 /**
  * @brief Devolve o mês de um histórico.
@@ -97,7 +89,6 @@ int get_history_day(History h);
  */
 int get_history_month(History h);
 
-
 /**
  * @brief Devolve a duração em segundos de um histórico.
  * 
@@ -106,7 +97,6 @@ int get_history_month(History h);
  * @return Duração em segundos.
  */
 int get_history_dur(History h);
-
 
 /**
  * @brief Liberta o espaço usado por um histórico @p h .

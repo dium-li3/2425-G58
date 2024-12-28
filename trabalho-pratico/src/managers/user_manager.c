@@ -17,7 +17,6 @@ typedef struct user_manager {
     char *user_file_path;
 } *User_Manager;
 
-
 User_Manager create_user_manager(){
     User_Manager um = malloc (sizeof(struct user_manager));
     um->users_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void *)free_user); //hash
@@ -29,6 +28,7 @@ User_Manager create_user_manager(){
 /*
     Insere um User na posição id da hash table.
 */
+
 void insert_user_by_id(User u, User_Manager user_manager){
     int id = get_user_id(u);
     g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
@@ -153,9 +153,6 @@ void free_user_manager(User_Manager um){
     free(um->user_file_path);
     free (um);
 }
-
-
-
 
 int get_user_index_from_id (int user_id, User_Manager um){
     User u = search_user_by_id (user_id, um);

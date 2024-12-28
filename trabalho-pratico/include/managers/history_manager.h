@@ -22,7 +22,6 @@ typedef struct history_manager *History_Manager;
  * 
  * @return Gestor de históricos.
 */
-
 History_Manager create_history_manager ();
 
 /**
@@ -34,7 +33,6 @@ History_Manager create_history_manager ();
  * 
  * @param hm Gestor cuja memória será liberada
 */
-
 void free_history_manager (History_Manager hm);
 
 /**
@@ -47,7 +45,6 @@ void free_history_manager (History_Manager hm);
  * @param id Identificador único do histórico a ser adicionado, usado como chave para a tabela.
  * @param history_manager gestor cuja tabela terá um novo histórico a ela adicionado.
 */
-
 void insert_history_by_id (History hi, int id, History_Manager history_manager);
 
 /**
@@ -61,7 +58,6 @@ void insert_history_by_id (History hi, int id, History_Manager history_manager);
  * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
  * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
 */
-
 History search_history_by_id(int id, History_Manager history_manager);
 
 /**
@@ -83,7 +79,6 @@ History search_history_by_id(int id, History_Manager history_manager);
  * @param mm Gestor de músicas.
  * @param um Gestor de usuários.
  */
-
 void store_History (char *history_path, History_Manager history_man, Art_Manager am, Music_Manager mm, User_Manager um);
 
 /**

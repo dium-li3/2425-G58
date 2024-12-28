@@ -49,14 +49,12 @@ void output_geral (char **infos, int n_infos,Output out);
  */
 void error_output (Parser p, Output out);
 
-
 /**
  * @brief Percorre @p a para ir imprimindo as linhas onde há erros (programa de testes).
  * 
  * @param a Array com o nº das linhas de um determinado ficheiro de resultados onde ocorreram erros.
  */
 void print_query_errors(GArray *a);
-
 
 /**
  * @brief Imprime os tempos das várias etapas do programa.
@@ -66,7 +64,6 @@ void print_query_errors(GArray *a);
  * @param elapsed Array com os tempos (criado na main_test).
  */
 void print_elapsed_times(double elapsed[]);
-
 
 /**
  * @brief Imprime os tempos de execução das diferentes queries.

@@ -5,7 +5,6 @@
 
 typedef struct music *Music;
 
-
 /**
  * @brief Cria uma Music a partir dos tokens de informação.
  *
@@ -18,7 +17,6 @@ typedef struct music *Music;
  */
 Music create_music_from_tokens (char **tokens);
 
-
 /**
  * @brief Devolve o id de uma música.
  *
@@ -27,7 +25,6 @@ Music create_music_from_tokens (char **tokens);
  * @return Id da música.
  */
 int get_music_id(Music m);
-
 
 /**
  * @brief Devolve o género de uma música.
@@ -41,7 +38,6 @@ int get_music_id(Music m);
  */
 const char* get_genre(Music m);
 
-
 /**
  * @brief Devolve a duração de uma música em segundos.
  *
@@ -50,7 +46,6 @@ const char* get_genre(Music m);
  * @return Duração da música.
  */
 int get_music_duration(Music m);
-
 
 /**
  * @brief Devolve um apontador para o array de artistas de uma música.
@@ -82,6 +77,5 @@ int get_music_album (Music m);
  * @param m Música a ser libertada.
  */
 void free_music(Music m);
-
 
 #endif

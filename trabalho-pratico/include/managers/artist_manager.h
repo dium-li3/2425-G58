@@ -9,7 +9,6 @@
 
 typedef struct art_manager *Art_Manager;
 
-
 /**
  * @brief Inicializa um gestor de artistas.
  *
@@ -23,7 +22,6 @@ typedef struct art_manager *Art_Manager;
  */
 Art_Manager create_art_manager();
 
-
 /**
  * @brief Insere um artista na tabela hash do gestor de artistas
  *
@@ -35,7 +33,6 @@ Art_Manager create_art_manager();
  * @param art_manager Gestor proprietário da tabela.
  */
 void insert_artists_by_id(Artist a, Art_Manager art_manager); 
-
 
 /**
  * @brief Ordena o array de artistas do gestor pelo tempo de discografia
@@ -49,14 +46,12 @@ void insert_artists_by_id(Artist a, Art_Manager art_manager);
  */
 void order_duration (Art_Manager artist_manager);
 
-
 /*
     Incrementa a receita total de um dado conjunto de artistas.
     No caso de artistas que são grupos, incrementa-se também a receita total
     dos seus membros por uma fração igual a 1 / nº membros.
 */
 void add_recipe_artists (const GArray *artists, Art_Manager am);
-
 
 /**
  * @brief Preenche um gestor com todos os artistas que estão num ficheiro
@@ -72,7 +67,6 @@ void add_recipe_artists (const GArray *artists, Art_Manager am);
  * @param artist_manager Gestor que será preenchido com os artistas do ficheiro.
  */
 void store_Artists (char *art_path, Art_Manager artists_manager);
-
 
 /**
  * @brief Confere se todos os artistas de um array estão presentes no gestor.
@@ -91,7 +85,6 @@ void store_Artists (char *art_path, Art_Manager artists_manager);
  */
 gboolean all_artists_exist (const GArray *artists, Art_Manager am);
 
-
 /**
  * @brief Adiciona uma duração à discografia de um grupo de artistas.
  *
@@ -107,7 +100,6 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am);
  */
 void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manager am);
 
-
 /**
  * @brief Adiciona um tempo de reprodução a um array de artistas.
  * 
@@ -120,7 +112,6 @@ void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manag
  */
 void add_listening_time_artists(const GArray *artists, int week, int time, Art_Manager am);
 
-
 /**
  * @brief Define a semana mais distante do 9/9/2024 onde ocorreram históricos.
  * 
@@ -128,7 +119,6 @@ void add_listening_time_artists(const GArray *artists, int week, int time, Art_M
  * @param mw Semana mais distante
  */
 void set_max_week(Art_Manager am, int mw);
-
 
 /**
  * @brief Devolve a semana máxima em que houve históricos.
@@ -138,7 +128,6 @@ void set_max_week(Art_Manager am, int mw);
  * @return Semana máxima.
  */
 int get_max_week(Art_Manager am);
-
 
 /**
  * @brief Calcula os top 10 de todas as semanas.
@@ -150,14 +139,12 @@ int get_max_week(Art_Manager am);
  */
 void calc_top10s(Art_Manager am);
 
-
 /**
  * @brief Calcula as frequências acumuladas de top 10 de todos os artistas.
  * 
  * @param am Contém o array com todos os artistas.
  */
 void acc_freq_top10s(Art_Manager am);
-
 
 /**
  * @brief Encontra o artista com mais tops 10 num dado intervalo de semanas.
@@ -171,7 +158,6 @@ void acc_freq_top10s(Art_Manager am);
  */
 int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *top_count);
 
-
 /**
  * @brief Incrementa o nº de álbuns de todos os artistas cujos IDs estão no array.
  * 
@@ -179,8 +165,6 @@ int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *to
  * @param am Contém a hash table de artistas por IDs.
  */
 void add_1_album_to_artists (const GArray *album_artists, Art_Manager am);
-
-
 
 /**
  * @brief Imprime o resumo de um artista com um dado ID.
@@ -190,7 +174,6 @@ void add_1_album_to_artists (const GArray *album_artists, Art_Manager am);
  * @param out Ficheiro de output.
  */
 void print_art_res_by_id (Art_Manager am, int id, Output out);
-
 
 /**
  * @brief Expõe os N primeiros artistas do array do gestor, dado o seu country.
@@ -208,7 +191,6 @@ void print_art_res_by_id (Art_Manager am, int id, Output out);
  */
 void print_N_country_art_info (Art_Manager am, char *country, int N, Output out);
 
-
 /**
  * @brief Expõe os N primeiros artistas do array do gestor.
  *
@@ -221,7 +203,6 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
  */
 void print_N_art_info (Art_Manager am, int N, Output out);
 
-
 /**
  * @brief Imprime para um ficheiro de resposta a informação do artista com mais top 10s.
  * 
@@ -232,7 +213,6 @@ void print_N_art_info (Art_Manager am, int N, Output out);
  */
 void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output out);
 
-
 /**
  * @brief Devolve o tamanho do array de artistas do gestor.
  *
@@ -242,7 +222,6 @@ void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output o
  * @return O tamanho do array de artistas do gestor.
  */
 int length_arr_disc (Art_Manager am);
-
 
 /**
  * @brief Libera a memória ocupada por um gestor de artistas.

@@ -22,7 +22,6 @@ typedef struct heap *Heap;
  */
 Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free_elem)(void *a), void *data);
 
-
 /**
  * @brief Imprime uma heap.
  * 
@@ -34,7 +33,6 @@ Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free_e
  */
 void heap_print(Heap h, void (*print)(void *x));
 
-
 /**
  * @brief Atualiza o campo @c data da heap.
  * 
@@ -42,7 +40,6 @@ void heap_print(Heap h, void (*print)(void *x));
  * @param new_data Novos dados.
  */
 void heap_set_data(Heap h, void *new_data);
-
 
 /**
  * @brief Puxa o elemento que está na posição @p i da heap até à sua posição correta.
@@ -52,7 +49,6 @@ void heap_set_data(Heap h, void *new_data);
  */
 void heap_bubbleUp(int i, Heap h);
 
-
 /**
  * @brief Empura o elemento que está na posição @p i da h até à sua posição correta.
  * 
@@ -60,7 +56,6 @@ void heap_bubbleUp(int i, Heap h);
  * @param h Heap.
  */
 void heap_bubbleDown(int i, Heap h);
-
 
 /**
  * @brief Adiciona @p x à heap.
@@ -74,7 +69,6 @@ void heap_bubbleDown(int i, Heap h);
  * @return Código de sucesso (1 se a inserção falhou ou 0 se a inserção funcionou).
  */
 int heap_add(Heap h, void *x);
-
 
 /**
  * @brief Remove o 1º elemento da Heap.
@@ -92,7 +86,6 @@ int heap_add(Heap h, void *x);
  */
 int heap_remove (Heap h, void **rem);
 
-
 /**
  * @brief Substitui o 1º elemento de @p h .
  * 
@@ -106,7 +99,6 @@ int heap_remove (Heap h, void **rem);
  */
 void heap_swap_fst_elem(Heap h, void *new);
 
-
 /**
  * @brief "Desembrulha" a Heap, devolvendo o array.
  * 
@@ -119,7 +111,6 @@ void heap_swap_fst_elem(Heap h, void *new);
  * @return Array da Heap.
  */
 void** heap_unwrap_array(Heap h, int *size);
-
 
 /**
  * @brief Liberta a memória usada por uma Heap.
