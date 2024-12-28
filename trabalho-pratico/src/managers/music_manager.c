@@ -112,10 +112,6 @@ void gen_arr_freq_acum(Music_Manager mm)
         gen_freq_acum (get_genre_by_index(mm, i));
 }
 
-
-/*
-    
-*/
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age)
 {
     int len = mm->genre_array->len;
@@ -163,7 +159,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
-int search_gen_index_by_id(int music_id,Music_Manager mm) {
+int search_gen_index_by_id(int music_id, Music_Manager mm) {
     Music m = search_music_by_id(music_id,mm);
     const char *gen = get_genre(m);
     int tam = mm->genre_array->len;

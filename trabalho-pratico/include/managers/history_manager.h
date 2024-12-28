@@ -58,8 +58,8 @@ void insert_history_by_id (History hi, int id, History_Manager history_manager);
  * no gestor, ou @b NULL, caso contrário.
  * 
  * @param id Identificador único do histórico a ser procurado na tabela.
- * @param id Gestor cuja tabela será revistada a procura do @p id.
- * @return Devolve @p TRUE se a tabela contiver o @p id; @b FALSE, caso contrário.
+ * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
+ * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
 */
 
 History search_history_by_id(int id, History_Manager history_manager);

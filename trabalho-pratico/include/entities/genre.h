@@ -26,7 +26,6 @@ Genre create_gen(const char *gen_name);
  */
 void free_genre(Genre *gen);
 
-
 /**
  * @brief Compara o nome de um gênero com outro nome, também
  * de um gênero.
@@ -108,7 +107,7 @@ void gen_freq_acum (Genre gen);
 void update_gen_total_likes (Genre gen, int min_age, int max_age);
 
 /**
- * @brief Função usada de base para ordenar o array de gêneros do @b music_manager
+ * @brief Função usada de base para ordenar o array de gêneros do @b music_manager.
  *
  * É um dos parâmetros que a função da glib @b g_array_sort() precisa para ordenar
  * o array de gêneros do @b music_manager segundo o total de curtidas de cada um.
@@ -120,12 +119,11 @@ void update_gen_total_likes (Genre gen, int min_age, int max_age);
  * qsort()-style, para que o array fique ordenado em ordem decrescente, facilitando
  * a sua exposição posteriormente.
  * 
- * @param a um g_pointer para um gênero constante.
- * @param b outro gênero que será comparado com @p a.
+ * @param a Um g_pointer para um gênero constante.
+ * @param b Outro gênero que será comparado com @p a.
  * @return Resultado da comparação.
  */
 int cmp_like_gen(gconstpointer g1, gconstpointer g2);
-
 
 /**
  * @brief Expõe as informações de um dado gênero.
