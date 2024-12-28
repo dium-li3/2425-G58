@@ -14,7 +14,7 @@ typedef struct history *History;
  * @param tokens Array de strings a processar e transformar na criação de um struct history.
  * @param year inteiro que irá guardar o ano do histórico.
  * 
- * @result History criado com os dados dos tokens.
+ * @return History criado com os dados dos tokens.
 */
 History create_history_from_tokens (char **tokens, int *year);
 
@@ -23,7 +23,7 @@ History create_history_from_tokens (char **tokens, int *year);
  * 
  * @param h histórico que contém a informação.
  * 
- * @result Dia do mês em que o histórico foi gravado.
+ * @return Dia do mês em que o histórico foi gravado.
 */
 
 int get_history_day (History h);
@@ -33,7 +33,7 @@ int get_history_day (History h);
  * 
  * @param h histórico que contém a informação.
  * 
- * @result Mês em que o histórico foi gravado.
+ * @return Mês em que o histórico foi gravado.
 */
 
 int get_history_month (History h);
@@ -43,7 +43,7 @@ int get_history_month (History h);
  * 
  * @param h histórico que contém a informação.
  * 
- * @result Hora do dia à qual o histórico se refere.
+ * @return Hora do dia à qual o histórico se refere.
 */
 
 int get_history_hour (History h);
@@ -53,7 +53,7 @@ int get_history_hour (History h);
  * 
  * @param h histórico que contém a informação.
  * 
- * @result Duração, em segundos, da audição de uma música por um utilizador.
+ * @return Duração, em segundos, da audição de uma música por um utilizador.
 */
 
 int get_history_listening_time (History h);
@@ -63,7 +63,7 @@ int get_history_listening_time (History h);
  * 
  * @param h histórico que contém a informação.
  * 
- * @result id da música à qual o histórico faz referência.
+ * @return id da música à qual o histórico faz referência.
 */
 
 int get_history_music (History h);

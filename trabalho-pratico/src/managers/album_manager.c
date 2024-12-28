@@ -16,9 +16,9 @@ typedef struct album_manager{
 
 Album_Manager create_album_manager (){
     Album_Manager album_m = malloc (sizeof (struct album_manager));
-    album_m->albums_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_album);
-    return album_m;
-}
+        album_m->albums_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_album);
+        return album_m;
+    }
 
 void free_album_manager (Album_Manager am){
     g_hash_table_destroy (am->albums_by_id);

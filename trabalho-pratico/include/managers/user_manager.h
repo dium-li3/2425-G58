@@ -44,7 +44,7 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager musi
  * @param year Ano no qual os eventos relacionados a esses históricos aconteceram.
  * @param um Gestor que contém o user cujo id @p user_id é o que procuramos.
  * 
- * @result Array de ids de históricos referente a um dado ano e a um dado utilizador.
+ * @return Array de ids de históricos referente a um dado ano e a um dado utilizador.
 */
 
 const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um);

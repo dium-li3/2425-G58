@@ -106,8 +106,8 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm);
  * 
  * @param alm Contém a hash table dos álbuns.
  */
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 
+void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 
 /**
  * @brief Imprime os géneros para um ficheiro de resposta (query 3).
@@ -118,8 +118,8 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
  *
  * @param out Contém o ficheiro de resultado e o separador (';' ou '=', consoante o tipo da query (S)).
  */
-void print_all_genres_info(Music_Manager mm, Output out);
 
+void print_all_genres_info(Music_Manager mm, Output out);
 
 /**
  * @brief Liberta um Music Manager.

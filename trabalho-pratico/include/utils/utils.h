@@ -65,7 +65,7 @@ int calc_week(int d, int m, int y);
  * @param array Array com elementos >= 0
  * @param N Número de elementos do array
  * 
- * @result Índice do maior elemento do array
+ * @return Índice do maior elemento do array
 */
 int array_max (int array[], int N);
 

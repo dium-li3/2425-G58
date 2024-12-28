@@ -70,7 +70,7 @@ int get_user_index(User u);
  * @param u Utilizador associado aos históricos cujos ids procuramos.
  * @param year Ano ao qual os históricos fazem referencia.
  * 
- * @result Array de ids de históricos referente a um dado ano e a um dado utilizador.
+ * @return Array de ids de históricos referente a um dado ano e a um dado utilizador.
 */
 const GArray *get_year_history(User u, int year);
 

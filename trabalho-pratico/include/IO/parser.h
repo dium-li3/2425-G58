@@ -10,7 +10,7 @@ typedef struct parser *Parser;
  * 
  * @param path string com o path para um ficheiro.
  * 
- * @result Pointer para a struct parser criada.
+ * @return Pointer para a struct parser criada.
 */
 Parser open_parser(char *path);
 
@@ -64,7 +64,7 @@ void go_back_1line (Parser p);
  * 
  * @param line Array do qual se vão converter os elementos para int.
  * 
- * @result GArray com os valores da @p line guardados como inteiros.
+ * @return GArray com os valores da @p line guardados como inteiros.
 */
 GArray *store_list (char *line);
 
@@ -75,7 +75,7 @@ GArray *store_list (char *line);
  * 
  * @param n_elems Número de elementos no qual dividir a linha lida.
  * 
- * @result Pointer para strings que contém @p n_elems string.
+ * @return Pointer para strings que contém @p n_elems string.
 */
 char **parse_line (Parser p, int n_elems);
 
@@ -92,7 +92,7 @@ char **parse_line (Parser p, int n_elems);
  * @param infos Pointer para strings com espaço para contar as divisões feitas na linha lida.
  * @param n_tokens Número de tokens máximo no qual se consegue dividir a linha e guardar a informação.
  * 
- * @result Número de bits lidos na linha do ficheiro.
+ * @return Número de bits lidos na linha do ficheiro.
 */
 int parse_1line_query(Parser p, char **info, int n_tokens);
 
@@ -116,7 +116,7 @@ void parse_1line (Parser p, char **line);
  * 
  * @param bd Data escrita em string.
  * 
- * @result Idade convertida da string, em short.
+ * @return Idade convertida da string, em short.
 */
 short read_date_to_age (char *bd);
 
@@ -129,7 +129,7 @@ short read_date_to_age (char *bd);
  * 
  * @param path caminho para a pasta dos csv.
  * 
- * @result Array com os paths para os ficheiros csv em específico.
+ * @return Array com os paths para os ficheiros csv em específico.
 */
 char **path3Entities (char *path);
 

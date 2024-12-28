@@ -84,8 +84,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             artist_ids = get_music_artists_from_id (get_history_music(history), mm);
             add_recipe_artists(artist_ids, am);
             add_year_history_id_to_user (um, user_id, year, hist_id); 
-            
-          
+               
             week = calc_week(get_history_day(history), get_history_month(history), year);
             if(week > max_week) max_week = week;
             dur = get_history_dur(history);
