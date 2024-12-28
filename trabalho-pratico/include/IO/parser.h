@@ -131,7 +131,7 @@ short read_date_to_age (char *bd);
  * 
  * @result Array com os paths para os ficheiros csv em específico.
 */
-char **path3Entities (char *path);
+char **pathEntities (char *path);
 
 /**
  * @brief Liberta o espaço usado pelo array de paths.

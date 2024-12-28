@@ -38,11 +38,11 @@ gboolean album_exists (int id, Album_Manager am){
     return (search_album_by_id (id, am) != NULL);
 }
 
-void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man){
+int store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man){
     Parser p = open_parser(album_path);
     if(p == NULL) {
-        perror("store_Album(17)");
-        exit(1);
+        fprintf(stderr, "%s: %s\n", strerror(errno), album_path);
+        return 1;
     }
 
     //Output out = open_out("resultados/albums_errors.csv", ';');
@@ -71,5 +71,5 @@ void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man
     }
     close_parser (p);
     // close_output (out);
+    return 0;
 }
-

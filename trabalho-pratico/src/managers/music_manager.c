@@ -19,11 +19,13 @@ typedef struct music_manager
 
 Music_Manager create_music_manager()
 {
-    Music_Manager mm = malloc(sizeof(struct music_manager));
+    Music_Manager mm = calloc(1, sizeof(struct music_manager));
+    
     mm->musics_by_id = g_hash_table_new_full(g_direct_hash, g_direct_equal, FALSE, (void *)free_music);
+    
     mm->genre_array = g_array_new(FALSE, TRUE, sizeof(Genre));
-    mm->genre_names = NULL;
     g_array_set_clear_func(mm->genre_array, (GDestroyNotify) free_genre);
+    
     return mm;
 }
 
@@ -197,14 +199,14 @@ int get_total_genres(Music_Manager mm) {
 }
 
 
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
+int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
     Parser p = open_parser(music_path);
     if(p == NULL) {
-        perror("store_Musics(145)");
-        exit(1);
+        fprintf(stderr, "%s: %s\n", strerror(errno), music_path);
+        return 1;
     }
 
-    Output out = open_out("resultados/musics_errors.csv", ';');
+    Output out = open_out("resultados/musics_errors.csv", ';', 0);
     Music music = NULL;
     int i = 0, album_id;
     char *gen_name;
@@ -249,6 +251,8 @@ void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Mana
 
     close_parser(p);
     close_output(out);
+
+    return 0;
 }
 
 void print_all_genres_info (Music_Manager mm, Output out){
@@ -267,9 +271,14 @@ void print_all_genres_info (Music_Manager mm, Output out){
 void free_music_manager(Music_Manager mm)
 {
     g_hash_table_destroy(mm->musics_by_id);
+    
     g_array_free(mm->genre_array, TRUE);
-    for (int i = 0; i < mm->total_genres; i++)
-        free (mm->genre_names[i]);
-    free(mm->genre_names);
+    
+    if(mm->genre_names != NULL) {
+        for (int i = 0; i < mm->total_genres; i++)
+            free (mm->genre_names[i]);
+        free(mm->genre_names);
+    }
+    
     free(mm);
 }

@@ -8,14 +8,16 @@
 typedef struct output{
     FILE *fp;
     char separador;
+    int interativo;
 } *Output;
 
 
 
-Output open_out (char *path, char separador){
+Output open_out (char *path, char separador, int interativo){
     Output out = calloc (1, sizeof (struct output));
     out->fp = fopen (path, "w");
     out->separador = separador;
+    out->interativo = interativo;
     return out;
 }
 

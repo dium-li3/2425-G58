@@ -19,10 +19,8 @@ typedef struct user_manager {
 
 
 User_Manager create_user_manager(){
-    User_Manager um = malloc (sizeof(struct user_manager));
+    User_Manager um = calloc (1, sizeof(struct user_manager));
     um->users_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void *)free_user); //hash
-    um->users_ids = NULL;
-    um->total_users = 0;
     return um;
 }
 
@@ -54,16 +52,16 @@ char **get_users_ids (User_Manager um){
     return um->users_ids; 
 }
 
-void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        perror("store_Users(57)");
-        exit(1);
+        fprintf(stderr, "%s: %s\n", strerror(errno), user_path);
+        return 1;
     }
 
     user_manager->user_file_path = strdup(user_path);
 
-    Output out = open_out("resultados/users_errors.csv", ';');
+    Output out = open_out("resultados/users_errors.csv", ';', 0);
     User user = NULL;
     GArray *liked_musics = NULL;
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
@@ -102,6 +100,8 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     gen_arr_freq_acum (mm);
     close_parser (p);
     close_output (out);
+
+    return 0;
 }
 
 User search_user_by_id(int id, User_Manager user_manager){
@@ -147,14 +147,18 @@ void print_user_res_by_id (User_Manager um, int id, Output out){
 
 void free_user_manager(User_Manager um){
     g_hash_table_destroy (um->users_by_id);
+    
     for (int i = 0; i < um->total_users; i++)
         free (um->users_ids[i]);
-    free (um->users_ids);
-    free(um->user_file_path);
+    
+    if(um->users_ids != NULL)
+        free (um->users_ids);
+    
+    if(um->user_file_path != NULL)
+        free(um->user_file_path);
+    
     free (um);
 }
-
-
 
 
 int get_user_index_from_id (int user_id, User_Manager um){

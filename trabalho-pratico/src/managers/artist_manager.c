@@ -315,14 +315,14 @@ void add_recipe_artists (const GArray *artists, Art_Manager am){
 }
 
 
-void store_Artists (char *art_path, Art_Manager artists_manager){
+int store_Artists (char *art_path, Art_Manager artists_manager){
     Parser p = open_parser(art_path);
     if(p == NULL) {
-        perror("store_Artists(146)");
-        exit(1);
+        fprintf(stderr, "%s: %s\n", strerror(errno), art_path);
+        return 1;
     }
 
-    Output out = open_out("resultados/artists_errors.csv", ';');
+    Output out = open_out("resultados/artists_errors.csv", ';', 0);
     Artist artist = NULL;
     int i = 0;
     char **tokens;
@@ -341,6 +341,8 @@ void store_Artists (char *art_path, Art_Manager artists_manager){
     }
     close_parser (p);
     close_output (out);
+
+    return 0;
 }
 
 int length_arr_disc (Art_Manager am){

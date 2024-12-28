@@ -12,7 +12,9 @@
 #include "testagem.h"
 
 
-int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
+int trabalho_test(char **argv, Query_stats qs, double elapsed[], int interativo){
+    int store = 0;  //código de sucesso para o armazenamento
+    
     struct timespec start, end;
     clock_gettime(CLOCK_REALTIME, &start);
 
@@ -21,17 +23,18 @@ int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
 
     Parser parser_queries = open_parser (argv[2]);
     if(parser_queries == NULL) {
-        perror("trabalho_test(22)");
+        free(qs);
+        perror("Inputs das queries:");
         return 1;
     }
 
 
-    char **entity_paths = path3Entities (path);
+    char **entity_paths = pathEntities (path);
     Master_Manager master_manager = create_master_manager(); 
 
 
     //Armazenamento e ordenação da informação + validação
-    store_Entities(entity_paths, master_manager);
+    store = store_Entities(entity_paths, master_manager);
     freeEntityPaths(entity_paths);
 
     clock_gettime(CLOCK_REALTIME, &end);
@@ -39,7 +42,8 @@ int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
 
 
     //Resposta às queries
-    answer_all_queries(parser_queries, master_manager, qs);
+    if(store == 0) answer_all_queries(parser_queries, master_manager, qs, interativo);
+    else free(qs);
     
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed[2] = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
@@ -54,7 +58,7 @@ int trabalho_test(int argc, char **argv, Query_stats qs, double elapsed[]){
     elapsed[3] = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     elapsed[3] = elapsed[3] - elapsed[2] - elapsed[1];
 
-    return 0;
+    return store;
 }
 
 
@@ -66,13 +70,14 @@ int main (int argc, char **argv){
     }
 
     Query_stats qs = create_query_stats();
+    int interativo = 0;
     
     struct timespec start, end;
     double elapsed[4];    //0->total; 1->store; 2->answer; 3->free
 
     clock_gettime(CLOCK_REALTIME, &start);
 
-    int r = trabalho_test(argc, argv, qs, elapsed);
+    int r = trabalho_test(argv, qs, elapsed, interativo);
 
     if(r==0) {
         clock_gettime(CLOCK_REALTIME, &end);

@@ -30,12 +30,15 @@ int search_user_index_by_id(int id, User_Manager um);
  * Armazena cada usuário na hash table do seu gestor, enquanto contabiliza
  * no array de gêneros do music_manager o número de curtidas que aquele 
  * usuário deu em cada gênero, com base na lista de músicas por ele curtidas.
+ * Caso não seja possível abrir o ficheiro, retorna 1.
  * 
  * @param user_path path do ficheiro dos usuários.
  * @param user_manager gestor cuja hash table receberá os usuários.
  * @param music_manager gestor proprietário do array de gêneros.
+ * 
+ * @return Código de sucesso.
  */
-void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
 
 /**
  * @brief Devolve os ids de históricos relacionados a um utilizador num dado ano.

@@ -181,10 +181,10 @@ short read_date_to_age (char *bd){
 }
 
 /*
-    Dado o path onde se encontram os 3 ficheiros .csv,
-    devolve um pointer para os 3 file pointers dos ficheiros.
+    Dado o path onde se encontram os ficheiros .csv,
+    devolve um pointer para os file pointers dos ficheiros.
 */
-char **path3Entities (char *path){
+char **pathEntities (char *path){
     size_t length_path = strlen(path);
     char *base_path = malloc (length_path+13);
     char **path_entities = malloc (sizeof (char*) * NEntities);

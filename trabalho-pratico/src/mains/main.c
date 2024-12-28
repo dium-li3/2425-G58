@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <omp.h>
 #include "master_manager.h"
 #include "parser.h"
 #include "queries.h"
 
-int trabalho (int argc, char **argv, Query_stats qs){
+int trabalho (char **argv, Query_stats qs, int interativo){
+    int store = 0;
+    
     char *path = argv[1];
 
     Parser parser_queries = open_parser (argv[2]);
@@ -15,21 +16,21 @@ int trabalho (int argc, char **argv, Query_stats qs){
         return 1;
     }
 
-    char **entity_paths = path3Entities (path);
+    char **entity_paths = pathEntities (path);
     Master_Manager master_manager = create_master_manager (); 
 
     //Armazenamento e ordenação da informação + validação
-    store_Entities(entity_paths, master_manager);
+    store = store_Entities(entity_paths, master_manager);
     freeEntityPaths(entity_paths);
 
     //Resposta às queries
-    answer_all_queries(parser_queries, master_manager, qs);
+    if(store == 0) answer_all_queries(parser_queries, master_manager, qs, interativo);
 
     //free moment
     free_master_manager(master_manager);
     close_parser(parser_queries);
 
-    return 0;
+    return store;
 }
 
 int main (int argc, char **argv){
@@ -37,9 +38,10 @@ int main (int argc, char **argv){
         printf("não incluiste os ficheiros direito.\n");
         return 1;
     }
-    printf("Número de threads disponíveis: %d\n", omp_get_num_procs());
     Query_stats qs = NULL;
-    int r = trabalho (argc, argv, qs);
+    int interativo = 0;
+
+    int r = trabalho (argv, qs, interativo);
     
     return r;
 }

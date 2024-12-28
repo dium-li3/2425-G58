@@ -20,25 +20,26 @@ Master_Manager create_master_manager();
  * @brief Armazena a informação das entidades.
  * 
  * Índices de @p entity_paths : 0->utilizadores, 1->músicas e 2->artistas
- * Também ordena o array de artistas por tempo de discografia.
+ * Também ordena o array de artistas por tempo de discografia e calcula todos os top 10.
+ * Caso não tenha sido possível abrir algum dos ficheiros, retorna 1.
  * 
  * @param entity_paths Array com os caminhos para os ficheiros CSV.
- * 
  * @param master_M Contém os gestores das entidades.
+ * 
+ * @return Código de sucesso.
  */
-void store_Entities (char **entity_paths, Master_Manager master_M);
+int store_Entities (char **entity_paths, Master_Manager master_M);
 
 
 /**
  * @brief Responde a todas as queries.
  * 
  * @param queries Parser com o caminho para o ficheiro de inputs.
- * 
  * @param mm Master Manager (contém todos os gestores).
- * 
  * @param qs Contém os tempos de execução e nº total de execuções para cada tipo de query.
+ * @param interativo Indica se o programa está a ser executado no modo interativo ou não.
  */
-void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs);
+void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs, int interativo);
 
 
 /**

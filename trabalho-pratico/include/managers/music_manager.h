@@ -97,16 +97,16 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm);
  * artistas e o seu álbum existem).
  * Também adiciona a duração de cada música aos seus artistas se a música for válida e então guardada.
  * Escreve todas as linhas de músicas inválidas no ficheiro de erros correspondente.
+ * Caso não seja possível abrir o ficheiro, retorna 1.
  * 
  * @param music_path Caminho para o ficheiro CSV das músicas.
- *
  * @param mm Music Manager que armazena as músicas e os géneros.
- *
  * @param am Contém a hash table dos artistas.
- * 
  * @param alm Contém a hash table dos álbuns.
+ * 
+ * @return Código de sucesso.
  */
-void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
+int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
 
 
 /**
