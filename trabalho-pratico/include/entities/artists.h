@@ -145,7 +145,6 @@ int compare_dur (gconstpointer a, gconstpointer b);
  * @param a Artista
  * @param b Artista
  * @param week Semana em questão
- * 
  * @return TRUE -> a<b ou FALSE -> a>b
  */
 int compare_listening_time(void *a, void *b, void *week);
@@ -229,12 +228,14 @@ int get_art_max_top(Artist a);
 
 /**
  * @brief Aumenta em 1 o número de albuns que um artista tem.
+ * 
+ * Incrementa em uma unidade o número de álbuns do artista @p a.
  *
  * @param a Artista que vai ter o seu número de albuns incrementado.
 */
 void add_1_album (Artist a);
 
-/*
+/**
  * @brief Adiciona a receita inteira que um artista recebe por música ouvida ao seu total ganho.
  *
  * @param a Artista ao qual se vai aumentar a receita total.

@@ -59,7 +59,6 @@ int get_week_listening_time(Artist a, int week) {
     return (week >= a->weeks->len) ? -1 : g_array_index(a->weeks, int, week);
 }
 
-
 const GArray *get_group_id_constituent (Artist a){
     const GArray *id_constituent = NULL;
     if (a->type == 'G')
@@ -142,10 +141,6 @@ char *get_art_type_str (Artist a){
     return res;
 }
 
-/*
-    Escreve num ficheiro de output um resumo
-    do artista, útil para a query 1.
-*/
 void print_art_res(Artist a, Output out){
     char **infos = calloc (5, sizeof(char *)); 
     infos[0] = strdup (a->name);

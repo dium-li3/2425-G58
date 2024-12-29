@@ -1,75 +1,119 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/*
+    
+*/
+/**
+ * @brief Valida o campo lista dos CSVs. 
+ * 
+ * Verifica se um campo de um ficheiro CSV inicia e termina com os caracteres "[" e "]",
+ * respectivamente.
+ * 
+ * @param tokens Tokens a desalocar.
+ * @param n Quantidade de tokens que cuja memória libertará espaço.
+*/
 int valid_list(char *lista);
 
-/*
-    Dados n tokens, liberta a memoria usada por eles
-    e pelo pointer que os guarda.
+/**
+ * @brief Libera a memória alocada pelos tokens. 
+ * 
+ * Dados @p n tokens, "dá free" do espaço usado por eles e pelo pointer que os guarda.
+ * 
+ * @param tokens Tokens a desalocar.
+ * @param n Quantidade de tokens que cuja memória libertará espaço.
 */
 void free_tokens(char **tokens, int n);
 
-/*
-    Calcula a duração em segundos. Só pode ser usada depois de se validar a string.
+/**
+ * @brief Calcula uma duração em segundos. 
+ * 
+ * Recebe uma contagem em horas, minutos e segundos (hh:mm:ss) e devolve o seu valor
+ * convertido em segundos. Só pode ser invocada depois de se validar a entrada.
+ * 
+ * @param st Valor a se converter em segundos.
+ * @result Resultado da conversão.
 */
 int calc_duration_s(char *st);
 
-/*
-    Converte segundos numa string hh:mm:ss
+/**
+ * @brief Converte um valor medido em segundos numa string "hh:mm:ss". 
+ * 
+ * Por meio de múltiplas divisões, transforma uma contagem em segundos numa string de formato
+ * "hh:mm:ss".
+ * 
+ * @param segs Valor a ser convertido na string com horas, minutos e segundos.
+ * @result Resultado da conversão.
 */
 char *calc_duration_hms(int segs);
 
-/*
-    Verifica se uma data de nascimento é válida e está escrita direito.
-    Datas são escritas na forma aaaa/mm/dd com
-    meses entre 1 e 12 e dias entre 1 e 31
+/**
+ * @brief Analisa uma determinada data. 
+ * 
+ * Verifica se uma data de nascimento é válida e está escrita direito. Datas são escritas na
+ * forma "aaaa/mm/dd" com meses entre 1 e 12, e dias entre 1 e 31.
+ * 
+ * @param date Data a ser inspecionada. 
+ * @result Devolve @b 1 se a data for válida; @b 0, se inválida.
 */
 int valid_date (char *date);
 
-//Passa todas as maiusculas de uma string em minúsculas.
+/**
+ * @brief Passa todas as maiúsculas de uma string em minúsculas.
+ * 
+ * Aplica a função @b tolower a cada carácter da string @p s.
+ * 
+ * @param s String cujos caracteres serão convertidos em minúsculas.
+*/
 void string_to_lower (char *s);
 
-//Verifica se uma dada string é igual a uma de duas dadas.
+/**
+ * @brief Verifica se uma dada string é igual a uma de duas dadas.
+ * 
+ * Testa se a string @p comp é igual a string @p s1 ou igual a string @p s2.
+ * 
+ * @param comp String que será testada.
+ * @param s1 Primeira string usada como modelo de comparação.
+ * @param s2 Segunda string usada como modelo de comparação.
+ * @result 1 caso @p comp seja igual a @p s1; 2, se @p comp for igual a @p s2.
+*/
 int same_string (const char *comp, const char *s1, const char *s2);
 
 /**
  * @brief Valida uma duração.
  *
- * Verifica se a duração segue o formato hh:mm:ss, com mm e ss <= 59 e hh <= 99.
+ * Verifica se a duração segue o formato "hh:mm:ss", esperando que os minutos e segundos sejam 
+ * menores ou iguais a 59 e as horas menores ou iguais a 99.
  *
  * @param durarion String com a duração.
- *
- * @return Booleano (1->válida e 0->inválida).
+ * @return 1 caso a duração seja válida; 0, caso seja inválida).
  */
 int valid_duration (char *duration);
 
-
 /**
- * @brief Calcula a semana de uma dada data decomposta em dia, mês e ano.
+ * @brief Retorna a quantidade de semanas entre a data fornecida e 09/09/2024.
  * 
- * A semana calculada é a semana de distância ao dia atual (9/9/2024).
+ * Calcula a semana do ano em que uma data se encontra, considerando o ponto de referência 
+ * 09/09/2024. Além disso, a função ajusta para anos bissextos e aplica algumas correções 
+ * específicas baseadas no número de dias entre a data fornecida e a referência em 2024.
  * 
- * @param d Dia
- * 
- * @param m Mês
- * 
- * @param y Ano
- * 
- * @return Semana
+ * @param d Dia da data fornecida.
+ * @param m Mês da data fornecida.
+ * @param y Ano da data fornecida.
+ * @return Número de semanas que a semana de entrada se distancia da data 09/09/2024.
  */
 int calc_week(int d, int m, int y);
 
 /**
  * @brief Calcula o índice onde está o maior valor de um array.
  * 
- * @param array Array com elementos >= 0
- * @param N Número de elementos do array
+ * Procura em um array o seu elemento com maior valor absoluto, considerando que cada um deles
+ * é maior ou igual a zero.
  * 
- * @return Índice do maior elemento do array
+ * @param array Array cujo índice do máximo se procura.
+ * @param N Número de elementos do array.
+ * @return Índice do maior elemento do array.
 */
 int array_max (int array[], int N);
-
-//Compara 2 inteiros.
-gint compare_g_int (gconstpointer p1, gconstpointer p2, void*);
 
 #endif
