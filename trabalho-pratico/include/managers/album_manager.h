@@ -25,7 +25,7 @@ Album_Manager create_album_manager ();
  * 
  * Dá free do struct e da hash table deste, dado um gestor @p am.  
  * 
- * @param am gestor cujo struct e tabela serão destruídos.
+ * @param am Gestor cujo struct e tabela serão destruídos.
 */
 void free_album_manager (Album_Manager am);
 
@@ -37,7 +37,7 @@ void free_album_manager (Album_Manager am);
  * 
  * @param al Álbum a ser adicionado na hash table do gestor.
  * @param id Identificador único do álbum a ser adicionado, usado como chave para a tabela.
- * @param album_manager gestor cuja tabela terá um novo artista a ela adicionado.
+ * @param album_manager Gestor cuja tabela terá um novo artista a ela adicionado.
 */
 void insert_album_by_id (Album al, int id, Album_Manager album_manager);
 
@@ -66,9 +66,7 @@ gboolean album_exists (int id, Album_Manager am);
  * na hash table do @p album_man.
  * 
  * @param album_path Caminho para o ficheiro CSV dos álbuns.
- *
  * @param album_man Album Manager que armazenará os álbuns.
- *
  * @param art_man Contém a hash table dos artistas que terão seu número de álbuns incrementado.
  */
 void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man);

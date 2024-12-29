@@ -62,8 +62,7 @@ char get_art_type_from_art(Artist a);
 /**
  * @brief Devolve o valor que um artista @p a ganha sempre que a sua música é ouvida.
  * 
- * @param a Artista
- * 
+ * @param a Artista cuja receita por reprodução se deseja.
  * @return Receita por música ouvida.
  */
 double get_art_recipe_stream (Artist a);
@@ -73,18 +72,16 @@ double get_art_recipe_stream (Artist a);
  * 
  * @param a Artista.
  * @param week Semana.
- * 
- * @return -1 se @p week é fora do array do artista ou o tempo de reprodução caso @c week<a->weeks->len
+ * @return -1 se @p week é fora do array do artista ou o tempo de reprodução caso @c week<a->weeks->len.
  */
 int get_week_listening_time(Artist a, int week);
 
 /**
- * @brief Devolve um array com os ids dos artistas que fazem parte do grupo de @p a .
+ * @brief Devolve um array com os ids dos artistas que fazem parte do grupo de @p a.
  * 
  * Só devolve algo se o artista @p a for um grupo, caso contrário devolve NULL.
  * 
- * @param a Artista
- * 
+ * @param a Artista.
  * @return Array de ids de artistas.
  */
 const GArray *get_group_id_constituent (Artist a);
@@ -160,9 +157,8 @@ int compare_listening_time(void *a, void *b, void *week);
  * artistas constituintes daquele id começa e termina com os caracteres
  * @b "[" e @b "]", respectivamente. Somado a isso, também faz a validação lógica
  * do artista, conferindo se o campo @b id_constituent de um artista 
- * individual não possui elementos.
- * 
- * Satisfeitas essas checagens, a função cria um artista.
+ * individual não possui elementos. Satisfeitas essas checagens, a função cria um
+ * artista.
  * 
  * @param tokens Strings segmentadas que contêm os dados necessários para criar
  * um artista.
@@ -249,7 +245,6 @@ void add_recipe (Artist a);
  * @brief Adiciona uma percentagem de outra receita por stream a um Artista.
  * 
  * @param a Artista ao qual a receita total vai ser aumentada.
- * 
  * @param percentage valor a ser somado à receita total.
 */
 void add_percentage_recipe (Artist a, double percentage);

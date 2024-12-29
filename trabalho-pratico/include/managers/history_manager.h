@@ -84,9 +84,10 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 /**
  * @brief Devolve a matriz do gestor de históricos.
  *
- * Devolve a matriz de reproduções do @p hm
+ * Devolve a matriz de reproduções do @p hm.
  * 
  * @param hm Gestor detentor da matriz a ser devolvida.
+ * @return Matriz do gestor.
  */
 
 int **get_matrix(History_Manager hm);

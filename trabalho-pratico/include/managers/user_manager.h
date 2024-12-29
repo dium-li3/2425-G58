@@ -71,10 +71,12 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager musi
 /**
  * @brief Devolve os ids de históricos relacionados a um utilizador num dado ano.
  * 
+ * Retorna um array com todos os históricos relacionados ao user com id @p user_id, 
+ * pertencentes ao ano @p year.
+ * 
  * @param user_id Id do utilizador ao qual queremos os ids de históricos.
  * @param year Ano no qual os eventos relacionados a esses históricos aconteceram.
  * @param um Gestor que contém o user cujo id @p user_id é o que procuramos.
- * 
  * @return Array de ids de históricos referente a um dado ano e a um dado utilizador.
 */
 const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um);

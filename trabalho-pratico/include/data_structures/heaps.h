@@ -15,9 +15,8 @@ typedef struct heap *Heap;
  * @param n Número de elementos a pré alocar.
  * @param comp Função de comparação.
  * @param free_elem Deve libertar um elemento da heap. Caso não se pretenda libertar os elementos individuais
- *                  aquando da libertação da heap, este campo deve ser NULL.
+ * aquando da libertação da heap, este campo deve ser NULL.
  * @param data Dados úteis a definir pelo utilizador.
- * 
  * @return Apontador para a Heap criada.
  */
 Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free_elem)(void *a), void *data);
@@ -65,7 +64,6 @@ void heap_bubbleDown(int i, Heap h);
  * 
  * @param h Heap.
  * @param x Elemento a adicionar.
- * 
  * @return Código de sucesso (1 se a inserção falhou ou 0 se a inserção funcionou).
  */
 int heap_add(Heap h, void *x);
@@ -81,7 +79,6 @@ int heap_add(Heap h, void *x);
  * 
  * @param h Heap.
  * @param rem Endereço onde deve ser colocado o elemento removido.
- * 
  * @return Código de sucesso (1 se a Heap está vazia ou 0 se foi possível remover).
  */
 int heap_remove (Heap h, void **rem);
@@ -107,7 +104,6 @@ void heap_swap_fst_elem(Heap h, void *new);
  * 
  * @param h Heap a desembrulhar.
  * @param size Apontador para colocar o tamanho.
- * 
  * @return Array da Heap.
  */
 void** heap_unwrap_array(Heap h, int *size);

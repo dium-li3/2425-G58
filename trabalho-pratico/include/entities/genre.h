@@ -68,17 +68,16 @@ void increment_like(Genre gen, short age);
  * géneros sem ter de percorrer o array e sim apenas pesquisando por ele
  * diretamente na hashtable.
  * 
- * @param gen Género
- * @param index Índice do género @p gen no array
+ * @param gen Género cujo campo @b index será modificado.
+ * @param index Índice do género @p gen no array.
  */
 void add_gen_index (Genre gen, int index);
 
 /**
  * @brief Devolve o nome de um dado Género.
  * 
- * @param gen Género
- * 
- * @return Nome do género
+ * @param gen Género portador do nome a devolver.
+ * @return Nome do género.
  */
 const char* get_genre_name (Genre gen);
 

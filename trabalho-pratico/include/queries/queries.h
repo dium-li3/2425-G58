@@ -29,18 +29,73 @@ typedef struct query5 *Query5;
 
 typedef struct query6 *Query6;
 
-//Cria uma struct query com espaço para as 3 queries atuais, todas já alocadas mas vazias.
+/**
+ * @brief Cria um gestor de álbuns.
+ * 
+ * Aloca memória para um gestor de álbuns, assim como inicializa a sua hash table.
+ * Destaca-se que, juntamente com a sua criação, estabele-se que a função @b free_album
+ * será a responsável por liberar a memória de cada entrada presente na tabela, quando
+ * está for eliminada.
+ * 
+ * @return Gestor de álbuns.
+*/
+
+/**
+ * @brief Aloca espaço para um struct query.
+ * 
+ * Aloca espaço na memória para as 6 queries, inicializando-as vazias a princípio.
+ * O campo @b separador é inicialmente definido como o carácter ' '.
+ * 
+ * @return Struct query recém-criado.
+*/
 Query create_query();
 
-//Devolve o tipo de query que tem de ser respondida.
+/**
+ * @brief Devolve o número (tipo) da query a ser respondida.
+ * 
+ * Acessa o campo @b query do struct @p q, que representa o número da query (de um
+ * a 6) que se pretende responder. O valor no campo acedido é então retornado.
+ * 
+ * @param q Struct cujo número será devolvido.
+ * @return Número da query @p q.
+*/
 short get_query_type(Query q);
 
-//Devolve o caractér a ser usado como separador no output de uma dada query.
+/**
+ * @brief Retorna o caractér a ser usado como separador no output de uma dada query.
+ * 
+ * Acessa o campo @b separador do struct @p q, caracter que separa os membros do output,
+ * caso o tipo da query tenha um S. O valor no campo acedido é então retornado.
+ * 
+ * @param q Struct cujo separador será devolvido.
+ * @return Struct query recém-criado.
+*/
 char get_separador (Query q);
 
-//Guarda a informação de uma linha de queries numa query.
+/**
+ * @brief Guarda a informação de uma linha de queries numa query.
+ * 
+ * Recebe uma linha do ficheiro de input e atribui o seu conteúdo a um struct query @p q,
+ * definindo o seu separador mediante o comprimento do primeiro token, e extraindo o seu 
+ * tipo para que seja possível invocar o inicializador de queries apropriado, o qual passará
+ * as restantes informações da linha para um dos substructs de @p q (Query1, Query1, Query2,
+ * Query3, Query4, Query5 ou Query6). Os tokens alocados no final da função têm sua memória
+ * libertada.
+ * 
+ * @param pq Estrutura que se mantém a par de um ficheiro aberto.
+ * @param q Struct que armazenará as informações da linha.
+*/
 void read_query_line(Parser pq, Query q);
 
+/**
+ * @brief Libera o espaço alocado por uma query.
+ * 
+ * Dá free da query @p q e de todos os seus substructs, invocando funções de free especias para
+ * os campos @b query2 e @b query5, que possui strings nos campos destas e por isso requerem um
+ * cuidado especial.
+ * 
+ * @param q Query a ser libertada.
+*/
 void free_query (Query q);
 
 void answer1(Query q, User_Manager um, Art_Manager am, Output out, Query_stats qs);

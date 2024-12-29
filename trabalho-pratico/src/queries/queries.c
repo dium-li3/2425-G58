@@ -13,7 +13,6 @@
 #include "utils.h"
 #include "recomendador.h"
 
-
 /*
     Estrutura para armazenar o nº de execuções de uma dada query (n)
     e o tempo total para essas execuções(time).
@@ -36,7 +35,7 @@ typedef struct query{
     Query4 query4;
     Query5 query5;
     Query6 query6;
-    char separador; //caracter que separa os membros do output, dependendo de se o tipo da query tem um S
+    char separador; 
 } *Query;
 
 typedef struct query1{
