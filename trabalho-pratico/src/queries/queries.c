@@ -12,6 +12,7 @@
 #include "queries.h"
 #include "utils.h"
 #include "recomendador.h"
+#include "recomendador_xpto.h"
 
 
 /*
