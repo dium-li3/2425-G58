@@ -295,7 +295,6 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
-
     
     int mw = get_max_week(am), art_id, top_count;
     
@@ -305,7 +304,6 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
         if(top_count == 0) output_empty(out);
         else print_most_freq_top_art(art_id, top_count, am, out);
     }
-    
     
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;

@@ -133,6 +133,19 @@ void answer2(Query q, Art_Manager am, Output out, Query_stats qs);
 */
 void answer3(Query q, Music_Manager mm, Output out, Query_stats qs);
 
+/**
+ * @brief Responde a query 4.
+ * 
+ * Inicialmente verifica se a semana máxima é menor que a semana inicial, situação essa que exige um output vazio.
+ * Caso a condição não se verifique, expõe o artista que apareceu mais vezes no "top 10 artistas" de um dado intervalo
+ * de tempo (podendo igualmente retornar um output vazio caso o artista melhor pontuado tenha classificação nula).
+ * Além disso, a função cronometra o seu tempo de execução.
+ * 
+ * @param q Estrutura que fornece as informações para a resolução da query.
+ * @param out Ficheiro onde as informações são escritas.
+ * @param qs Estrutura que armazena o número de execuções de cada query e o tempo total das suas execuções.
+ * @param am Gestor portador do artista melhor classificado.
+*/
 void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
 
 /**
@@ -151,6 +164,21 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
 */
 void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs);
 
+/**
+ * @brief Responde a query 6.
+ * 
+ * Devolve um resumo anual de um dado utilizador, nomeadamente a sua duração total de reprodução, o dia em que ouviu
+ * mais músicas, seu álbum preferifo, o artista mais escutado, a quantidade de faixas ouvidas, o género que mais 
+ * consumiu e a hora do dia em que costuma ouvir mais música.
+ * 
+ * @param q Estrutura que fornece as informações para a resolução da query.
+ * @param am Gestor de artistas.
+ * @param mm Gestor de músicas.
+ * @param um Gestor de usuários.
+ * @param hm Gestor de históricos.
+ * @param out Ficheiro onde as informações são escritas.
+ * @param qs Estrutura que armazena o número de execuções de cada query e o tempo total das suas execuções.
+*/
 void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History_Manager hm, Output out, Query_stats qs);
 
 /**
