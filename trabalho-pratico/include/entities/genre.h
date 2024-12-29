@@ -132,6 +132,7 @@ int cmp_like_gen(gconstpointer g1, gconstpointer g2);
  * 
  * @param gen Gênero o qual terá as informações reveladas.
  * @param out Struct usado pelo output.
+ * @return Número total de curtidas de @p gen.
  */
 int print_genre_info(Genre gen, Output out);
 
