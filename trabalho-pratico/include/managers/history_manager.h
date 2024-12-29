@@ -17,7 +17,7 @@ typedef struct history_manager *History_Manager;
  * Aloca memória para um gestor de históricos, assim como inicializa a sua hash table.
  * Destaca-se que, juntamente com a sua criação, estabele-se que a função @b free_history
  * será a responsável por liberar a memória de cada entrada presente na tabela, quando
- * está for eliminada. A matriz que contém o nº de reproduções de cada gênero por cada
+ * está for eliminada. A matriz que contém o número de reproduções de cada gênero por cada
  * usuário é aqui inicializada como nula.
  * 
  * @return Gestor de históricos.

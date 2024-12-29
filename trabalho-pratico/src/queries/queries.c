@@ -583,9 +583,6 @@ Query_stats create_query_stats() {
     return r;
 }
 
-/*
-    Incrementa automaticamente o nº de execuções.
-*/
 void add_query_stats(Query_stats qd, double time, int type) {
     qd->n[type-1]++;
     qd->time[type-1] += time;

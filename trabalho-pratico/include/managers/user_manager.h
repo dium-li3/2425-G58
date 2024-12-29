@@ -32,19 +32,19 @@ User_Manager create_user_manager();
 User search_user_by_id(int id, User_Manager user_manager);
 
 /**
- * @brief Verifica se uma determinada música está presente na hash table do gestor.
+ * @brief Verifica se um determinado usuário está presente na hash table do gestor.
  * 
- * Invoca a @b search_album_by_id, com os parâmetros que esta necessita, e verifica se o retorno da chamada
+ * Invoca a @b search_user_by_id, com os parâmetros que esta necessita, e verifica se o retorno da chamada
  * é nulo (neste caso simbolizando que o @p id dado não é chave de nenhuma entrada da tabela @p um).
  * 
- * @param id Identificador único da música a ser procurada na tabela.
+ * @param id Identificador único do usuário a ser procurada na tabela.
  * @param um Gestor cuja tabela será revistada a procura do @p id.
  * @return Devolve @p TRUE se a tabela contiver o @p id; @b FALSE, caso contrário.
 */
 gboolean user_exists (int id, User_Manager um);
 
 /**
- * @brief Devolve .
+ * @brief Devolve o índice do usuário na matriz do gestor de históricos.
  * 
  * Dado um id @p id, busca na hash table do gestor de usuários o user com esse identificador, devolvendo o
  * seu índice na matriz do @b history_manager.
