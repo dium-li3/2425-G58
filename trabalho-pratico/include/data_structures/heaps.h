@@ -33,15 +33,19 @@ Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free_e
 void heap_print(Heap h, void (*print)(void *x));
 
 /**
- * @brief Atualiza o campo @c data da heap.
+ * @brief Atualiza o campo @b data da heap.
  * 
- * @param h Heap.
- * @param new_data Novos dados.
+ * Atribui ao campo @b data de @p h o valor @p new_data.
+ * 
+ * @param h Heap cujo o campo será modificado.
+ * @param new_data Novos dados a inserir.
  */
 void heap_set_data(Heap h, void *new_data);
 
 /**
- * @brief Puxa o elemento que está na posição @p i da heap até à sua posição correta.
+ * @brief Eleva um elemento da heap até que esta satisfaça a sua definição.
+ * 
+ * Puxa o elemento que está na posição @p i de @p h até à sua posição correta.
  * 
  * @param i Índice do elemento que deve ser puxado.
  * @param h Heap.
@@ -49,7 +53,9 @@ void heap_set_data(Heap h, void *new_data);
 void heap_bubbleUp(int i, Heap h);
 
 /**
- * @brief Empura o elemento que está na posição @p i da h até à sua posição correta.
+ * @brief Decai um elemento da heap até que esta satisfaça a sua definição.
+ * 
+ * Empura o elemento que está na posição @p i de @p h até à sua posição correta.
  * 
  * @param i Índice do elemento que deve ser empurrado.
  * @param h Heap.
