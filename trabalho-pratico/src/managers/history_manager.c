@@ -17,7 +17,6 @@ typedef struct history_manager{
     int mat_size;
 } *History_Manager;
 
-
 History_Manager create_history_manager (){
     History_Manager hm = malloc (sizeof(struct history_manager));
     
@@ -27,7 +26,6 @@ History_Manager create_history_manager (){
     return hm;
 }
 
-
 int **get_matrix(History_Manager hm) {
     return hm->matrix;
 }
@@ -35,7 +33,6 @@ int **get_matrix(History_Manager hm) {
 void insert_history_by_id (History h, int id, History_Manager history_manager){
     g_hash_table_insert(history_manager->histories_by_id, GINT_TO_POINTER(id), h);
 }
-
 
 History search_history_by_id(int id, History_Manager history_manager){
     History al = g_hash_table_lookup(history_manager->histories_by_id, GINT_TO_POINTER(id));

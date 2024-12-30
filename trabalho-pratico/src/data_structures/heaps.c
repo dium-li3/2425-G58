@@ -15,8 +15,6 @@ typedef struct heap {
     void *data;
 } *Heap;
 
-
-
 Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free)(void *a), void *data){
     Heap h = calloc(1, sizeof(struct heap));
 
@@ -31,7 +29,6 @@ Heap heap_new(size_t n, int (*comp)(void *a, void *b, void *data), void (*free)(
     return h;
 }
 
-
 int valid_heap(Heap h){
     int i, r = 1, N = h->size;
 
@@ -44,13 +41,11 @@ int valid_heap(Heap h){
     return r;
 }
 
-
 void swap(void **a, int i, int j){
     void *t = a[i];
     a[i] = a[j];
     a[j] = t;
 }
-
 
 void heap_print(Heap h, void (*print)(void *x)){
     putchar('[');
@@ -67,12 +62,9 @@ void heap_print(Heap h, void (*print)(void *x)){
     (valid_heap(h))? printf("(válida)\n\n") : printf("(inválida)\n\n");
 }
 
-
-
 void heap_set_data(Heap h, void *new_data){
     h->data = new_data;
 }
-
 
 void heap_bubbleUp(int i, Heap h) {
     while(i > 0 && h->compare(h->heap[i], h->heap[pai(i)], h->data)) {
@@ -80,7 +72,6 @@ void heap_bubbleUp(int i, Heap h) {
         i = pai(i);
     }
 }
-
 
 void heap_bubbleDown(int i, Heap h) {
     int f, N = h->size;
@@ -93,7 +84,6 @@ void heap_bubbleDown(int i, Heap h) {
         i = f;
     }
 }
-
 
 int heap_add(Heap h, void *x){
     if(h->size == h->max) {
@@ -109,7 +99,6 @@ int heap_add(Heap h, void *x){
     return 0;
 }
 
-
 int heap_remove (Heap h, void **rem) {
     if(h->size == 0) return 1;
 
@@ -120,14 +109,12 @@ int heap_remove (Heap h, void **rem) {
     return 0;
 }
 
-
 void heap_swap_fst_elem(Heap h, void *new){
     if(h->compare(h->heap[0], new, h->data) != 0){
         h->heap[0] = new;
         heap_bubbleDown(0, h);
     }
 }
-
 
 void** heap_unwrap_array(Heap h, int *size){
     void **array = h->heap;
@@ -137,7 +124,6 @@ void** heap_unwrap_array(Heap h, int *size){
     
     return array;
 }
-
 
 void heap_free(Heap h){
     int size = h->size;

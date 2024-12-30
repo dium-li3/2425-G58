@@ -7,7 +7,7 @@
 typedef struct history{
     int day;
     int month;
-    int hour_of_day; //char?? ;)
+    int hour_of_day;
     int duration;
     int music_id;
 } *History;
@@ -62,8 +62,6 @@ int get_history_listening_time (History h){
 int get_history_music (History h){
     return h->music_id;
 }
-
-
 
 int get_history_dur(History h){
     return h->duration;

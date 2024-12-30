@@ -139,7 +139,7 @@ int get_max_week(Art_Manager am);
  * @brief Calcula os top 10 de todas as semanas.
  * 
  * Os artistas que compõem o top 10 de uma semana são marcados com -1 na posição correspondente
- * do seu array @c weeks .
+ * do seu array @c weeks.
  * 
  * @param am Contém o array com todos os artistas.
  */

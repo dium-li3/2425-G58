@@ -134,8 +134,6 @@ void store_Entities(char **entity_paths, Master_Manager master_M){
     acc_freq_top10s(master_M->artist_M);
 }
 
-
-
 void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
     short type = get_query_type(q);
     if (type > 0){
@@ -178,8 +176,6 @@ void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     }
     free_query(q);
 }
-
-
 
 void free_master_manager(Master_Manager m){
     free_user_manager(m->user_M);

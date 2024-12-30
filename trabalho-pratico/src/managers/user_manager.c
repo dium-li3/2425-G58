@@ -34,10 +34,6 @@ void insert_user_by_id(User u, User_Manager user_manager){
     g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
 }
 
-/*
-    Incrementa número de users.
-*/
-
 int get_total_users(User_Manager um) {
     return um->total_users;
 }
@@ -133,9 +129,6 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
     add_year_history_id(u, year, history_id);
 }
 
-/*
-    Dá print de um User cujo id é o dado.
-*/
 void print_user_res_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
     Parser p = open_parser(um->user_file_path);

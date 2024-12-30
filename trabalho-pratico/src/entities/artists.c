@@ -204,24 +204,15 @@ int get_art_max_top(Artist a) {
     return g_array_index(a->weeks, int, a->weeks->len-1);
 }
 
-//Incrementa o número de albuns de um dado artista.
 void add_1_album (Artist a){
 //    if (a->type == 'I')
     a->n_albums++;
 }
 
-/*
-    Adiciona a receita inteira que um artista recebe
-    por música ouvida ao seu total ganho.
-*/
 void add_recipe (Artist a){
     a->total_recipe += a->recipe_per_stream;
 }
 
-/*
-    Adiciona a percentagem da receita de um grupo
-    a um dado Artista.
-*/
 void add_percentage_recipe (Artist a, double recipe){
     a->total_recipe += recipe;
 }

@@ -5,8 +5,6 @@
 #include "parser.h"
 #include "utils.h"
 
-
-
 typedef struct music {
     int id;
     GArray *artists_ids;
@@ -15,7 +13,6 @@ typedef struct music {
     short year;
     int album_id;
 } *Music;
-
 
 Music create_music(int id, GArray *arts_ids, int d_s, int album_id, char *g, short y) {
     Music m = calloc(1, sizeof(struct music));
@@ -45,21 +42,17 @@ Music create_music_from_tokens (char **tokens) {
     return m;
 }
 
-
 int get_music_id(Music m) {
     return (m->id);
 }
-
 
 const char* get_genre(Music m) {
     return m->genre;
 }
 
-
 int get_music_duration(Music m){
     return (m->duration_s);
 }
-
 
 const GArray *get_music_artists(Music m){
     return m->artists_ids;

@@ -16,7 +16,6 @@ typedef struct music_manager
     int total_genres;
 } *Music_Manager;
 
-
 Music_Manager create_music_manager()
 {
     Music_Manager mm = malloc(sizeof(struct music_manager));
@@ -43,16 +42,10 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
-
 /*
-    Atribui um índice da matriz ao gênero.
-    Insere o gênero no array do mm (Devolve
-    1 caso tenha inserido um novo genero de
-    musica).
-    Guarda o nome do gênero no array de nomes.
-    Incrementa o número de gẽneros.
-    
-
+    Atribui um índice da matriz ao gênero. Insere o gênero no array do mm
+    (Devolve 1 caso tenha inserido um novo genero de musica). Guarda o nome
+    do gênero no array de nomes. Incrementa o número de gẽneros.
 */
 gboolean insert_gen(Music m, Music_Manager mus_m, int index)
 {
@@ -73,7 +66,6 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int index)
     
     return r;
 }
-
 
 void add_like_genre(Music_Manager mm, const char *genre, short age)
 {
@@ -141,10 +133,6 @@ gboolean music_exists (int id, Music_Manager mm){
     return r;
 }
 
-/*
-    Verifica se as musicas de uma lista de ids de musicas
-    pertencem todas às músicas que temos guardadas.
-*/
 gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     gboolean r = TRUE;
     int len = -1;
@@ -176,7 +164,6 @@ char **get_genre_names(Music_Manager mm) {
     return mm->genre_names;
 }
 
-
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);
     const GArray *artists_ids = get_music_artists (m);
@@ -191,7 +178,6 @@ int get_music_album_by_id (int id, Music_Manager mm){
 int get_total_genres(Music_Manager mm) {
     return mm->total_genres;
 }
-
 
 void store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
     Parser p = open_parser(music_path);
