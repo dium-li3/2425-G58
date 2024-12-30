@@ -149,7 +149,6 @@ int valid_subscription (char *subs_type){
 
 //Verifica se os campos que têm de ser sintáticamente validados de um dado utilizador estão direito/válidos.
 int valid_user_sintatic (char *email, char *date, char *sub_type){
-   // printf("CALL VALID DATE%s\n",date);
     return valid_email_string(email) && valid_date(date) && valid_subscription(sub_type);
 }
 

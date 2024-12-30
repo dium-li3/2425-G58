@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <glib.h>
-//#include <regex.h>
 #include "utils.h"
 
 int valid_list(char *lista) {
@@ -106,7 +105,7 @@ int calc_week(int d, int m, int y) {
     }
     else t = 253 - t; //253 é o número de dias em 2024 até 09/09/2024
 
-    week = (t+4)/7;
+    week = (t+5)/7;
 
     return week;
 }

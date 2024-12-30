@@ -38,14 +38,6 @@ int get_total_users(User_Manager um) {
     return um->total_users;
 }
 
-// void cast_ids (User_Manager um, GArray *array_ids) {
-//     int tam = um->total_users;
-
-//     for (int i = 0;i<tam;i++) {
-//         um->users_ids[i] = g_array_index(array_ids,char *,i);
-//     }
-// }
-
 char **get_users_ids (User_Manager um){
     return um->users_ids; 
 }

@@ -22,7 +22,6 @@ Music create_music(int id, GArray *arts_ids, int d_s, int album_id, char *g, sho
     m->genre = strdup(g);
     m->year = y;
     m->album_id = album_id;
-    //m->likes começa toda a 0 por causa do calloc.
     return m;
 }
 
@@ -57,11 +56,6 @@ int get_music_duration(Music m){
 const GArray *get_music_artists(Music m){
     return m->artists_ids;
 }
-
-/*GArray *get_music_artists_copy(Music m){
-    GArray *copy = g_array_copy (m->artists_ids);
-    return copy;
-}*/
 
 int get_music_album (Music m){
     return m->album_id;

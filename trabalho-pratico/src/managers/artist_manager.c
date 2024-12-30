@@ -129,13 +129,6 @@ void calc_top10_week(GArray *artists, int week) {
 
 void calc_top10s(Art_Manager am) {
     int i, mw = am->max_week; //len = am->art_by_dur->len;
-    /*Artist a = NULL;
-
-    //garantir que todos os artistas têm o array de semanas inicializado a 0 até à max week
-    for(i = 0; i < len; i++) {
-        a = g_array_index(am->art_by_dur, Artist, i);
-        set_art_max_week(a, mw);
-    }*/
 
     for(i = 0; i < mw; i++)
         calc_top10_week(am->art_by_dur, i);

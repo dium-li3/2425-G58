@@ -70,8 +70,6 @@ GArray *store_list (char *line){
     return list;
 }
 
-//short *parse_time (char *line, short *time){}
-
 /*
     Separa uma linha nos seus tokens.
 */
