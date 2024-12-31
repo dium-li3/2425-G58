@@ -421,7 +421,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     Query6 q6= q->query6;
 
     //Guardar a informação relativa a um dado ano de um dado utilizador.    
-    int i, j, k, history_id, music_id, album_id, artist_id, month, day, hour, listening_time, genre_ind, num_musics, album_dur;
+    int i, j, k, history_pos, music_id, album_id, artist_id, month, day, hour, listening_time, genre_ind, num_musics, album_dur;
     int hour_arr [24] = {0};
     int month_and_day_matriz [12][31] = {0};
     int listening_time_total = 0;
@@ -430,6 +430,8 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     const char *favorite_genre = NULL;
     char ***favorite_artists = NULL;
     char **output_tokens = NULL;
+    char **tokens = NULL;
+    int useless;
 
     gpointer already_exists;
 
@@ -442,16 +444,22 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
 
     GHashTable *diff_musics = g_hash_table_new(g_direct_hash, g_direct_equal);
 
-    const GArray *yearly_history_ids = get_year_history_from_user_id(q6->user_id , q6->year, um);
+    Parser hist_file = open_parser (get_history_path(hm));
+    const GArray *yearly_history_positions = get_year_history_from_user_id(q6->user_id , q6->year, um);
     int number_histories;
-    if (yearly_history_ids != NULL && yearly_history_ids->len > 0){
-        number_histories = yearly_history_ids->len;
+    if (yearly_history_positions != NULL && yearly_history_positions->len > 0){
+        number_histories = yearly_history_positions->len;
 
         //Percorrer os históricos e 'absorve' as suas informações
         for (i = 0; i < number_histories; i++){
-
-            history_id = g_array_index (yearly_history_ids, int, i);
-            get_history_info (history_id, &listening_time, &music_id, &month, &day, &hour, hm);
+            history_pos = g_array_index (yearly_history_positions, long, i);
+            set_file_pos (hist_file, history_pos);
+            tokens = parse_line (hist_file, 8);
+            music_id = atoi (tokens[2] +1);
+            hour = read_timestamp_elements (tokens[3], &useless, &month, &day);
+            listening_time = calc_duration_s (tokens[4]);
+            
+            //get_history_info (history_id, &listening_time, &music_id, &month, &day, &hour, hm);
             artists_ids = get_music_artists_from_id (music_id, mm);
             genre_ind = search_gen_index_by_id (music_id, mm);
             album_id = get_music_album_by_id (music_id, mm);

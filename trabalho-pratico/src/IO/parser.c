@@ -13,7 +13,7 @@ typedef struct parser{
     ssize_t nRead;
 } *Parser;
 
-Parser open_parser(char *path){
+Parser open_parser(const char *path){
     Parser p = NULL;
     FILE *temp = NULL;
     
@@ -176,6 +176,13 @@ short read_date_to_age (char *bd){
         if (year_month_day[2] <= 9) age++;
     }
     return age;
+}
+
+//Devolve a data e duração de uma string que contém essa informação
+int read_timestamp_elements (char *str, int *year, int *month, int *day){
+    int dur = 0;
+    sscanf(str, "%d/%d/%d %d", year, month, day, &dur);
+    return dur;
 }
 
 /*

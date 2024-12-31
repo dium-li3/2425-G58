@@ -25,6 +25,15 @@ typedef struct history_manager *History_Manager;
 History_Manager create_history_manager ();
 
 /**
+ * @brief Devolve a string com o caminho para o ficheiro CSV de históricos guardada pelo
+ * @p hm. 
+ * 
+ * @param hm Gestor de históricos
+ * @return const char* 
+ */
+const char *get_history_path (History_Manager hm);
+
+/**
  * @brief Libera a memória ocupada pelo gestor de históricos.
  * 
  * Dá free do struct e da hash table deste, dado um gestor @p hm. Somado a isso, também
@@ -45,7 +54,7 @@ void free_history_manager (History_Manager hm);
  * @param id Identificador único do histórico a ser adicionado, usado como chave para a tabela.
  * @param history_manager gestor cuja tabela terá um novo histórico a ela adicionado.
 */
-void insert_history_by_id (History hi, int id, History_Manager history_manager);
+//void insert_history_by_id (History hi, int id, History_Manager history_manager);
 
 /**
  * @brief Verifica se um determinado histórico está presente na hash table do seu gestor, devolvendo-o
@@ -58,7 +67,7 @@ void insert_history_by_id (History hi, int id, History_Manager history_manager);
  * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
  * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
 */
-History search_history_by_id(int id, History_Manager history_manager);
+//History search_history_by_id(int id, History_Manager history_manager);
 
 /**
  * @brief Armazena todos os históricos.
@@ -106,6 +115,6 @@ int **get_matrix(History_Manager hm);
  * @param hour apontador para onde vamos guardar a hora do dia na qual o histórico aconteceu.
  * @param hm Gestor que contém todos os históricos.
 */
-void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
+//void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
 
 #endif
