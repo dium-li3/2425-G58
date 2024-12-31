@@ -25,10 +25,11 @@ Master_Manager create_master_manager();
  * 
  * @param entity_paths Array com os caminhos para os ficheiros CSV.
  * @param master_M Contém os gestores das entidades.
+ * @param interativo Indica se o programa está no modo interativo ou não.
  * 
  * @return Código de sucesso.
  */
-int store_Entities (char **entity_paths, Master_Manager master_M);
+int store_Entities (char **entity_paths, Master_Manager master_M, int interativo);
 
 
 /**

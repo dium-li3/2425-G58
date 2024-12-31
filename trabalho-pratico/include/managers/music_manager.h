@@ -103,10 +103,11 @@ const GArray *get_music_artists_from_id (int id, Music_Manager mm);
  * @param mm Music Manager que armazena as músicas e os géneros.
  * @param am Contém a hash table dos artistas.
  * @param alm Contém a hash table dos álbuns.
+ * @param interativo Indica se o programa está no modo interativo ou não.
  * 
  * @return Código de sucesso.
  */
-int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm);
+int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm, int interativo);
 
 
 /**

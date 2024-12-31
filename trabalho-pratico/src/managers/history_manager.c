@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "history.h"
 #include "parser.h"
@@ -47,10 +48,10 @@ void fill_matrix(int user_id, int music_id, User_Manager um, Music_Manager mm, H
    hm->matrix[row][column]++;
 }
 
-int store_History (char *history_path, History_Manager hm, Art_Manager am, Music_Manager mm, User_Manager um){
+int store_History (char *history_path, History_Manager hm, Art_Manager am, Music_Manager mm, User_Manager um, int interativo){
     Parser p = open_parser(history_path);
     if(p == NULL) {
-        fprintf(stderr, "%s: %s\n", strerror(errno), history_path);
+        interativo ? printw("%s: ficheiro não encontrado.\n", history_path) : fprintf(stderr, "%s: %s\n", strerror(errno), history_path);
         return 1;
     }
 

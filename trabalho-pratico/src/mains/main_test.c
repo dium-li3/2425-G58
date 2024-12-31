@@ -34,7 +34,7 @@ int trabalho_test(char **argv, Query_stats qs, double elapsed[], int interativo)
 
 
     //Armazenamento e ordenação da informação + validação
-    store = store_Entities(entity_paths, master_manager);
+    store = store_Entities(entity_paths, master_manager, interativo);
     freeEntityPaths(entity_paths);
 
     clock_gettime(CLOCK_REALTIME, &end);
@@ -43,7 +43,7 @@ int trabalho_test(char **argv, Query_stats qs, double elapsed[], int interativo)
 
     //Resposta às queries
     if(store == 0) answer_all_queries(parser_queries, master_manager, qs, interativo);
-    else free(qs);
+    else free(qs);  
     
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed[2] = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;

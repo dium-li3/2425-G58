@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdio.h>
+#include <ncurses.h>
 
 #include "user_manager.h"
 #include "parser.h"
@@ -52,10 +53,10 @@ char **get_users_ids (User_Manager um){
     return um->users_ids; 
 }
 
-int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm, int interativo){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        fprintf(stderr, "%s: %s\n", strerror(errno), user_path);
+        interativo ? printw("%s: ficheiro não encontrado.\n", user_path) : fprintf(stderr, "%s: %s\n", strerror(errno), user_path);
         return 1;
     }
 

@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdio.h>
+#include <ncurses.h>
 
 #include "artist_manager.h"
 #include "artists.h"
@@ -315,10 +316,10 @@ void add_recipe_artists (const GArray *artists, Art_Manager am){
 }
 
 
-int store_Artists (char *art_path, Art_Manager artists_manager){
+int store_Artists (char *art_path, Art_Manager artists_manager, int interativo){
     Parser p = open_parser(art_path);
     if(p == NULL) {
-        fprintf(stderr, "%s: %s\n", strerror(errno), art_path);
+        interativo ? printw("%s: ficheiro não encontrado.\n", art_path) : fprintf(stderr, "%s: %s\n", strerror(errno), art_path);
         return 1;
     }
 

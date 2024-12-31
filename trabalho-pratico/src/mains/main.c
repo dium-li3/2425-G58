@@ -20,7 +20,7 @@ int trabalho (char **argv, Query_stats qs, int interativo){
     Master_Manager master_manager = create_master_manager (); 
 
     //Armazenamento e ordenação da informação + validação
-    store = store_Entities(entity_paths, master_manager);
+    store = store_Entities(entity_paths, master_manager, interativo);
     freeEntityPaths(entity_paths);
 
     //Resposta às queries

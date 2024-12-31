@@ -1,5 +1,7 @@
 #include <glib.h>
 #include <stdio.h>
+#include <ncurses.h>
+
 #include "parser.h"
 #include "music_manager.h"
 #include "artist_manager.h"
@@ -199,10 +201,10 @@ int get_total_genres(Music_Manager mm) {
 }
 
 
-int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm){
+int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manager alm, int interativo){
     Parser p = open_parser(music_path);
     if(p == NULL) {
-        fprintf(stderr, "%s: %s\n", strerror(errno), music_path);
+        interativo ? printw("%s: ficheiro não encontrado.\n", music_path) : fprintf(stderr, "%s: %s\n", strerror(errno), music_path);
         return 1;
     }
 

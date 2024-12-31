@@ -16,6 +16,6 @@ void insert_album_by_id (Album al, int id, Album_Manager album_manager);
 
 gboolean album_exists (int id, Album_Manager am);
 
-int store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man);
+int store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man, int interativo);
 
 #endif

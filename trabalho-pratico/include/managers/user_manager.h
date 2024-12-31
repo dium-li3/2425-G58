@@ -35,10 +35,11 @@ int search_user_index_by_id(int id, User_Manager um);
  * @param user_path path do ficheiro dos usuários.
  * @param user_manager gestor cuja hash table receberá os usuários.
  * @param music_manager gestor proprietário do array de gêneros.
+ * @param interativo Indica se o programa está no modo interativo ou não.
  * 
  * @return Código de sucesso.
  */
-int store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager, int interativo);
 
 /**
  * @brief Devolve os ids de históricos relacionados a um utilizador num dado ano.
