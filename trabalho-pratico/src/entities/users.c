@@ -28,7 +28,7 @@ User create_user (int id, short age, int index, long fp){
     u->yearly_history_ids = g_ptr_array_sized_new (7);
 
     for (int i = 0; i < 7; i++){
-        year = g_array_new (FALSE, TRUE, sizeof(long));
+        year = g_array_new (FALSE, TRUE, sizeof(int));
         g_ptr_array_add (u->yearly_history_ids, year);
     }
     return u;
@@ -64,7 +64,7 @@ const GArray *get_year_history(User u, int year){
     return history_ids;
 }
 
-void add_year_history_pos(User u, int year, int history_pos){
+void add_year_history_id(User u, int year, int history_id){
     GArray *year_history;
     int id = 2024 - year;
     int ptr_array_len = u->yearly_history_ids->len;
@@ -76,7 +76,7 @@ void add_year_history_pos(User u, int year, int history_pos){
     }
     year_history = (GArray *)g_ptr_array_index (u->yearly_history_ids, id);
 
-    g_array_append_val (year_history, history_pos);
+    g_array_append_val (year_history, history_id);
 }
 
 void print_user_res(User u, Output out, Parser p){

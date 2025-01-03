@@ -178,13 +178,6 @@ short read_date_to_age (char *bd){
     return age;
 }
 
-//Devolve a data e duração de uma string que contém essa informação
-int read_timestamp_elements (char *str, int *year, int *month, int *day){
-    int dur = 0;
-    sscanf(str, "%d/%d/%d %d", year, month, day, &dur);
-    return dur;
-}
-
 /*
     Dado o path onde se encontram os 3 ficheiros .csv,
     devolve um pointer para os 3 file pointers dos ficheiros.

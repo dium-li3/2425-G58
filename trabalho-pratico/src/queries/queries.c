@@ -423,7 +423,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     Query6 q6= q->query6;
 
     //Guardar a informação relativa a um dado ano de um dado utilizador.    
-    int i, j, k, history_pos, music_id, album_id, artist_id, month, day, hour, listening_time, genre_ind, num_musics, album_dur;
+    int i, j, k, history_id, music_id, album_id, artist_id, month, day, hour, listening_time, genre_ind, num_musics, album_dur;
     int hour_arr [24] = {0};
     int month_and_day_matriz [12][31] = {0};
     int listening_time_total = 0;
@@ -451,9 +451,9 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
 
         //Percorrer os históricos e 'absorve' as suas informações
         for (i = 0; i < number_histories; i++){
-            history_pos = g_array_index (yearly_history_positions, long, i);
+            history_id = g_array_index (yearly_history_positions, int, i);
             
-            get_history_info (history_pos, &listening_time, &music_id, &month, &day, &hour, hm);
+            get_history_info (history_id, &listening_time, &music_id, &month, &day, &hour, hm);
             artists_ids = get_music_artists_from_id (music_id, mm);
             genre_ind = search_gen_index_by_id (music_id, mm);
             album_id = get_music_album_by_id (music_id, mm);

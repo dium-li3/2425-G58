@@ -6,21 +6,13 @@
 #include "history.h"
 
 typedef struct history{
-    int day;
-    int month;
-    int hour_of_day;
-    int duration;
-    int music_id;
+    long file_pos;
 } *History;
 
 
-History create_history (int day, int month, int hour, int duration, int music_id){
+History create_history (long file_pos){
     History h = malloc (sizeof (struct history));
-    h->day = day;
-    h->month = month;
-    h->hour_of_day = hour;
-    h->duration = duration;
-    h->music_id = music_id;
+    h->file_pos = file_pos;
     return h;
 }
 
@@ -29,40 +21,29 @@ gboolean valid_platform (char *platform){
     return same_string (platform, "mobile", "desktop");
 }
 
-History create_history_from_tokens (char **tokens, int *year){
+//Devolve a data e duração de uma string que contém essa informação
+int read_timestamp_elements (char *str, int *year, int *month, int *day){
+    int dur = 0;
+    sscanf(str, "%d/%d/%d %d", year, month, day, &dur);
+    return dur;
+}
+
+History create_history_from_tokens (char **tokens, long file_pos, int *hist_id, int *user_id, int *music_id, int *year, int *month, int *day, int *dur){
     History h = NULL;
-    int day, month, hour_of_day, music_id, duration;
     if (valid_duration (tokens[4]) && valid_platform (tokens[5])){
-        //timestamp são todas => yyyy/mm/dd hh:mm:ss   nunca têm erros, e são o tokens[3]
-        sscanf(tokens[3], "%d/%d/%d %d", year, &month, &day, &hour_of_day);
-
-        duration = calc_duration_s (tokens[4]);
-        music_id = atoi (tokens[2] + 1); 
-
-        h = create_history (day, month, hour_of_day, duration, music_id);
+        *hist_id = atoi (tokens[0]+1);
+        *user_id = atoi (tokens[1]+1);
+        *music_id = atoi (tokens[2]+1);
+        
+        sscanf(tokens[3], "%d/%d/%d", year, month, day);
+        *dur = calc_duration_s (tokens[4]);
+        h = create_history (file_pos);
     }
     return h;
 }
 
-int get_history_day (History h){
-    return h->day;
-}
-int get_history_month (History h){
-    return h->month;
-}
-int get_history_hour (History h){
-    return h->hour_of_day;
-}
-int get_history_listening_time (History h){
-    return h->duration;
-}
-
-int get_history_music (History h){
-    return h->music_id;
-}
-
-int get_history_dur(History h){
-    return h->duration;
+long get_history_pos (History h){
+    return h->file_pos;
 }
 
 void free_history (History h){

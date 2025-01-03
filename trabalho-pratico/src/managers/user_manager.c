@@ -116,9 +116,9 @@ const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager 
     return history_ids;
 }
 
-void add_year_history_pos_to_user (User_Manager um, int user_id, int year, int history_pos){
+void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id){
     User u = search_user_by_id (user_id, um);
-    add_year_history_pos(u, year, history_pos);
+    add_year_history_id(u, year, history_id);
 }
 
 void print_user_res_by_id (User_Manager um, int id, Output out){

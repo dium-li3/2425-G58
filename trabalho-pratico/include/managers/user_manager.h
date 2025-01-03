@@ -69,7 +69,7 @@ int search_user_index_by_id(int id, User_Manager um);
 void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
 
 /**
- * @brief Devolve as posições dos históricos relacionados a um utilizador num dado ano.
+ * @brief Devolve os ids de históricos relacionados a um utilizador num dado ano.
  * 
  * Retorna um array com todos os históricos relacionados ao user com id @p user_id, 
  * pertencentes ao ano @p year.
@@ -82,17 +82,17 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager musi
 const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um);
 
 /**
- * @brief Adiciona a posição de um histórico no seu CSV à informação do utilizador com um dado id.
+ * @brief Adiciona o id de um histórico à informação do utilizador com um dado id.
  * 
  * Procura o utilizador segundo o id que recebeu, e insere no
- * array de posições de históricos por ano do utilizador a posição do histórico que recebeu,
+ * array de ids de históricos por ano do utilizador o id do histórico que recebeu,
  * também tendo em consideração o ano do histórico.
  * 
  * @param user_id id do utilizador ao qual adicionar o id do histórico.
  * @param year ano do histórico.
- * @param history_po id do histórico, valor que vai ser guardado no utilizador.
+ * @param history_id id do histórico, valor que vai ser guardado no utilizador.
 */
-void add_year_history_pos_to_user (User_Manager um, int user_id, int year, int history_pos);
+void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id);
 
 /**
  * @brief Recebe o id de um usuário e imprime as suas informações.

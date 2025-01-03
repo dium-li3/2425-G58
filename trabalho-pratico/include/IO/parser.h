@@ -125,22 +125,6 @@ void parse_1line (Parser p, char **line);
 */
 short read_date_to_age (char *bd);
 
-/**
- * @brief Lê a timestamp escrita numa string e guarda os elementos 
- * da data em variáveis dadas e devolve a hora que a data.
- * 
- * Lê uma timestamp que está escrita como yyyy/mm/dd hh:mm:ss
- * e guarda os 3 elementos da data e devolve o primeiro elemento
- * da duração.
- * 
- * @param str timestamp que contém uma data seguida de uma duração
- * @param year Variável que irá conter o primeiro elemento da data.
- * @param month Variável que irá conter o segundo elemento da data.
- * @param day Variável que irá conter o último elemento da data.
- * 
- * @return Primeiro elemento da duração.
- */
-int read_timestamp_elements (char *str, int *year, int *month, int *day);
 
 /**
  * @brief Dado um caminho @p path para a pasta dos csv, cria as strings com o path para cada csv individual.

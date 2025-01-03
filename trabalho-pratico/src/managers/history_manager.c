@@ -12,7 +12,7 @@
 #define HISTORY_ELEMS 6 
 
 typedef struct history_manager{
-    //GHashTable *histories_by_id;
+    GHashTable *histories_by_id;
     int** matrix;
     int mat_size;
     char *history_file_path;
@@ -21,7 +21,7 @@ typedef struct history_manager{
 History_Manager create_history_manager (){
     History_Manager hm = malloc (sizeof(struct history_manager));
     
-    //hm->histories_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void*)free_history);
+    hm->histories_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void*)free_history);
     hm->matrix = NULL;
     hm->history_file_path = NULL;
     
@@ -36,7 +36,6 @@ const char *get_history_path (History_Manager hm){
     return hm->history_file_path;
 }
 
-/*
 void insert_history_by_id (History h, int id, History_Manager history_manager){
     g_hash_table_insert(history_manager->histories_by_id, GINT_TO_POINTER(id), h);
 }
@@ -45,7 +44,6 @@ History search_history_by_id(int id, History_Manager history_manager){
     History al = g_hash_table_lookup(history_manager->histories_by_id, GINT_TO_POINTER(id));
     return al;
 }
-*/
 
 void fill_matrix(int user_id, int music_id, User_Manager um, Music_Manager mm, History_Manager hm) {
    int row = search_user_index_by_id(user_id,um);
@@ -63,9 +61,8 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     hm->history_file_path = strdup(history_path);
 
     Output out = open_out("resultados/history_errors.csv", ';');
-    //History history = NULL;
-    //int hist_id;
-    int user_id, music_id, year, month, day, week, dur, max_week = -1;
+    History history = NULL;
+    int hist_id, user_id, music_id, year, month, day, week, dur, max_week = -1;
     char **tokens = NULL;
     const GArray *artist_ids;
 
@@ -81,29 +78,19 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     tokens = parse_line (p, HISTORY_ELEMS); //ignorar a 1ª linha do ficheiro
     free_tokens(tokens, HISTORY_ELEMS);
     for (file_pos = get_file_pos(p), tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
-        //history = create_history_from_tokens (tokens, &year);
-        //if (history != NULL){
         string_to_lower (tokens[5]); 
         if (valid_duration (tokens[4]) && same_string (tokens[5], "mobile", "desktop")){
-            //hist_id = atoi (tokens[0]+1);
-            user_id = atoi (tokens[1]+1);
-            music_id = atoi (tokens[2]+1);
+            history = create_history_from_tokens (tokens, file_pos, &hist_id, &user_id, &music_id, &year, &month, &day, &dur);
             
-            dur = read_timestamp_elements (tokens[3], &year, &month, &day);
-            dur = calc_duration_s (tokens[4]);
-            
-            //insert_history_by_id (history, hist_id, hm);
+            insert_history_by_id (history, hist_id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 
             artist_ids = get_music_artists_from_id (music_id, mm);
             add_recipe_artists(artist_ids, am);
-            //add_year_history_id_to_user (um, user_id, year, hist_id); 
-            add_year_history_pos_to_user (um, user_id, year, file_pos);
+            add_year_history_id_to_user (um, user_id, year, hist_id); 
 
-            //week = calc_week(get_history_day(history), get_history_month(history), year);
             week = calc_week(day, month, year);
             if(week > max_week) max_week = week;
-            //dur = get_history_dur(history);
             add_listening_time_artists(artist_ids, week, dur, am);
         }
         else
@@ -118,7 +105,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
 
 void free_history_manager (History_Manager hm){
     int rows = hm->mat_size;
-    //g_hash_table_destroy (hm->histories_by_id);
+    g_hash_table_destroy (hm->histories_by_id);
     for (int i = 0; i < rows; i++) {
         free(hm->matrix[i]);
     }
@@ -127,8 +114,10 @@ void free_history_manager (History_Manager hm){
     free (hm);
 }
 
-void get_history_info (int history_pos, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
-    int useless;
+void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
+    int useless, history_pos;
+    History h = search_history_by_id(history_id, hm);
+    history_pos = get_history_pos (h);
 
     Parser hist_file = open_parser (hm->history_file_path);
     set_file_pos (hist_file, history_pos);

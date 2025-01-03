@@ -54,7 +54,7 @@ void free_history_manager (History_Manager hm);
  * @param id Identificador único do histórico a ser adicionado, usado como chave para a tabela.
  * @param history_manager gestor cuja tabela terá um novo histórico a ela adicionado.
 */
-//void insert_history_by_id (History hi, int id, History_Manager history_manager);
+void insert_history_by_id (History hi, int id, History_Manager history_manager);
 
 /**
  * @brief Verifica se um determinado histórico está presente na hash table do seu gestor, devolvendo-o
@@ -67,7 +67,7 @@ void free_history_manager (History_Manager hm);
  * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
  * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
 */
-//History search_history_by_id(int id, History_Manager history_manager);
+History search_history_by_id(int id, History_Manager history_manager);
 
 /**
  * @brief Armazena todos os históricos.
@@ -102,7 +102,7 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 int **get_matrix(History_Manager hm);
 
 /**
- * @brief Copia a informação de um histórico numa dada posição no ficheiro CSV de históricos para outras variaveis.
+ * @brief Copia a informação de um histórico para outras variaveis.
  * 
  * Lê as informações de um histórico abrindo o ficheiro CSV de históricos e atualizando a sua posição
  * para a posição do histórico que queremos, e copia o valor dos campos desse histórico para outras variáveis.

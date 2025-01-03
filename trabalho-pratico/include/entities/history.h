@@ -15,81 +15,33 @@ typedef struct history *History;
  * 
  * @return History criado com os dados dos tokens.
 */
-History create_history_from_tokens (char **tokens, int *year);
+History create_history_from_tokens (char **tokens, long file_pos, int *hist_id, int *user_id, int *music_id, int *year, int *month, int *day, int *dur);
 
 /**
- * @brief Devolve o dia do mês ao qual um histórico @p h se refere.
+ * @brief Devolve a posição de um dado histórico @p h no ficheiro CSV de históricos.
  * 
- * @param h histórico que contém a informação.
- * @return Dia do mês em que o histórico foi gravado.
-*/
-int get_history_day (History h);
-
-/**
- * @brief Devolve o mês ao qual um histórico se refere.
+ * @param h Histórico
  * 
- * @param h histórico que contém a informação.
- * @return Mês em que o histórico foi gravado.
-*/
-int get_history_month (History h);
-
-/**
- * @brief Devolve a hora à qual um histórico se refere.
- * 
- * @param h histórico que contém a informação.
- * 
- * @return Hora do dia à qual o histórico se refere.
-*/
-int get_history_hour (History h);
-
-/**
- * @brief Devolve quanto um user ouviu uma música segundo um histórico, em segundos.
- * 
- * @param h histórico que contém a informação.
- * @return Duração, em segundos, da audição de uma música por um utilizador.
-*/
-int get_history_listening_time (History h);
-
-/**
- * @brief Devolve o id da música à qual o histórico faz referência.
- * 
- * @param h histórico que contém a informação.
- * @return id da música à qual o histórico faz referência.
-*/
-int get_history_music (History h);
-
-
-/**
- * @brief Atualiza os ids de artistas guardados num histórico.
- * 
- * @param h Histórico a ser atualizado.
- * @param artist_ids array que contém os artistas relevantes a este histórico.
-*/
-void set_artist_ids (History h, GArray *artist_ids);
-
-/**
- * @brief Devolve o dia de um histórico.
- * 
- * @param h Histórico cujo dia se quer obter.
- * @return Dia.
+ * @return Posição das informações deste histórico no CSV.
  */
-int get_history_day(History h);
+long get_history_pos (History h);
 
 /**
- * @brief Devolve o mês de um histórico.
+ * @brief Lê a timestamp escrita numa string e guarda os elementos 
+ * da data em variáveis dadas e devolve a hora que a data.
  * 
- * @param h Histórico cujo mês se quer obter.
- * @return Mês.
- */
-int get_history_month(History h);
-
-/**
- * @brief Devolve a duração em segundos de um histórico.
+ * Lê uma timestamp que está escrita como yyyy/mm/dd hh:mm:ss
+ * e guarda os 3 elementos da data e devolve o primeiro elemento
+ * da duração.
  * 
- * @param h Histórico cuja duração se pretende obter.
- * @return Duração em segundos.
+ * @param str timestamp que contém uma data seguida de uma duração
+ * @param year Variável que irá conter o primeiro elemento da data.
+ * @param month Variável que irá conter o segundo elemento da data.
+ * @param day Variável que irá conter o último elemento da data.
+ * 
+ * @return Primeiro elemento da duração.
  */
-int get_history_dur(History h);
+int read_timestamp_elements (char *str, int *year, int *month, int *day);
 
 /**
  * @brief Liberta o espaço usado por um histórico @p h .
