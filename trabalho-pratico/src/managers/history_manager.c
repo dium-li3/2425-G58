@@ -127,11 +127,17 @@ void free_history_manager (History_Manager hm){
     free (hm);
 }
 
-// void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
-//     History h = search_history_by_id (history_id, hm);
-//     *listening_time = get_history_listening_time (h);
-//     *music_id = get_history_music (h);
-//     *month = get_history_month (h);
-//     *day = get_history_day (h);
-//     *hour = get_history_hour (h);
-// }
+void get_history_info (int history_pos, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm){
+    int useless;
+
+    Parser hist_file = open_parser (hm->history_file_path);
+    set_file_pos (hist_file, history_pos);
+    char **tokens = parse_line (hist_file, HISTORY_ELEMS);
+
+    *music_id = atoi (tokens[2] +1);
+    *hour = read_timestamp_elements (tokens[3], &useless, month, day);
+    *listening_time = calc_duration_s (tokens[4]);
+
+    close_parser (hist_file);
+    free_tokens(tokens, HISTORY_ELEMS);
+}

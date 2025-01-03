@@ -281,6 +281,8 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Query3 q3 = q->query3;
+    if (q3->max > 149)
+        q3->max = 149;
     sort_gen(mm, q3->min, q3->max);
 
     print_all_genres_info (mm, out);
@@ -430,8 +432,6 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     const char *favorite_genre = NULL;
     char ***favorite_artists = NULL;
     char **output_tokens = NULL;
-    char **tokens = NULL;
-    int useless;
 
     gpointer already_exists;
 
@@ -444,7 +444,6 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
 
     GHashTable *diff_musics = g_hash_table_new(g_direct_hash, g_direct_equal);
 
-    Parser hist_file = open_parser (get_history_path(hm));
     const GArray *yearly_history_positions = get_year_history_from_user_id(q6->user_id , q6->year, um);
     int number_histories;
     if (yearly_history_positions != NULL && yearly_history_positions->len > 0){
@@ -453,13 +452,8 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
         //Percorrer os históricos e 'absorve' as suas informações
         for (i = 0; i < number_histories; i++){
             history_pos = g_array_index (yearly_history_positions, long, i);
-            set_file_pos (hist_file, history_pos);
-            tokens = parse_line (hist_file, 8);
-            music_id = atoi (tokens[2] +1);
-            hour = read_timestamp_elements (tokens[3], &useless, &month, &day);
-            listening_time = calc_duration_s (tokens[4]);
             
-            //get_history_info (history_id, &listening_time, &music_id, &month, &day, &hour, hm);
+            get_history_info (history_pos, &listening_time, &music_id, &month, &day, &hour, hm);
             artists_ids = get_music_artists_from_id (music_id, mm);
             genre_ind = search_gen_index_by_id (music_id, mm);
             album_id = get_music_album_by_id (music_id, mm);

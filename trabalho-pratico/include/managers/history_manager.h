@@ -102,19 +102,19 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 int **get_matrix(History_Manager hm);
 
 /**
- * @brief Copia a informação guardada num histórico para outras variaveis.
+ * @brief Copia a informação de um histórico numa dada posição no ficheiro CSV de históricos para outras variaveis.
  * 
- * Procura um histórico no gestor @p hm dado o seu identificador @p history_id a partir da função
- * @b search_history_by_id e copia o valor dos campos desse histórico para outras variáveis.
+ * Lê as informações de um histórico abrindo o ficheiro CSV de históricos e atualizando a sua posição
+ * para a posição do histórico que queremos, e copia o valor dos campos desse histórico para outras variáveis.
  * 
- * @param history_id id do histórico cuja informação queremos. 
+ * @param history_pos posição do histórico no ficheiro, cuja informação queremos. 
  * @param listening_time apontador para onde vamos guardar a duração guardado pelo histórico.
  * @param music_id apontador para onde vamos guardar o id da música à qual o histórico faz referência.
  * @param month apontador para onde vamos guardar o mês no qual o histórico aconteceu.
  * @param day apontador para onde vamos guardar o dia no qual o histórico aconteceu.
  * @param hour apontador para onde vamos guardar a hora do dia na qual o histórico aconteceu.
- * @param hm Gestor que contém todos os históricos.
+ * @param hm Gestor que contém o caminho para o ficheiro de históricos.
 */
-//void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
+void get_history_info (int history_pos, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
 
 #endif
