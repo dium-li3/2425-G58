@@ -1,9 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-/*
-    
-*/
 /**
  * @brief Valida o campo lista dos CSVs. 
  * 
