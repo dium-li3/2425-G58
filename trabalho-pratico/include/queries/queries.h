@@ -168,8 +168,8 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
  * @brief Responde a query 6.
  * 
  * Devolve um resumo anual de um dado utilizador, nomeadamente a sua duração total de reprodução, o dia em que ouviu
- * mais músicas, seu álbum preferifo, o artista mais escutado, a quantidade de faixas ouvidas, o género que mais 
- * consumiu e a hora do dia em que costuma ouvir mais música.
+ * mais músicas, seu álbum preferido, o artista mais escutado, a quantidade de faixas ouvidas, o género que mais 
+ * consumiu e a hora do dia em que costuma ouvir mais música. Além disso, essa answer cronometra o seu tempo de execução.
  * 
  * @param q Estrutura que fornece as informações para a resolução da query.
  * @param am Gestor de artistas.
