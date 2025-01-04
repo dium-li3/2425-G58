@@ -139,11 +139,14 @@ void free_users_ids (User_Manager um){
     for (int i = 0; i < um->total_users; i++)
         free (um->users_ids[i]);
     free (um->users_ids);
+    um->users_ids = NULL;
 }
 
 void free_user_manager(User_Manager um){
     g_hash_table_destroy (um->users_by_id);
     free(um->user_file_path);
+    if (um->users_ids != NULL)
+        free_users_ids (um);
     free (um);
 }
 

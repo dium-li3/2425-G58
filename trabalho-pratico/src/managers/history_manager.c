@@ -112,11 +112,13 @@ void free_matrix (History_Manager hm){
         free(hm->matrix[i]);
     }
     free(hm->matrix);
+    hm->matrix = NULL;
 }
 
 void free_history_manager (History_Manager hm){
     g_hash_table_destroy (hm->histories_by_id);
-    
+    if (hm->matrix != NULL)
+        free_matrix(hm);
     free (hm);
 }
 
