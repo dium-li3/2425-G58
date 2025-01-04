@@ -27,6 +27,13 @@
         "stdlib.h": "c",
         "string.h": "c",
         "ncurses.h": "c",
-        "random": "cpp"
+        "random": "cpp",
+        "interativo.h": "c",
+        "album_manager.h": "c",
+        "history_manager.h": "c",
+        "musics.h": "c",
+        "glib.h": "c",
+        "garray.h": "c",
+        "galloca.h": "c"
     }
 }

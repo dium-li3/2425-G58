@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "output.h"
 #include "parser.h"
@@ -8,16 +9,16 @@
 typedef struct output{
     FILE *fp;
     char separador;
-    int interativo;
+    int terminal;
 } *Output;
 
 
 
-Output open_out (char *path, char separador, int interativo){
+Output open_out (char *path, char separador, int terminal){
     Output out = calloc (1, sizeof (struct output));
     out->fp = fopen (path, "w");
     out->separador = separador;
-    out->interativo = interativo;
+    out->terminal = terminal;
     return out;
 }
 
@@ -30,7 +31,15 @@ void output_empty (Output out){
     fprintf(out->fp, "\n");
 }
 
-void output_geral (char **infos, int n_infos,Output out){
+void output_geral (char **infos, int n_infos, Output out){
+    if(out->terminal != 0) {
+        printw("%s", infos[0]);
+        for (int i = 1; i < n_infos; i++){
+            printw("%c%s", out->separador, infos[i]);
+        }
+        addch('\n');
+    }
+    
     fprintf(out->fp, "%s", infos[0]);
     for (int i = 1; i < n_infos; i++){
         fprintf(out->fp, "%c%s", out->separador, infos[i]);
@@ -44,6 +53,11 @@ void error_output (Parser p, Output out){
     parse_1line (p, &line);
     fprintf(out->fp, "%s", line);
     free (line);
+}
+
+
+void set_terminal_true(Output out) {
+    out->terminal = 1;
 }
 
 

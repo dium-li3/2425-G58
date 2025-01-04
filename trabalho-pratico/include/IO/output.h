@@ -51,6 +51,14 @@ void error_output (Parser p, Output out);
 
 
 /**
+ * @brief Define o booleano @c terminal a verdadeiro.
+ * 
+ * @param out Ficheiro de output.
+ */
+void set_terminal_true(Output out);
+
+
+/**
  * @brief Percorre @p a para ir imprimindo as linhas onde há erros (programa de testes).
  * 
  * @param a Array com o nº das linhas de um determinado ficheiro de resultados onde ocorreram erros.

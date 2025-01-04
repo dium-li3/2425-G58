@@ -22,11 +22,11 @@ Parser open_parser(char *path);
 void close_parser(Parser p);
 
 /**
- * @brief Devolve o número de bits que foram lidos da última vez que se acedeu ao ficheiro aberto pelo Parser.
+ * @brief Devolve o número de bytes que foram lidos da última vez que se acedeu ao ficheiro aberto pelo Parser.
  * 
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
  * 
- * @return Número de bits lidos. 
+ * @return Número de bytes lidos. 
 */
 ssize_t get_nRead (Parser p);
 
@@ -92,7 +92,7 @@ char **parse_line (Parser p, int n_elems);
  * @param infos Pointer para strings com espaço para contar as divisões feitas na linha lida.
  * @param n_tokens Número de tokens máximo no qual se consegue dividir a linha e guardar a informação.
  * 
- * @result Número de bits lidos na linha do ficheiro.
+ * @result Número de bytes lidos na linha do ficheiro.
 */
 int parse_1line_query(Parser p, char **info, int n_tokens);
 

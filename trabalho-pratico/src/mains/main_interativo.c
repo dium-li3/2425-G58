@@ -18,7 +18,7 @@ int trabalho_interativo(Query_stats qs, int interativo){
     Master_Manager master_manager = NULL;
     store = store_data_until_correct(&master_manager, interativo);
 
-    //if(store == 0) interpret_queries(master_manager, interativo);
+    if(store == 0) store = input_queries(master_manager, interativo);
 
     free_master_manager(master_manager);
 

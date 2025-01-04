@@ -9,6 +9,15 @@
 #define GBa_PAIR 3
 
 
+//Teclas
+#define ENTER 10
+#define ESC 27
+
+#define BUFSIZ_QUERYLINE 110
+
+#define TEMP_FILE_PATH "query_commands_temp.txt"
+
+
 /**
  * @brief Inicializa o ncurses e imprime o ecrã inicial do programa.
  * 
@@ -21,6 +30,7 @@ void print_init();
  * @brief Armazena os dados dos CSVs para o programa interativo.
  * 
  * Executa a store_Entities até o utilizador inserir um caminho válido.
+ * Termina o programa caso o utilizador escreva 'sair'.
  * 
  * @param mm Apontador para o Master Manager que foi declarado na main
  * @param interativo Booleano.
@@ -30,5 +40,22 @@ void print_init();
  *                            - 2->o utilizador saiu do programa
  */
 int store_data_until_correct(Master_Manager *mm, int interativo);
+
+
+/**
+ * @brief Lê o input do utilizador relativo às queries até este decidir fechar o programa.
+ * 
+ * Lê o tipo de query, modificador de separador e argumentos de um comando e responde no terminal ou num ficheiro
+ * de resposta, conforme o utilizador preferir. Também existe a opção de usar o recomendador dos professores ou o nosso.
+ * A leitura é feita de forma repetitiva, até o utilizador decidir sair.
+ * 
+ * @param mm Master Manager.
+ * @param interativo Booleano.
+ * 
+ * @return Código de sucesso: - 0->sucesso
+ *                            - 1->resposta não correu bem (este caso não deverá acontecer)
+ *                            - 2->o utilizador saiu do programa 
+ */
+int input_queries(Master_Manager mm, int interativo);
 
 #endif

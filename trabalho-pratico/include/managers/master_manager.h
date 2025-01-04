@@ -25,11 +25,23 @@ Master_Manager create_master_manager();
  * 
  * @param entity_paths Array com os caminhos para os ficheiros CSV.
  * @param master_M Contém os gestores das entidades.
- * @param interativo Indica se o programa está no modo interativo ou não.
+ * @param interativo Indica se o programa está no modo interativo ou não, para saber que função utilizar ao imprimir um erro de armazenamento.
  * 
  * @return Código de sucesso.
  */
 int store_Entities (char **entity_paths, Master_Manager master_M, int interativo);
+
+
+/**
+ * @brief Responde a uma query.
+ * 
+ * @param q Estrutura com os dados da query a responder.
+ * @param mm Master Manager
+ * @param n_query Número da query a ser executada (NÃO é o tipo da query)
+ * @param qs Contém os tempos de execução e nº total de execuções para cada tipo de query.
+ * @param terminal Indica se o programa, ao ser executado no modo interativo, deve mostrar o resultado da query no terminal.
+ */
+void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal);
 
 
 /**
@@ -38,9 +50,8 @@ int store_Entities (char **entity_paths, Master_Manager master_M, int interativo
  * @param queries Parser com o caminho para o ficheiro de inputs.
  * @param mm Master Manager (contém todos os gestores).
  * @param qs Contém os tempos de execução e nº total de execuções para cada tipo de query.
- * @param interativo Indica se o programa está a ser executado no modo interativo ou não.
  */
-void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs, int interativo);
+void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs);
 
 
 /**

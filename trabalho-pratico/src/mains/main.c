@@ -24,7 +24,7 @@ int trabalho (char **argv, Query_stats qs, int interativo){
     freeEntityPaths(entity_paths);
 
     //Resposta às queries
-    if(store == 0) answer_all_queries(parser_queries, master_manager, qs, interativo);
+    if(store == 0) answer_all_queries(parser_queries, master_manager, qs);
 
     //free moment
     free_master_manager(master_manager);

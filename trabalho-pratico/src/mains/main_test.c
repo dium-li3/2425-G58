@@ -42,7 +42,7 @@ int trabalho_test(char **argv, Query_stats qs, double elapsed[], int interativo)
 
 
     //Resposta às queries
-    if(store == 0) answer_all_queries(parser_queries, master_manager, qs, interativo);
+    if(store == 0) answer_all_queries(parser_queries, master_manager, qs);
     else free(qs);  
     
     clock_gettime(CLOCK_REALTIME, &end);
