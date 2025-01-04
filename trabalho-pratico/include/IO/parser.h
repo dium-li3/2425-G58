@@ -12,7 +12,7 @@ typedef struct parser *Parser;
  * 
  * @param path string com o path para um ficheiro.
  * @return Pointer para a struct parser criada.
-*/
+ */
 Parser open_parser(char *path);
 
 /**
@@ -21,17 +21,18 @@ Parser open_parser(char *path);
  * Fecha o ficheiro que o parser usa e liberta a memória da estrutura.
  * 
  * @param p Pointer para a estrutura sobre a qual se aplica a função.
-*/
+ */
 void close_parser(Parser p);
 
 /**
- * @brief Devolve o número de bits que foram lidos da última vez que se acedeu ao Parser.
+ * @brief Devolve o número de bytes que foram lidos da última vez que se acedeu ao Parser.
  * 
- * Devolve o número de bits que foram lidos da última vez que se acedeu ao ficheiro aberto pelo Parser.
+ * Devolve o número de bytes que foram lidos da última vez que se acedeu ao ficheiro aberto pelo Parser.
  * 
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
- * @return Número de bits lidos. 
-*/
+ * 
+ * @return Número de bytes lidos.
+ */
 ssize_t get_nRead (Parser p);
 
 /**
@@ -60,7 +61,7 @@ void set_file_pos(Parser p, long new_fp);
  * Retorna uma linha no ficheiro que o parser tem aberto.
 
  * @param p Estrutura que se mantém a par de um ficheiro aberto. 
-*/
+ */
 void go_back_1line (Parser p);
 
 /**
@@ -73,7 +74,7 @@ void go_back_1line (Parser p);
  * 
  * @param line Array do qual se vão converter os elementos para int.
  * @return GArray com os valores da @p line guardados como inteiros.
-*/
+ */
 GArray *store_list (char *line);
 
 /**
@@ -84,7 +85,7 @@ GArray *store_list (char *line);
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
  * @param n_elems Número de elementos no qual dividir a linha lida.
  * @return Pointer para strings que contém @p n_elems string.
-*/
+ */
 char **parse_line (Parser p, int n_elems);
 
 /**
@@ -99,7 +100,8 @@ char **parse_line (Parser p, int n_elems);
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
  * @param infos Pointer para strings com espaço para contar as divisões feitas na linha lida.
  * @param n_tokens Número de tokens máximo no qual se consegue dividir a linha e guardar a informação.
- * @return Número de bits lidos na linha do ficheiro.
+ *
+ * @return Número de bytes lidos na linha do ficheiro.
 */
 int parse_1line_query(Parser p, char **info, int n_tokens);
 
@@ -111,7 +113,7 @@ int parse_1line_query(Parser p, char **info, int n_tokens);
  * 
  * @param p Estrutura que se mantém a par de um ficheiro aberto.
  * @param line Pointer para o array no qual a linha lida vai ser escrita.
-*/
+ */
 void parse_1line (Parser p, char **line);
 
 /**
@@ -122,7 +124,7 @@ void parse_1line (Parser p, char **line);
  * 
  * @param bd Data escrita em string.
  * @return Idade convertida da string, em short.
-*/
+ */
 short read_date_to_age (char *bd);
 
 /**
@@ -134,8 +136,8 @@ short read_date_to_age (char *bd);
  * 
  * @param path caminho para a pasta dos csv.
  * @return Array com os paths para os ficheiros csv em específico.
-*/
-char **path3Entities (char *path);
+ */
+char **pathEntities (char *path);
 
 /**
  * @brief Liberta o espaço usado pelo array de paths.
@@ -143,7 +145,7 @@ char **path3Entities (char *path);
  * Dá free o espaço alocado pelo array @p fp_entities.
  * 
  * @param fp_entitiesss Pointer para o array de paths.
-*/
+ */
 void freeEntityPaths (char **fp_entities);
 
 #endif

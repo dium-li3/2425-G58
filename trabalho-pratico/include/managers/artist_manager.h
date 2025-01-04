@@ -61,15 +61,18 @@ void add_recipe_artists (const GArray *artists, Art_Manager am);
  * @brief Preenche um gestor com todos os artistas que estão num ficheiro
  * cujo path é dado.
  *
- * Função chamada pelo @b master_manager para guardar no gestor de artistas
- * - especificamente no seu array e na sua hash table - todos os artistas
- * presentes em um ficheiro dado o caminho deste. Ademais, também imprime
- * algum artista que esteja incorreto.
+ * Função chamada pelo @b master_manager para guardar no gestor de artistas - especificamente no seu array
+ * e na sua hash table - todos os artistas presentes em um ficheiro dado o caminho deste.
+ * Também imprime algum artista que esteja incorreto.
+ * Caso não seja possível abrir o ficheiro, retorna 1.
  * 
- * @param art_path caminho do ficheiro que contém os artistas.
+ * @param art_path Caminho do ficheiro que contém os artistas.
  * @param artist_manager Gestor que será preenchido com os artistas do ficheiro.
+ * @param interativo Indica se o o programa está no modo interativo ou não.
+ * 
+ * @return Código de sucesso.
  */
-void store_Artists (char *art_path, Art_Manager artists_manager);
+int store_Artists (char *art_path, Art_Manager artists_manager, int interativo);
 
 /**
  * @brief Confere se todos os artistas de um array estão presentes no gestor.

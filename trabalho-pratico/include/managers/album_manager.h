@@ -17,7 +17,7 @@ typedef struct album_manager *Album_Manager;
  * está for eliminada.
  * 
  * @return Gestor de álbuns.
-*/
+ */
 Album_Manager create_album_manager ();
 
 /**
@@ -26,7 +26,7 @@ Album_Manager create_album_manager ();
  * Dá free do struct e da hash table deste, dado um gestor @p am.  
  * 
  * @param am Gestor cujo struct e tabela serão destruídos.
-*/
+ */
 void free_album_manager (Album_Manager am);
 
 /**
@@ -38,7 +38,7 @@ void free_album_manager (Album_Manager am);
  * @param al Álbum a ser adicionado na hash table do gestor.
  * @param id Identificador único do álbum a ser adicionado, usado como chave para a tabela.
  * @param album_manager Gestor cuja tabela terá um novo artista a ela adicionado.
-*/
+ */
 void insert_album_by_id (Album al, int id, Album_Manager album_manager);
 
 /**
@@ -53,8 +53,9 @@ void insert_album_by_id (Album al, int id, Album_Manager album_manager);
  * @param id Identificador único do álbum a ser procurado na tabela.
  * @param am Gestor cuja tabela será revistada a procura do @p id.
  * @return Devolve @p TRUE se a tabela contiver o @p id; @b FALSE, caso contrário.
-*/
+ */
 gboolean album_exists (int id, Album_Manager am);
+
 
 /**
  * @brief Armazena todos os álbuns e preenche um parâmetro de cada artista.
@@ -68,7 +69,8 @@ gboolean album_exists (int id, Album_Manager am);
  * @param album_path Caminho para o ficheiro CSV dos álbuns.
  * @param album_man Album Manager que armazenará os álbuns.
  * @param art_man Contém a hash table dos artistas que terão seu número de álbuns incrementado.
+ * @param interativo Indica se o o programa está no modo interativo ou não.
  */
-void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man);
+int store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man, int interativo);
 
 #endif

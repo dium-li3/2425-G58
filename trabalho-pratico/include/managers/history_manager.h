@@ -21,7 +21,7 @@ typedef struct history_manager *History_Manager;
  * usuário é aqui inicializada como nula.
  * 
  * @return Gestor de históricos.
-*/
+ */
 History_Manager create_history_manager ();
 
 /**
@@ -32,7 +32,7 @@ History_Manager create_history_manager ();
  * aquela ocupado.
  * 
  * @param hm Gestor cuja memória será liberada
-*/
+ */
 void free_history_manager (History_Manager hm);
 
 /**
@@ -44,7 +44,7 @@ void free_history_manager (History_Manager hm);
  * @param hi Histórico a ser adicionado na hash table do gestor.
  * @param id Identificador único do histórico a ser adicionado, usado como chave para a tabela.
  * @param history_manager gestor cuja tabela terá um novo histórico a ela adicionado.
-*/
+ */
 void insert_history_by_id (History hi, int id, History_Manager history_manager);
 
 /**
@@ -57,8 +57,9 @@ void insert_history_by_id (History hi, int id, History_Manager history_manager);
  * @param id Identificador único do histórico a ser procurado na tabela.
  * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
  * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
-*/
+ */
 History search_history_by_id(int id, History_Manager history_manager);
+
 
 /**
  * @brief Armazena todos os históricos.
@@ -78,8 +79,11 @@ History search_history_by_id(int id, History_Manager history_manager);
  * @param am Gestor de artistas.
  * @param mm Gestor de músicas.
  * @param um Gestor de usuários.
+ * @param interativo Indica se o programa está no modo interativo ou não.
+ *
+ * @return Código de sucesso.
  */
-void store_History (char *history_path, History_Manager history_man, Art_Manager am, Music_Manager mm, User_Manager um);
+int store_History (char *history_path, History_Manager history_man, Art_Manager am, Music_Manager mm, User_Manager um, int interativo);
 
 /**
  * @brief Devolve a matriz do gestor de históricos.
@@ -89,7 +93,6 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
  * @param hm Gestor detentor da matriz a ser devolvida.
  * @return Matriz do gestor.
  */
-
 int **get_matrix(History_Manager hm);
 
 /**
@@ -105,7 +108,7 @@ int **get_matrix(History_Manager hm);
  * @param day apontador para onde vamos guardar o dia no qual o histórico aconteceu.
  * @param hour apontador para onde vamos guardar a hora do dia na qual o histórico aconteceu.
  * @param hm Gestor que contém todos os históricos.
-*/
+ */
 void get_history_info (int history_id, int *listening_time, int *music_id, int *month, int *day, int *hour, History_Manager hm);
 
 #endif

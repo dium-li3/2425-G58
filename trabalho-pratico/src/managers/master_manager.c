@@ -119,28 +119,33 @@ void store_Entities(char **entity_paths, Master_Manager master_M){
     printf("Top 10s: %lfs\n", elapsedtop);
 }*/
 
-void store_Entities(char **entity_paths, Master_Manager master_M){
-    store_Artists(entity_paths[2], master_M->artist_M);
+int store_Entities(char **entity_paths, Master_Manager master_M, int interativo){
+    if(store_Artists(entity_paths[2], master_M->artist_M, interativo) == 1) return 1;
+
+    if(store_Album (entity_paths[3], master_M->album_M, master_M->artist_M, interativo) == 1) return 1;
     
-    store_Album (entity_paths[3], master_M->album_M, master_M->artist_M);
+    if(store_Musics(entity_paths[1], master_M->music_M, master_M->artist_M, master_M->album_M, interativo) == 1) return 1;
     
-    store_Musics(entity_paths[1], master_M->music_M, master_M->artist_M, master_M->album_M);
     order_duration (master_M->artist_M);
     
-    store_Users(entity_paths[0], master_M->user_M, master_M->music_M);
+    if(store_Users(entity_paths[0], master_M->user_M, master_M->music_M, interativo) == 1) return 1;
     
-    store_History(entity_paths[4], master_M->hist_M, master_M->artist_M, master_M->music_M, master_M->user_M);
+    if(store_History(entity_paths[4], master_M->hist_M, master_M->artist_M, master_M->music_M, master_M->user_M, interativo) == 1) return 1;;
+    
     calc_top10s(master_M->artist_M);
     acc_freq_top10s(master_M->artist_M);
+
+    return 0;
 }
 
-void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
+
+void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal){
     short type = get_query_type(q);
     if (type > 0){
         char output_file[46];
         snprintf(output_file, 46, "resultados/command%d_output.txt", n_query);
         char separador = get_separador (q);
-        Output out = open_out (output_file, separador);
+        Output out = open_out (output_file, separador, terminal);
         switch (type)
         {
         case (1):
@@ -172,7 +177,7 @@ void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     for (i = 1; get_nRead(queries) != -1; i++)
     {
         read_query_line(queries, q);
-        answer_query(q, mm, i, qs);
+        answer_query(q, mm, i, qs, 0);  // 0 no campo do booleano porque esta função nunca é chamada no modo interativo
     }
     free_query(q);
 }

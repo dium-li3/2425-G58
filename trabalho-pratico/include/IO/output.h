@@ -14,9 +14,11 @@ typedef struct output *Output;
  * 
  * @param path Caminho para um ficheiro.
  * @param separador Caractér que separa o que está a ser escrito numa mesma linha
+ * @param interativo Indica se o programa está a ser executado no modo interativo ou não (booleano)
+ *
  * @return Estrutura de output 
  */
-Output open_out (char *path, char separador);
+Output open_out (char *path, char separador, int interativo);
 
 /**
  * @brief Liberta o espaço ocupado pelo output.
@@ -46,7 +48,7 @@ void output_empty (Output out);
  * @param n_infos Número de elementos
  * @param out Output
  */
-void output_geral (char **infos, int n_infos,Output out);
+void output_geral (char **infos, int n_infos, Output out);
 
 /**
  * @brief Escreve uma linha num ficheiro de erros.
@@ -57,6 +59,14 @@ void output_geral (char **infos, int n_infos,Output out);
  * @param out Ficheiro de erros
  */
 void error_output (Parser p, Output out);
+
+/**
+ * @brief Define o booleano @c terminal a verdadeiro.
+ * 
+ * @param out Ficheiro de output.
+ */
+void set_terminal_true(Output out);
+
 
 /**
  * @brief Percorre um array para imprimir as linhas erradas.
@@ -83,7 +93,6 @@ void print_elapsed_times(double elapsed[]);
  * Para cada tipo de query, é imprimido o tempo total gasto nesse tipo e o tempo médio por execução.
  * 
  * @param type Tipo da query.
- * 
  * @param n Número de vezes que a query foi executada.
  * @param time Tempo total de execução da query (todas as @p n execuções somadas).
  */

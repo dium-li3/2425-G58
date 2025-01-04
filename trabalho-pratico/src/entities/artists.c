@@ -123,7 +123,7 @@ Artist create_artist_from_tokens(char **tokens){
     {
         int id = atoi(tokens[0] + 1);
         double recipe_per_stream = strtod(tokens[3], NULL);
-        GArray *weeks = g_array_sized_new(FALSE, TRUE, sizeof(int), 400);
+        GArray *weeks = g_array_new(FALSE, TRUE, sizeof(int));
 
         a = create_art(id, tokens[1], recipe_per_stream, id_constituent, tokens[5], art_type, weeks);
     }

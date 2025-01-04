@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "album_manager.h"
 #include "albums.h"
@@ -38,11 +39,11 @@ gboolean album_exists (int id, Album_Manager am){
     return (search_album_by_id (id, am) != NULL);
 }
 
-void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man){
+int store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man, int interativo){
     Parser p = open_parser(album_path);
     if(p == NULL) {
-        perror("store_Album(17)");
-        exit(1);
+        interativo ? printw("%s: ficheiro não encontrado.\n", album_path) : fprintf(stderr, "%s: %s\n", strerror(errno), album_path);
+        return 1;
     }
 
     Album album = NULL;
@@ -64,6 +65,7 @@ void store_Album (char *album_path, Album_Manager album_man, Art_Manager art_man
         
         free_tokens(tokens, ALBUM_ELEMS);
     }
+  
     close_parser (p);
+    return 0;
 }
-
