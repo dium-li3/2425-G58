@@ -4,6 +4,9 @@
 #include <glib.h>
 #include "output.h"
 
+
+#define GEN_LEN 151
+
 typedef struct genre *Genre;
 
 /**

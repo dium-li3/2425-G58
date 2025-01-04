@@ -282,6 +282,7 @@ void answer3(Query q, Music_Manager mm, Output out, Query_stats qs){
     clock_gettime(CLOCK_REALTIME, &start);
     
     Query3 q3 = q->query3;
+    if(q3->max >= 150) q3->max = 150;
     sort_gen(mm, q3->min, q3->max);
 
     print_all_genres_info (mm, out);
@@ -312,7 +313,7 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
     if (qs != NULL) add_query_stats(qs, elapsed, 4);
 }
 
-void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs){
+void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs, int rec_xpto){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -332,7 +333,8 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
         
         char **arrAnswer;
 
-        arrAnswer = recomendaUtilizadores(idUtilizadorAlvo, matrizClassificacaoMusicas, idsUtilizadores,nomesGeneros,numUtilizadores,numGeneros,numRecomendacoes);
+        if(rec_xpto != 0) arrAnswer = recomendaUtilizadores_xpto(idUtilizadorAlvo, matrizClassificacaoMusicas, idsUtilizadores,nomesGeneros,numUtilizadores,numGeneros,numRecomendacoes);
+        else arrAnswer = recomendaUtilizadores(idUtilizadorAlvo, matrizClassificacaoMusicas, idsUtilizadores,nomesGeneros,numUtilizadores,numGeneros,numRecomendacoes);
         
         for (int i = 0;i<numRecomendacoes;i++) {
             output_geral(arrAnswer + i,1,out);

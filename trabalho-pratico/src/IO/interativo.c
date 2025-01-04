@@ -330,9 +330,9 @@ void input_command_args_4(char line[]) {
 }
 
 
-void input_command_args_5(char line[]) {
+void input_command_args_5(char line[], int *recomendador) {
     char buffer[8]; //utilizadores têm no máximo 7 dígitos no ID + 1 para o \0
-    int valid = 0, id = -1, i;
+    int valid = 0, id = -1, i, key = -1;
 
     while(!valid) {
         clear_to_bot_from_pos(3, 0);
@@ -363,7 +363,15 @@ void input_command_args_5(char line[]) {
 
     sprintf(line+strlen(line), " %s", buffer);
 
-    addch('\n');
+    addstr("\nDeseja usar o RecomendadorXPTO?\n\n[s/n]");
+
+    noecho();
+    while(key != 's' && key != 'n') key = getch();
+    echo();
+
+    clear_to_bot_from_pos(9, 0);
+
+    *recomendador = (key == 's') ? 1 : 0;
 }
 
 
@@ -429,7 +437,7 @@ void input_command_args_6(char line[]) {
 
 
 // Chama uma função que lê os argumentos de um comando, dependendo do tipo.
-void input_command_args(int type, char line[]) {
+void input_command_args(int type, char line[], int *recomendador) {
     clear_to_bot_from_pos(3, 0);
     
     switch (type) {
@@ -446,7 +454,7 @@ void input_command_args(int type, char line[]) {
             input_command_args_4(line);
             break;
         case '5':
-            input_command_args_5(line);
+            input_command_args_5(line, recomendador);
             break;
         case '6':
             input_command_args_6(line);
@@ -474,7 +482,7 @@ int input_display_terminal(int n_query) {
 
 int input_queries(Master_Manager mm, int interativo) {
     wait_for_enter("[Prima ENTER para prosseguir para as queries]");
-    int query_type = -1, separador = -1, i, n_query = 0, terminal;
+    int query_type = -1, separador = -1, i, n_query = 0, terminal, recomendador;
     char *query_line = malloc(sizeof(char) * BUFSIZ_QUERYLINE);
     Query q = NULL;
     Output out = NULL;
@@ -499,7 +507,7 @@ int input_queries(Master_Manager mm, int interativo) {
         printw("Comando atual: %s\n\n", query_line);
         wait_for_enter("[Prima ENTER para inserir os argumentos do comando]");
 
-        input_command_args(query_type, query_line);
+        input_command_args(query_type, query_line, &recomendador);
         printw("Comando atual: %s\n\n", query_line);
         output_geral(&query_line, 1, out); n_query++;
         close_output(out);
@@ -513,7 +521,7 @@ int input_queries(Master_Manager mm, int interativo) {
         q = create_query();
         p = open_parser(TEMP_FILE_PATH);
         read_query_line(p, q);
-        answer_query(q, mm, n_query, NULL, terminal);
+        answer_query(q, mm, n_query, NULL, terminal, recomendador);
 
         wait_for_enter("\n[Pressione ENTER para prosseguir]");
 

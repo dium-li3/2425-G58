@@ -161,8 +161,9 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
  * @param hm Gestor portador da matriz que contém o número de reproduções de cada gênero por cada usuário.
  * @param out Ficheiro onde as informações são escritas.
  * @param qs Estrutura que armazena o número de execuções de cada query e o tempo total das suas execuções.
+ * @param rec_xpto Indica se é para usar o recomendador xpto.
 */
-void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs);
+void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs, int rec_xpto);
 
 /**
  * @brief Responde a query 6.

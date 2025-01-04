@@ -39,8 +39,9 @@ int store_Entities (char **entity_paths, Master_Manager master_M, int interativo
  * @param n_query Número da query a ser executada (NÃO é o tipo da query)
  * @param qs Contém os tempos de execução e nº total de execuções para cada tipo de query.
  * @param terminal Indica se o programa, ao ser executado no modo interativo, deve mostrar o resultado da query no terminal.
+ * @param rec_xpto Indica se, para a Q5, é para usar o nosso recomendador.
  */
-void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal);
+void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal, int rec_xpto);
 
 /**
  * @brief Responde a todas as queries.

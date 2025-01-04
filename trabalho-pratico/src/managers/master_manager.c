@@ -139,7 +139,7 @@ int store_Entities(char **entity_paths, Master_Manager master_M, int interativo)
 }
 
 
-void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal){
+void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int terminal, int rec_xpto){
     short type = get_query_type(q);
     if (type > 0){
         char output_file[46];
@@ -161,7 +161,7 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int t
             answer4(q, out, qs, mm->artist_M);
             break;
         case (5):
-            answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs);
+            answer5(q,mm->user_M,mm->music_M,mm->hist_M, out, qs, rec_xpto);
             break;
         case (6):
             answer6(q, mm->artist_M, mm->music_M, mm->user_M, mm->hist_M, out, qs);
@@ -177,7 +177,7 @@ void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     for (i = 1; get_nRead(queries) != -1; i++)
     {
         read_query_line(queries, q);
-        answer_query(q, mm, i, qs, 0);  // 0 no campo do booleano porque esta função nunca é chamada no modo interativo
+        answer_query(q, mm, i, qs, 0, 0);  // 0 nos campos dos booleanos porque esta função nunca é chamada no modo interativo
     }
     free_query(q);
 }
