@@ -18,7 +18,6 @@ typedef struct music_manager
     int total_genres;
 } *Music_Manager;
 
-
 Music_Manager create_music_manager()
 {
     Music_Manager mm = calloc(1, sizeof(struct music_manager));
@@ -47,16 +46,10 @@ Music search_music_by_id(int id, Music_Manager music_manager)
     return m;
 }
 
-
 /*
-    Atribui um índice da matriz ao gênero.
-    Insere o gênero no array do mm (Devolve
-    1 caso tenha inserido um novo genero de
-    musica).
-    Guarda o nome do gênero no array de nomes.
-    Incrementa o número de gẽneros.
-    
-
+    Atribui um índice da matriz ao gênero. Insere o gênero no array do mm
+    (Devolve 1 caso tenha inserido um novo genero de musica). Guarda o nome
+    do gênero no array de nomes. Incrementa o número de gẽneros.
 */
 gboolean insert_gen(Music m, Music_Manager mus_m, int index)
 {
@@ -77,7 +70,6 @@ gboolean insert_gen(Music m, Music_Manager mus_m, int index)
     
     return r;
 }
-
 
 void add_like_genre(Music_Manager mm, const char *genre, short age)
 {
@@ -116,10 +108,6 @@ void gen_arr_freq_acum(Music_Manager mm)
         gen_freq_acum (get_genre_by_index(mm, i));
 }
 
-
-/*
-    
-*/
 void update_arr_total_likes(Music_Manager mm,int min_age, int max_age)
 {
     int len = mm->genre_array->len;
@@ -149,10 +137,6 @@ gboolean music_exists (int id, Music_Manager mm){
     return r;
 }
 
-/*
-    Verifica se as musicas de uma lista de ids de musicas
-    pertencem todas às músicas que temos guardadas.
-*/
 gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     gboolean r = TRUE;
     int len = -1;
@@ -167,7 +151,7 @@ gboolean all_musics_exist (const GArray *musics, Music_Manager mm){
     return r;
 }
 
-int search_gen_index_by_id(int music_id,Music_Manager mm) {
+int search_gen_index_by_id(int music_id, Music_Manager mm) {
     Music m = search_music_by_id(music_id,mm);
     const char *gen = get_genre(m);
     int tam = mm->genre_array->len;
@@ -183,7 +167,6 @@ int search_gen_index_by_id(int music_id,Music_Manager mm) {
 char **get_genre_names(Music_Manager mm) {
     return mm->genre_names;
 }
-
 
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
     Music m = search_music_by_id (id, mm);

@@ -59,7 +59,6 @@ int get_week_listening_time(Artist a, int week) {
     return (week >= a->weeks->len) ? -1 : g_array_index(a->weeks, int, week);
 }
 
-
 const GArray *get_group_id_constituent (Artist a){
     const GArray *id_constituent = NULL;
     if (a->type == 'G')
@@ -142,10 +141,6 @@ char *get_art_type_str (Artist a){
     return res;
 }
 
-/*
-    Escreve num ficheiro de output um resumo
-    do artista, útil para a query 1.
-*/
 void print_art_res(Artist a, Output out){
     char **infos = calloc (5, sizeof(char *)); 
     infos[0] = strdup (a->name);
@@ -209,24 +204,15 @@ int get_art_max_top(Artist a) {
     return g_array_index(a->weeks, int, a->weeks->len-1);
 }
 
-//Incrementa o número de albuns de um dado artista.
 void add_1_album (Artist a){
 //    if (a->type == 'I')
     a->n_albums++;
 }
 
-/*
-    Adiciona a receita inteira que um artista recebe
-    por música ouvida ao seu total ganho.
-*/
 void add_recipe (Artist a){
     a->total_recipe += a->recipe_per_stream;
 }
 
-/*
-    Adiciona a percentagem da receita de um grupo
-    a um dado Artista.
-*/
 void add_percentage_recipe (Artist a, double recipe){
     a->total_recipe += recipe;
 }

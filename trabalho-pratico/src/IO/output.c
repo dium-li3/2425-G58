@@ -16,7 +16,7 @@ typedef struct output{
 
 Output open_out (char *path, char separador, int terminal){
     Output out = calloc (1, sizeof (struct output));
-    out->fp = fopen (path, "w");
+    out->fp = fopen (path, "a");
     out->separador = separador;
     out->terminal = terminal;
     return out;

@@ -18,7 +18,6 @@ typedef struct user_manager {
     char *user_file_path;
 } *User_Manager;
 
-
 User_Manager create_user_manager(){
     User_Manager um = calloc (1, sizeof(struct user_manager));
     um->users_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void *)free_user); //hash
@@ -28,26 +27,15 @@ User_Manager create_user_manager(){
 /*
     Insere um User na posição id da hash table.
 */
+
 void insert_user_by_id(User u, User_Manager user_manager){
     int id = get_user_id(u);
     g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
 }
 
-/*
-    Incrementa número de users.
-*/
-
 int get_total_users(User_Manager um) {
     return um->total_users;
 }
-
-// void cast_ids (User_Manager um, GArray *array_ids) {
-//     int tam = um->total_users;
-
-//     for (int i = 0;i<tam;i++) {
-//         um->users_ids[i] = g_array_index(array_ids,char *,i);
-//     }
-// }
 
 char **get_users_ids (User_Manager um){
     return um->users_ids; 
@@ -134,9 +122,6 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
     add_year_history_id(u, year, history_id);
 }
 
-/*
-    Dá print de um User cujo id é o dado.
-*/
 void print_user_res_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
     Parser p = open_parser(um->user_file_path);

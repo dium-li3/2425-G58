@@ -13,7 +13,6 @@
 #include "utils.h"
 #include "recomendador.h"
 
-
 /*
     Estrutura para armazenar o nº de execuções de uma dada query (n)
     e o tempo total para essas execuções(time).
@@ -36,7 +35,7 @@ typedef struct query{
     Query4 query4;
     Query5 query5;
     Query6 query6;
-    char separador; //caracter que separa os membros do output, dependendo de se o tipo da query tem um S
+    char separador; 
 } *Query;
 
 typedef struct query1{
@@ -296,7 +295,6 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
-
     
     int mw = get_max_week(am), art_id, top_count;
     
@@ -306,7 +304,6 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
         if(top_count == 0) output_empty(out);
         else print_most_freq_top_art(art_id, top_count, am, out);
     }
-    
     
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
@@ -584,9 +581,6 @@ Query_stats create_query_stats() {
     return r;
 }
 
-/*
-    Incrementa automaticamente o nº de execuções.
-*/
 void add_query_stats(Query_stats qd, double time, int type) {
     qd->n[type-1]++;
     qd->time[type-1] += time;

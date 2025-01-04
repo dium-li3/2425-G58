@@ -7,12 +7,10 @@
 
 #define LEN_RESULTS 40
 
-
 void update_paths(char *rf, char *ef, char *rd, char *ed, int i, size_t len_expected) {
     snprintf(rf, LEN_RESULTS, "%scommand%d_output.txt", rd, i);
     snprintf(ef, len_expected, "%scommand%d_output.txt", ed, i);
 }
-
 
 /*
     Retorna 0 se houver discrepâncias ou 1 se não houver.
@@ -41,7 +39,6 @@ int compare_files(Parser rp, Parser ep, GArray *a) {
 
         return ((a->len != 0)? 0 : 1);
 }
-
 
 void testagem(char *expected) {
     printf("\n\n===TESTAGEM===\n\n");

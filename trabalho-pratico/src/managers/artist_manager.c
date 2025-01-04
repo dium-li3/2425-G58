@@ -53,9 +53,6 @@ gboolean artist_exists(int id, Art_Manager art_manager)
     return r;
 }
 
-/*
-    Verifica se todos os artistas num array de artistas existem.
-*/
 gboolean all_artists_exist (const GArray *artists, Art_Manager am){
     gboolean r = TRUE;
     int len = -1;
@@ -70,9 +67,6 @@ gboolean all_artists_exist (const GArray *artists, Art_Manager am){
     return r;
 }
 
-/*
-    Adiciona uma dada duração à discocrafia de todos os artistas de um dado array.
-*/
 void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manager am){
     Artist a = NULL;
     
@@ -85,7 +79,6 @@ void add_disc_dur_artists (const GArray *music_artists , int duration, Art_Manag
     }
 }
 
-
 void add_listening_time_artists(const GArray *artists, int week, int time, Art_Manager am){
     Artist a = NULL;
 
@@ -95,7 +88,6 @@ void add_listening_time_artists(const GArray *artists, int week, int time, Art_M
     }
 }
 
-
 void set_max_week(Art_Manager am, int mw){
     am->max_week = mw;
 }
@@ -103,8 +95,6 @@ void set_max_week(Art_Manager am, int mw){
 int get_max_week(Art_Manager am){
     return am->max_week;
 }
-
-
 
 /*
     Percorre o array de artistas do Art_Manager e calcula o top 10 de uma determinada semana.
@@ -140,13 +130,6 @@ void calc_top10_week(GArray *artists, int week) {
 
 void calc_top10s(Art_Manager am) {
     int i, mw = am->max_week; //len = am->art_by_dur->len;
-    /*Artist a = NULL;
-
-    //garantir que todos os artistas têm o array de semanas inicializado a 0 até à max week
-    for(i = 0; i < len; i++) {
-        a = g_array_index(am->art_by_dur, Artist, i);
-        set_art_max_week(a, mw);
-    }*/
 
     for(i = 0; i < mw; i++)
         calc_top10_week(am->art_by_dur, i);
@@ -162,7 +145,6 @@ void acc_freq_top10s(Art_Manager am) {
         acc_freq_top10_1art(a);
     }
 }
-
 
 int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *top_count) {
     int i, len = am->art_by_dur->len, ntops_begin, ntops_end, top_count_temp, art_id, id_temp;
@@ -193,8 +175,6 @@ int find_most_freq_top_art(int begin_week, int end_week, Art_Manager am, int *to
 
     return art_id;
 }
-
-
 
 void add_1_album_to_artists (const GArray *album_artists, Art_Manager am){
     Artist a = NULL;
@@ -229,7 +209,6 @@ Artist search_artist_by_dur_country(Art_Manager am, char *country, int i){
     return a;
 }
 
-
 void print_art_res_by_id (Art_Manager am, int id, Output out){
     Artist a = search_artist_by_id(id, am);
     if (a!= NULL)
@@ -238,9 +217,6 @@ void print_art_res_by_id (Art_Manager am, int id, Output out){
         output_empty (out);
 }
 
-/*
-    Dá print dos primeiros N artistas do array ordenado por discografia de artistas.
-*/
 void print_N_art_info (Art_Manager am, int N, Output out){
     Artist a = NULL;
     for (int i = 0; i < N; i++){
@@ -249,10 +225,6 @@ void print_N_art_info (Art_Manager am, int N, Output out){
     }
 }
 
-/*
-    Dá print dos N primeiros artistas que pertencem a um dado país,
-    pela ordem em que aparecem no array de artistas ordenado por discografia.
-*/
 void print_N_country_art_info (Art_Manager am, char *country, int N, Output out){
     Artist a = NULL;
     int len = am->art_by_dur->len;
@@ -266,25 +238,16 @@ void print_N_country_art_info (Art_Manager am, char *country, int N, Output out)
     }
 }
 
-
 void print_most_freq_top_art(int art_id, int top_count, Art_Manager am, Output out) {
     Artist a = search_artist_by_id(art_id, am);
 
     print_top_count_art(a, top_count, out);
 }
 
-
-/*
-    Ordena um array de artistas por ordem decrescente de discografia.
-*/
 void order_duration (Art_Manager artist_manager){
     g_array_sort(artist_manager->art_by_dur, compare_dur);
 }
 
-/*
-    Incrementa a receita total dos artistas cujos ids
-    estão no array dado.
-*/
 void add_recipe_artists (const GArray *artists, Art_Manager am){
     Artist a = NULL, constintuent = NULL;
     int id, len, len_group;
