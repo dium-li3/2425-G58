@@ -34,10 +34,15 @@ typedef struct query6 *Query6;
  * 
  * Aloca espaço na memória para as 6 queries, inicializando-as vazias a princípio.
  * O campo @b separador é inicialmente definido como o carácter ' '.
+ * Também preenche logo uma 'cache' para facilitar as futuras consultas da query 5.
+ * 
+ * @param um Gestor de utilizadores que contém o array de ids de utilizadores.
+ * @param mm Gestor de músicas que contém o array de nomes de géneros.
+ * @param hm Gestor de históricos que contém a matriz de classificações de cada género por utilizador.
  * 
  * @return Struct query recém-criado.
 */
-Query create_query();
+Query create_query(User_Manager um, Music_Manager mm, History_Manager hm);
 
 /**
  * @brief Devolve o número (tipo) da query a ser respondida.

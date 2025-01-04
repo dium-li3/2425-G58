@@ -58,9 +58,18 @@ typedef struct query4{
     int end_week;
 } *Query4;
 
+typedef struct q5_cache{
+    int **matrizClassificacaoMusicas;
+    char **idsUtilizadores;
+    char **nomesGeneros;
+    int numUtilizadores;
+    int numGeneros;
+} *Q5Cache;
+
 typedef struct query5{
     char *user_id;
     int N_results;
+    Q5Cache cache;
 } *Query5;
 
 typedef struct query6{
@@ -69,13 +78,24 @@ typedef struct query6{
     int N_artists;
 } *Query6;
 
-Query create_query(){
+Q5Cache save_q5_cache (User_Manager um, Music_Manager mm, History_Manager hm){
+    Q5Cache cache = calloc (1, sizeof (struct q5_cache));
+    cache->matrizClassificacaoMusicas = get_matrix(hm);
+    cache->idsUtilizadores = get_users_ids(um);
+    cache->nomesGeneros = get_genre_names(mm);
+    cache->numUtilizadores = get_total_users(um);
+    cache->numGeneros = get_total_genres(mm);
+    return cache;
+}
+
+Query create_query(User_Manager um, Music_Manager mm, History_Manager hm){
     Query q = calloc (1, sizeof(struct query));//define logo int query a 0.
     q->query1 = calloc (1, sizeof(struct query1));
     q->query2 = calloc (1, sizeof(struct query2));
     q->query3 = calloc (1, sizeof(struct query3));
     q->query4 = calloc (1, sizeof(struct query4));
     q->query5 = calloc (1, sizeof(struct query5));
+    q->query5->cache = save_q5_cache (um, mm, hm);
     q->query6 = calloc (1, sizeof(struct query6));
 
     q->separador = ' ';
@@ -216,8 +236,20 @@ void free_query2 (Query2 q){
     free (q);
 }
 
+void free_q5_cache (Q5Cache c){
+    int i;
+    for (i = 0; i < c->numUtilizadores; i++){
+        free (c->idsUtilizadores[i]);
+        free (c->matrizClassificacaoMusicas[i]);
+    }
+    for (i = 0; i < c->numGeneros; i++)
+        free (c->nomesGeneros[i]);
+}
+
 void free_query5 (Query5 q){
     free (q->user_id);
+    if (q->cache != NULL)
+        free_q5_cache(q->cache);
     free (q);
 }
 
@@ -324,11 +356,13 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
     else {
         Query5 q5 = q->query5;
         char *idUtilizadorAlvo = q5->user_id;
-        int **matrizClassificacaoMusicas = get_matrix(hm);
-        char **idsUtilizadores = get_users_ids(um);
-        char **nomesGeneros = get_genre_names(mm);
-        int numUtilizadores = get_total_users(um);
-        int numGeneros = get_total_genres(mm);
+        
+        int **matrizClassificacaoMusicas = q5->cache->matrizClassificacaoMusicas;
+        char **idsUtilizadores = q5->cache->idsUtilizadores;
+        char **nomesGeneros = q5->cache->nomesGeneros;
+        int numUtilizadores = q5->cache->numUtilizadores;
+        int numGeneros = q5->cache->numGeneros;
+
         int numRecomendacoes = q5->N_results;
         
         char **arrAnswer;

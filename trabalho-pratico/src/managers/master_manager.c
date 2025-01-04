@@ -168,7 +168,9 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs){
 
 void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     int i;
-    Query q = create_query();
+    Query q = create_query(mm->user_M, mm->music_M, mm->hist_M);
+    free_matrix(mm->hist_M);
+    free_users_ids(mm->user_M);
     for (i = 1; get_nRead(queries) != -1; i++)
     {
         read_query_line(queries, q);

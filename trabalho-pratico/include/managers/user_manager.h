@@ -128,11 +128,18 @@ int get_total_users(User_Manager um);
 /**
  * @brief Devolve o id de todos os usuários.
  *
- * Retorna o array com os identificadores de todos os usuários. 
+ * Retorna uma cópia do array com os identificadores de todos os usuários. 
  * 
  * @param um Gestor portador do array a devolver.
  * @return Array com todos os identificadores dos usuários.
  */
 char **get_users_ids (User_Manager um);
+
+/**
+ * @brief Liberta o espaço usado pelo array de ids guardado pelo gestor de utilizadores @p um .
+ * 
+ * @param um Gestor de utilizadores.
+ */
+void free_users_ids (User_Manager um);
 
 #endif

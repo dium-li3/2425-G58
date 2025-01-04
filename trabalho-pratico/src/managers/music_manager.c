@@ -161,7 +161,11 @@ int search_gen_index_by_id(int music_id, Music_Manager mm) {
 }
 
 char **get_genre_names(Music_Manager mm) {
-    return mm->genre_names;
+    char **r = calloc (mm->total_genres, sizeof (char*));
+    int i;
+    for (i = 0; i < mm->total_genres; i++)
+        r[i] = strdup (mm->genre_names[i]);
+    return r;
 }
 
 const GArray *get_music_artists_from_id (int id, Music_Manager mm){
@@ -252,6 +256,5 @@ void free_music_manager(Music_Manager mm)
     g_array_free(mm->genre_array, TRUE);
     for (int i = 0; i < mm->total_genres; i++)
         free (mm->genre_names[i]);
-    free(mm->genre_names);
     free(mm);
 }

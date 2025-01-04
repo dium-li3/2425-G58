@@ -102,6 +102,13 @@ void store_History (char *history_path, History_Manager history_man, Art_Manager
 int **get_matrix(History_Manager hm);
 
 /**
+ * @brief Liberta o espaço usado pela matriz guardada no gestor de históricos @p hm .
+ * 
+ * @param hm Gestor de históricos.
+ */
+void free_matrix (History_Manager hm);
+
+/**
  * @brief Copia a informação de um histórico para outras variaveis.
  * 
  * Lê as informações de um histórico abrindo o ficheiro CSV de históricos e atualizando a sua posição

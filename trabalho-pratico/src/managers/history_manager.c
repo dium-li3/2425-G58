@@ -14,7 +14,7 @@
 typedef struct history_manager{
     GHashTable *histories_by_id;
     int** matrix;
-    int mat_size;
+    int mat_size[2];
     char *history_file_path;
 } *History_Manager;
 
@@ -29,7 +29,13 @@ History_Manager create_history_manager (){
 }
 
 int **get_matrix(History_Manager hm) {
-    return hm->matrix;
+    int id, gen, **m = calloc (hm->mat_size[0], sizeof (int *));
+    for (id = 0; id < hm->mat_size[0]; id++){
+        m[id] = calloc (hm->mat_size[1], sizeof (int));
+        for (gen = 0; gen < hm->mat_size[1]; gen++)
+            m[id][gen] = hm->matrix[id][gen];
+    }
+    return m;
 }
 
 const char *get_history_path (History_Manager hm){
@@ -69,7 +75,8 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     int row = get_total_users(um);
     int column = get_total_genres(mm);
     long file_pos;
-    hm->mat_size = row;
+    hm->mat_size[0] = row;
+    hm->mat_size[1] = column;
     hm->matrix = calloc(row , sizeof(int*)); //estava a fazer sizeof(int)...
     for (int i = 0; i < row; i++) {
         hm->matrix[i] = calloc(column, sizeof(int));
@@ -78,10 +85,8 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     tokens = parse_line (p, HISTORY_ELEMS); //ignorar a 1ª linha do ficheiro
     free_tokens(tokens, HISTORY_ELEMS);
     for (file_pos = get_file_pos(p), tokens = parse_line (p, HISTORY_ELEMS); tokens != NULL; tokens = parse_line (p, HISTORY_ELEMS)){
-        string_to_lower (tokens[5]); 
-        if (valid_duration (tokens[4]) && same_string (tokens[5], "mobile", "desktop")){
-            history = create_history_from_tokens (tokens, file_pos, &hist_id, &user_id, &music_id, &year, &month, &day, &dur);
-            
+        history = create_history_from_tokens (tokens, file_pos, &hist_id, &user_id, &music_id, &year, &month, &day, &dur);
+        if (history != NULL){   
             insert_history_by_id (history, hist_id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 
@@ -103,13 +108,17 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     close_output (out);
 }
 
-void free_history_manager (History_Manager hm){
-    int rows = hm->mat_size;
-    g_hash_table_destroy (hm->histories_by_id);
+void free_matrix (History_Manager hm){
+    int rows = hm->mat_size[0];
     for (int i = 0; i < rows; i++) {
         free(hm->matrix[i]);
     }
     free(hm->matrix);
+}
+
+void free_history_manager (History_Manager hm){
+    g_hash_table_destroy (hm->histories_by_id);
+
     free (hm->history_file_path);
     free (hm);
 }
