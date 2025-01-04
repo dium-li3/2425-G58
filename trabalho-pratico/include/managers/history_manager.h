@@ -25,6 +25,13 @@ typedef struct history_manager *History_Manager;
 History_Manager create_history_manager ();
 
 /**
+ * @brief Liberta o espaço usado pela matriz guardada no gestor de históricos @p hm .
+ * 
+ * @param hm Gestor de históricos.
+ */
+void free_matrix (History_Manager hm);
+
+/**
  * @brief Libera a memória ocupada pelo gestor de históricos.
  * 
  * Dá free do struct e da hash table deste, dado um gestor @p hm. Somado a isso, também

@@ -111,6 +111,13 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
 void print_user_res_by_id (User_Manager um, int id, Output out);
 
 /**
+ * @brief Liberta o espaço usado pelo array de ids guardado pelo gestor de utilizadores @p um .
+ * 
+ * @param um Gestor de utilizadores.
+ */
+void free_users_ids (User_Manager um);
+
+/**
  * @brief Libera a memória ocupada por um gestor de usuários.
  *
  * "Dá free" separadamente de cada um dos campos do gestor de usuários.
@@ -132,7 +139,7 @@ int get_total_users(User_Manager um);
 /**
  * @brief Devolve o id de todos os usuários.
  *
- * Retorna o array com os identificadores de todos os usuários. 
+ * Retorna uma cópia do array com os identificadores de todos os usuários. 
  * 
  * @param um Gestor portador do array a devolver.
  * @return Array com todos os identificadores dos usuários.

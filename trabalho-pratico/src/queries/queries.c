@@ -59,9 +59,18 @@ typedef struct query4{
     int end_week;
 } *Query4;
 
+typedef struct q5_cache{
+    int **matrizClassificacaoMusicas;
+    char **idsUtilizadores;
+    char **nomesGeneros;
+    int numUtilizadores;
+    int numGeneros;
+} *Q5Cache;
+
 typedef struct query5{
     char *user_id;
     int N_results;
+    Q5Cache cache;
 } *Query5;
 
 typedef struct query6{
@@ -69,6 +78,18 @@ typedef struct query6{
     int year;
     int N_artists;
 } *Query6;
+
+Q5Cache save_q5_cache (User_Manager um, Music_Manager mm, History_Manager hm){
+    Q5Cache cache = calloc (1, sizeof (struct q5_cache));
+    cache->matrizClassificacaoMusicas = get_matrix(hm);
+    cache->idsUtilizadores = get_users_ids(um);
+    cache->nomesGeneros = get_genre_names(mm);
+    cache->numUtilizadores = get_total_users(um);
+    cache->numGeneros = get_total_genres(mm);
+    free_matrix(hm);
+    free_users_ids(um);
+    return cache;
+}
 
 Query create_query(){
     Query q = calloc (1, sizeof(struct query));//define logo int query a 0.
@@ -217,8 +238,24 @@ void free_query2 (Query2 q){
     free (q);
 }
 
+void free_q5_cache_data (Q5Cache c){
+    int i;
+    for (i = 0; i < c->numUtilizadores; i++){
+        free (c->idsUtilizadores[i]);
+        free (c->matrizClassificacaoMusicas[i]);
+    }
+    free (c->idsUtilizadores);
+    free (c->matrizClassificacaoMusicas);
+    for (i = 0; i < c->numGeneros; i++)
+        free (c->nomesGeneros[i]);
+    free (c->nomesGeneros);
+}
+
 void free_query5 (Query5 q){
     free (q->user_id);
+    if (q->cache != NULL)
+        free_q5_cache_data(q->cache);
+    free (q->cache);
     free (q);
 }
 
@@ -312,8 +349,7 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am){
 
     if (qs != NULL) add_query_stats(qs, elapsed, 4);
 }
-
-void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Output out, Query_stats qs, int rec_xpto){
+void answer5(Query q, User_Manager um, Music_Manager mm, History_Manager hm, Output out, Query_stats qs, int rec_xpto){
     struct timespec start, end;
     double elapsed;
     clock_gettime(CLOCK_REALTIME, &start);
@@ -323,12 +359,16 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
     } 
     else {
         Query5 q5 = q->query5;
+        if (q5->cache == NULL)
+            q5->cache = save_q5_cache(um, mm, hm);
         char *idUtilizadorAlvo = q5->user_id;
-        int **matrizClassificacaoMusicas = get_matrix(hm);
-        char **idsUtilizadores = get_users_ids(um);
-        char **nomesGeneros = get_genre_names(mm);
-        int numUtilizadores = get_total_users(um);
-        int numGeneros = get_total_genres(mm);
+        
+        int **matrizClassificacaoMusicas = q5->cache->matrizClassificacaoMusicas;
+        char **idsUtilizadores = q5->cache->idsUtilizadores;
+        char **nomesGeneros = q5->cache->nomesGeneros;
+        int numUtilizadores = q5->cache->numUtilizadores;
+        int numGeneros = q5->cache->numGeneros;
+
         int numRecomendacoes = q5->N_results;
         
         char **arrAnswer;
@@ -342,7 +382,7 @@ void answer5(Query q, User_Manager um, Music_Manager mm,History_Manager hm, Outp
         
         free (arrAnswer);
     }
-  
+
     clock_gettime(CLOCK_REALTIME, &end);
     elapsed = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9) * 1e3;
 
@@ -431,6 +471,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     int n_genres = get_total_genres (mm);
     int *genres = calloc (n_genres, sizeof(int));
     const char *favorite_genre = NULL;
+    char **genres_names = get_genre_names(mm);
     char ***favorite_artists = NULL;
     char **output_tokens = NULL;
 
@@ -507,7 +548,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
                 }
         day++; month++;
         genre_ind = array_max (genres, n_genres);
-        favorite_genre = get_genre_names(mm)[genre_ind];
+        favorite_genre = genres_names[genre_ind];
         num_musics = g_hash_table_size (diff_musics);
 
         g_hash_table_foreach (diff_albums, max_in_hash, max);
@@ -566,6 +607,7 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
         output_empty (out);
     free (genres);
     free (max);
+    free_tokens(genres_names, n_genres);
     if (diff_musics != NULL)
         g_hash_table_destroy (diff_musics);
     if (diff_albums != NULL)

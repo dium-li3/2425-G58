@@ -182,7 +182,7 @@ int get_total_genres(Music_Manager mm);
 /**
  * @brief Devolve o array com o nome de todos os gêneros.
  * 
- * Retorna um array de strings, estas representando os nomes de cada gênero presente no ficheiro CSV.
+ * Retorna uma cópia de um array de strings, estas representando os nomes de cada gênero presente no ficheiro CSV.
  * 
  * @param mm Gestor portador do array a devolver.
  * @return Array com o nome de cada gênero.

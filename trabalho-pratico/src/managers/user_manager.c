@@ -38,7 +38,11 @@ int get_total_users(User_Manager um) {
 }
 
 char **get_users_ids (User_Manager um){
-    return um->users_ids; 
+    int i;
+    char **r = calloc (um->total_users, sizeof (char*));
+    for (i = 0; i < um->total_users;i ++)
+        r[i] = strdup (um->users_ids[i]);
+    return r;
 }
 
 int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm, int interativo){
@@ -131,18 +135,15 @@ void print_user_res_by_id (User_Manager um, int id, Output out){
     close_parser(p);
 }
 
-void free_user_manager(User_Manager um){
-    g_hash_table_destroy (um->users_by_id);
-    
+void free_users_ids (User_Manager um){
     for (int i = 0; i < um->total_users; i++)
         free (um->users_ids[i]);
-    
-    if(um->users_ids != NULL)
-        free (um->users_ids);
-    
-    if(um->user_file_path != NULL)
-        free(um->user_file_path);
-    
+    free (um->users_ids);
+}
+
+void free_user_manager(User_Manager um){
+    g_hash_table_destroy (um->users_by_id);
+    free(um->user_file_path);
     free (um);
 }
 

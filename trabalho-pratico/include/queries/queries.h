@@ -152,8 +152,10 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
  * @brief Responde a query 5.
  * 
  * Primeiramente verifica se o id do usuário fornecido para a query 5 existe. Em seguida, começa a obter cada
- * parâmetro exigido pela função @b recomendaUtilizadores a partir da aplicação de getters aos gestores @p um,
- * @p mm e @p hm, posteriormente chamando essa função. Além disso, essa answer cronometra o seu tempo de execução.
+ * parâmetro exigido pelas funções de recomendação a partir de uma cache própria que os contém, se
+ * a cache estiver 'fria' então preenchia, posteriormente chamando a função de recomendador escolhia, por default
+ * a dos professores. 
+ * Além disso, essa answer cronometra o seu tempo de execução.
  * 
  * @param q Estrutura que fornece as informações para a resolução da query.
  * @param um Gestor portador dos identificadores dos usuários assim como a sua quantidade total.

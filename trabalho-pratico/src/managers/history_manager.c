@@ -15,7 +15,7 @@
 typedef struct history_manager{
     GHashTable *histories_by_id;
     int** matrix;
-    int mat_size;
+    int mat_size[2];//[0] = linhas, [1] = colunas
 } *History_Manager;
 
 History_Manager create_history_manager (){
@@ -27,7 +27,13 @@ History_Manager create_history_manager (){
 }
 
 int **get_matrix(History_Manager hm) {
-    return hm->matrix;
+    int id, gen, **m = calloc (hm->mat_size[0], sizeof (int *));
+    for (id = 0; id < hm->mat_size[0]; id++){
+        m[id] = calloc (hm->mat_size[1], sizeof (int));
+        for (gen = 0; gen < hm->mat_size[1]; gen++)
+            m[id][gen] = hm->matrix[id][gen];
+    }
+    return m;
 }
 
 void insert_history_by_id (History h, int id, History_Manager history_manager){
@@ -60,7 +66,8 @@ int store_History (char *history_path, History_Manager hm, Art_Manager am, Music
 
     int row = get_total_users(um);
     int column = get_total_genres(mm);
-    hm->mat_size = row;
+    hm->mat_size[0] = row;
+    hm->mat_size[1] = column;
     hm->matrix = calloc(row , sizeof(int*)); //estava a fazer sizeof(int)...
     for (int i = 0; i < row; i++) {
         hm->matrix[i] = calloc(column, sizeof(int));
@@ -99,15 +106,16 @@ int store_History (char *history_path, History_Manager hm, Art_Manager am, Music
     return 0;
 }
 
+void free_matrix (History_Manager hm){
+    int rows = hm->mat_size[0];
+    for (int i = 0; i < rows; i++) {
+        free(hm->matrix[i]);
+    }
+    free(hm->matrix);
+}
+
 void free_history_manager (History_Manager hm){
     g_hash_table_destroy (hm->histories_by_id);
-
-    if(hm->matrix != NULL) {
-        int rows = hm->mat_size;
-        for (int i = 0; i < rows; i++)
-            free(hm->matrix[i]);
-        free(hm->matrix);
-    }
     
     free (hm);
 }

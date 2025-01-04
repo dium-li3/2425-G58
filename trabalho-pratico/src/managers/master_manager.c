@@ -173,11 +173,11 @@ void answer_query(Query q, Master_Manager mm, int n_query, Query_stats qs, int t
 
 void answer_all_queries(Parser queries, Master_Manager mm, Query_stats qs){
     int i;
-    Query q = create_query();
+    Query q = create_query(mm->user_M, mm->music_M, mm->hist_M);
     for (i = 1; get_nRead(queries) != -1; i++)
     {
         read_query_line(queries, q);
-        answer_query(q, mm, i, qs, 0, 0);  // 0 nos campos dos booleanos porque esta função nunca é chamada no modo interativo
+        answer_query(q, mm, i, qs, 0, 0);
     }
     free_query(q);
 }
