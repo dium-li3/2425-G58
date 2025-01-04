@@ -25,7 +25,8 @@
  * <b>numRecomendacoes</b>
  * @note O número máximo de recomendações é <b>numUtilizadores - 1</b>. Caso
  * <b>numRecomendacoes</b> ultrapasse este valor, o mesmo será automaticamente
- * truncado.
+ * truncado. Ademais, o resumo detalhado dessa função é dispensado uma vez que o
+ * seu corpo nos foi omitido.
  */
 char **recomendaUtilizadores(char *idUtilizadorAlvo,
                              int **matrizClassificacaoMusicas,

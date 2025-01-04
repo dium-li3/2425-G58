@@ -3,20 +3,12 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <glib.h>
-//#include <regex.h>
 #include "utils.h"
 
-/*
-    Valida o campo lista dos CSVs.
-*/
 int valid_list(char *lista) {
     return (lista[0] == '[' && lista[strlen(lista)-1] == ']');
 }
 
-/*
-    Dados n tokens, liberta a memoria usada por eles
-    e pelo pointer que os guarda.
-*/
 void free_tokens(char **tokens, int n){
     for (int i = 0; i < n; i++){
         free (tokens[i]);
@@ -24,9 +16,6 @@ void free_tokens(char **tokens, int n){
     free (tokens);
 }
 
-/*
-    Calcula a duração em segundos. Só pode ser usada depois de se validar a string.
-*/
 int calc_duration_s(char *st) {
     int h = 0, m = 0, s = 0;
     sscanf(st, "%d:%d:%d", &h, &m, &s);
@@ -44,11 +33,6 @@ char *calc_duration_hms(int segs){
     return hms;
 }
 
-/*
-    Verifica se uma data de nascimento é válida e está escrita direito.
-    Datas são escritas na forma aaaa/mm/dd com
-    meses entre 1 e 12 e dias entre 1 e 31
-*/
 int valid_date (char *date){
     int v;
     int mes = 0;
@@ -75,14 +59,12 @@ int valid_date (char *date){
     return v;
 }
 
-//Passa todas as maiusculas de uma string em minúsculas.
 void string_to_lower (char *s){
     int i;
     for (i = 0; s[i] != '\0'; i++)
         s[i] = tolower (s[i]);
 }
 
-//Verifica se uma dada string é igual a uma de duas dadas.
 int same_string (const char *comp, const char *s1, const char *s2){
     int r = 0;
     if (strcmp (comp, s1) == 0)
@@ -92,7 +74,6 @@ int same_string (const char *comp, const char *s1, const char *s2){
     return r;
 }
 
-//Verifica se uma duração é válida e está escrita direito.
 int valid_duration (char *duration){
     int r = 1;
     if (strlen (duration) != 8) r = 0;
@@ -124,7 +105,7 @@ int calc_week(int d, int m, int y) {
     }
     else t = 253 - t; //253 é o número de dias em 2024 até 09/09/2024
 
-    week = (t+4)/7;
+    week = (t+5)/7;
 
     return week;
 }
@@ -134,17 +115,5 @@ int array_max (int array[], int N){
     for (i = 1; i < N; i++)
         if (array[i] > array[r])
             r = i;
-    return r;
-}
-
-gint compare_g_int (gconstpointer p1, gconstpointer p2, void*){
-    int r = 0;
-    int *pv1 = (int*) p1;
-    int *pv2 = (int*) p2;
-    if (pv1 > pv2)
-        r = -1;
-    else if (pv1 < pv2)
-        r = 1;
-    else r = 0;
     return r;
 }

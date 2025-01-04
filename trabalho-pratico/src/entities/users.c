@@ -34,7 +34,6 @@ User create_user (int id, short age, int index, long fp){
     return u;
 }
 
-//Devolve o username do utilizador.
 int get_user_id(User u){
     return u->id;
 }
@@ -54,8 +53,6 @@ int get_user_index(User u){
     return u->index;
 }
 
-
-//Devolve o histórico de um dado ano.
 const GArray *get_year_history(User u, int year){
     const GArray *history_ids;
     int id = 2024 - year;
@@ -67,7 +64,6 @@ const GArray *get_year_history(User u, int year){
     return history_ids;
 }
 
-//Adiciona o id de um histórico num array de anos especifico de um user especifico.
 void add_year_history_id(User u, int year, int history_id){
     GArray *year_history;
     int id = 2024 - year;
@@ -82,7 +78,6 @@ void add_year_history_id(User u, int year, int history_id){
 
     g_array_append_val (year_history, history_id);
 }
-
 
 void print_user_res(User u, Output out, Parser p){
     if (u != NULL){
@@ -115,12 +110,9 @@ void free_user(User u){
 
 
 /*
-    Verifica se um email está escrito direito.
-    username@lstring.rstring
-    username só minusculas ou numeros
-    lstring tamanho superior a 1
-    rstring tamanho entre 2 e 3 inclusive
-    lstring e rstring só têm minusculas.
+    Verifica se um email está escrito direito (username@lstring.rstring).
+    username só minusculas ou numeros .lstring tamanho superior a 1.
+    rstring tamanho entre 2 e 3 inclusive. lstring e rstring só têm minusculas.
 */
 int valid_email_string (char *email){
     int us = 0;
@@ -157,16 +149,9 @@ int valid_subscription (char *subs_type){
 
 //Verifica se os campos que têm de ser sintáticamente validados de um dado utilizador estão direito/válidos.
 int valid_user_sintatic (char *email, char *date, char *sub_type){
-   // printf("CALL VALID DATE%s\n",date);
     return valid_email_string(email) && valid_date(date) && valid_subscription(sub_type);
 }
 
-/*
-    Cria um User, baseado nos tokens recebidos.
-    Devolve NULL caso o user seja sintáticamente inválido.
-    Adiciona o id do user no array de ids.
-    Atribui um índice da matriz ao user.
-*/
 User create_user_from_tokens (char **tokens, int index, long file_pos){
     int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
     int id;

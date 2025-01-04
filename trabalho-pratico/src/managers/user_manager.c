@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdio.h>
+#include <ncurses.h>
 
 #include "user_manager.h"
 #include "parser.h"
@@ -17,53 +18,39 @@ typedef struct user_manager {
     char *user_file_path;
 } *User_Manager;
 
-
 User_Manager create_user_manager(){
-    User_Manager um = malloc (sizeof(struct user_manager));
+    User_Manager um = calloc (1, sizeof(struct user_manager));
     um->users_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void *)free_user); //hash
-    um->users_ids = NULL;
-    um->total_users = 0;
     return um;
 }
 
 /*
     Insere um User na posição id da hash table.
 */
+
 void insert_user_by_id(User u, User_Manager user_manager){
     int id = get_user_id(u);
     g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
 }
 
-/*
-    Incrementa número de users.
-*/
-
 int get_total_users(User_Manager um) {
     return um->total_users;
 }
-
-// void cast_ids (User_Manager um, GArray *array_ids) {
-//     int tam = um->total_users;
-
-//     for (int i = 0;i<tam;i++) {
-//         um->users_ids[i] = g_array_index(array_ids,char *,i);
-//     }
-// }
 
 char **get_users_ids (User_Manager um){
     return um->users_ids; 
 }
 
-void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm, int interativo){
     Parser p = open_parser (user_path);
     if(p == NULL) {
-        perror("store_Users(57)");
-        exit(1);
+        interativo ? printw("%s: ficheiro não encontrado.\n", user_path) : fprintf(stderr, "%s: %s\n", strerror(errno), user_path);
+        return 1;
     }
 
     user_manager->user_file_path = strdup(user_path);
 
-    Output out = open_out("resultados/users_errors.csv", ';');
+    Output out = open_out("resultados/users_errors.csv", ';', 0);
     User user = NULL;
     GArray *liked_musics = NULL;
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
@@ -102,6 +89,8 @@ void store_Users (char *user_path, User_Manager user_manager, Music_Manager mm){
     gen_arr_freq_acum (mm);
     close_parser (p);
     close_output (out);
+
+    return 0;
 }
 
 User search_user_by_id(int id, User_Manager user_manager){
@@ -133,9 +122,6 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
     add_year_history_id(u, year, history_id);
 }
 
-/*
-    Dá print de um User cujo id é o dado.
-*/
 void print_user_res_by_id (User_Manager um, int id, Output out){
     User u = search_user_by_id(id, um);
     Parser p = open_parser(um->user_file_path);
@@ -147,14 +133,18 @@ void print_user_res_by_id (User_Manager um, int id, Output out){
 
 void free_user_manager(User_Manager um){
     g_hash_table_destroy (um->users_by_id);
+    
     for (int i = 0; i < um->total_users; i++)
         free (um->users_ids[i]);
-    free (um->users_ids);
-    free(um->user_file_path);
+    
+    if(um->users_ids != NULL)
+        free (um->users_ids);
+    
+    if(um->user_file_path != NULL)
+        free(um->user_file_path);
+    
     free (um);
 }
-
-
 
 
 int get_user_index_from_id (int user_id, User_Manager um){

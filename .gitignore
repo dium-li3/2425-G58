@@ -37,6 +37,7 @@
 *.hex
 programa-principal
 programa-testes
+programa-interativo
 
 # Debug files
 *.dSYM/

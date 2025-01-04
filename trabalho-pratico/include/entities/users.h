@@ -20,7 +20,6 @@ typedef struct user *User;
  * @param tokens Array dos campos de informação do CSV.
  * @param index Índice do utilizador no array do seu gestor.
  * @param file_pos Posição do utilizador no ficheiro CSV.
- * 
  * @return Apontador para o novo usuário e NULL caso este seja inválido.
  */
 User create_user_from_tokens (char **tokens, int index, long file_pos);
@@ -52,12 +51,10 @@ short get_user_age (User u);
  * de strings de ids sem ter de percorrer o dito array e sim apenas pesquisando pelo
  * utilizador @p u diretamente na hashtable.
  * 
- * @param u Utilizador
- * 
+ * @param u Utilizador detentor do índice a retornar.
  * @return Índice do utlizador @p u no array
  */
 int get_user_index(User u);
-
 
 /**
  * @brief Função que devolve um array de ids de históricos de um dado ano de um utilizador @p u .
@@ -70,7 +67,7 @@ int get_user_index(User u);
  * @param u Utilizador associado aos históricos cujos ids procuramos.
  * @param year Ano ao qual os históricos fazem referencia.
  * 
- * @result Array de ids de históricos referente a um dado ano e a um dado utilizador.
+ * @return Array de ids de históricos referente a um dado ano e a um dado utilizador.
 */
 const GArray *get_year_history(User u, int year);
 

@@ -23,6 +23,17 @@
         "unordered_map": "c",
         "vector": "c",
         "string_view": "c",
-        "initializer_list": "c"
+        "initializer_list": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "ncurses.h": "c",
+        "random": "cpp",
+        "interativo.h": "c",
+        "album_manager.h": "c",
+        "history_manager.h": "c",
+        "musics.h": "c",
+        "glib.h": "c",
+        "garray.h": "c",
+        "galloca.h": "c"
     }
 }

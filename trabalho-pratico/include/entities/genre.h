@@ -26,7 +26,6 @@ Genre create_gen(const char *gen_name);
  */
 void free_genre(Genre *gen);
 
-
 /**
  * @brief Compara o nome de um gênero com outro nome, também
  * de um gênero.
@@ -69,17 +68,16 @@ void increment_like(Genre gen, short age);
  * géneros sem ter de percorrer o array e sim apenas pesquisando por ele
  * diretamente na hashtable.
  * 
- * @param gen Género
- * @param index Índice do género @p gen no array
+ * @param gen Género cujo campo @b index será modificado.
+ * @param index Índice do género @p gen no array.
  */
 void add_gen_index (Genre gen, int index);
 
 /**
  * @brief Devolve o nome de um dado Género.
  * 
- * @param gen Género
- * 
- * @return Nome do género
+ * @param gen Género portador do nome a devolver.
+ * @return Nome do género.
  */
 const char* get_genre_name (Genre gen);
 
@@ -108,7 +106,7 @@ void gen_freq_acum (Genre gen);
 void update_gen_total_likes (Genre gen, int min_age, int max_age);
 
 /**
- * @brief Função usada de base para ordenar o array de gêneros do @b music_manager
+ * @brief Função usada de base para ordenar o array de gêneros do @b music_manager.
  *
  * É um dos parâmetros que a função da glib @b g_array_sort() precisa para ordenar
  * o array de gêneros do @b music_manager segundo o total de curtidas de cada um.
@@ -120,12 +118,11 @@ void update_gen_total_likes (Genre gen, int min_age, int max_age);
  * qsort()-style, para que o array fique ordenado em ordem decrescente, facilitando
  * a sua exposição posteriormente.
  * 
- * @param a um g_pointer para um gênero constante.
- * @param b outro gênero que será comparado com @p a.
+ * @param a Um g_pointer para um gênero constante.
+ * @param b Outro gênero que será comparado com @p a.
  * @return Resultado da comparação.
  */
 int cmp_like_gen(gconstpointer g1, gconstpointer g2);
-
 
 /**
  * @brief Expõe as informações de um dado gênero.
@@ -135,6 +132,7 @@ int cmp_like_gen(gconstpointer g1, gconstpointer g2);
  * 
  * @param gen Gênero o qual terá as informações reveladas.
  * @param out Struct usado pelo output.
+ * @return Número total de curtidas de @p gen.
  */
 int print_genre_info(Genre gen, Output out);
 

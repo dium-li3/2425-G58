@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "history.h"
 #include "parser.h"
@@ -17,16 +18,13 @@ typedef struct history_manager{
     int mat_size;
 } *History_Manager;
 
-
 History_Manager create_history_manager (){
-    History_Manager hm = malloc (sizeof(struct history_manager));
+    History_Manager hm = calloc (1, sizeof(struct history_manager));
     
     hm->histories_by_id = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, (void*)free_history);
-    hm->matrix = NULL;
     
     return hm;
 }
-
 
 int **get_matrix(History_Manager hm) {
     return hm->matrix;
@@ -35,7 +33,6 @@ int **get_matrix(History_Manager hm) {
 void insert_history_by_id (History h, int id, History_Manager history_manager){
     g_hash_table_insert(history_manager->histories_by_id, GINT_TO_POINTER(id), h);
 }
-
 
 History search_history_by_id(int id, History_Manager history_manager){
     History al = g_hash_table_lookup(history_manager->histories_by_id, GINT_TO_POINTER(id));
@@ -48,14 +45,14 @@ void fill_matrix(int user_id, int music_id, User_Manager um, Music_Manager mm, H
    hm->matrix[row][column]++;
 }
 
-void store_History (char *history_path, History_Manager hm, Art_Manager am, Music_Manager mm, User_Manager um){
+int store_History (char *history_path, History_Manager hm, Art_Manager am, Music_Manager mm, User_Manager um, int interativo){
     Parser p = open_parser(history_path);
     if(p == NULL) {
-        perror("store_history(39)");
-        exit(1);
+        interativo ? printw("%s: ficheiro não encontrado.\n", history_path) : fprintf(stderr, "%s: %s\n", strerror(errno), history_path);
+        return 1;
     }
 
-    Output out = open_out("resultados/history_errors.csv", ';');
+    Output out = open_out("resultados/history_errors.csv", ';', 0);
     History history = NULL;
     int hist_id, user_id, music_id, year, week, dur, max_week = -1;
     char **tokens = NULL;
@@ -84,8 +81,7 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
             artist_ids = get_music_artists_from_id (get_history_music(history), mm);
             add_recipe_artists(artist_ids, am);
             add_year_history_id_to_user (um, user_id, year, hist_id); 
-            
-          
+               
             week = calc_week(get_history_day(history), get_history_month(history), year);
             if(week > max_week) max_week = week;
             dur = get_history_dur(history);
@@ -99,15 +95,20 @@ void store_History (char *history_path, History_Manager hm, Art_Manager am, Musi
     set_max_week(am, max_week);
     close_parser (p);
     close_output (out);
+
+    return 0;
 }
 
 void free_history_manager (History_Manager hm){
-    int rows = hm->mat_size;
     g_hash_table_destroy (hm->histories_by_id);
-    for (int i = 0; i < rows; i++) {
-        free(hm->matrix[i]);
+
+    if(hm->matrix != NULL) {
+        int rows = hm->mat_size;
+        for (int i = 0; i < rows; i++)
+            free(hm->matrix[i]);
+        free(hm->matrix);
     }
-    free(hm->matrix);
+    
     free (hm);
 }
 

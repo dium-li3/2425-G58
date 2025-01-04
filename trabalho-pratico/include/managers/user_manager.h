@@ -18,10 +18,41 @@ typedef struct user_manager *User_Manager;
  */
 User_Manager create_user_manager();
 
+/**
+ * @brief Verifica se um determinado usuário está presente na hash table do seu gestor, devolvendo-o
+ * em caso afirmativo.
+ * 
+ * Dado um @p id e um gestor @p user_manager, devolve o usuário cujo @p id se especifica, caso este esteja
+ * presente no gestor, ou @b NULL, caso contrário.
+ * 
+ * @param id Identificador único do usuário a ser procurado na tabela.
+ * @param user_manager Gestor cuja tabela será revistada a procura do @p id.
+ * @return Usuário com identificador @p id (ou @b NULL, na ausência dele no gestor).
+*/
 User search_user_by_id(int id, User_Manager user_manager);
 
+/**
+ * @brief Verifica se um determinado usuário está presente na hash table do gestor.
+ * 
+ * Invoca a @b search_user_by_id, com os parâmetros que esta necessita, e verifica se o retorno da chamada
+ * é nulo (neste caso simbolizando que o @p id dado não é chave de nenhuma entrada da tabela @p um).
+ * 
+ * @param id Identificador único do usuário a ser procurada na tabela.
+ * @param um Gestor cuja tabela será revistada a procura do @p id.
+ * @return Devolve @p TRUE se a tabela contiver o @p id; @b FALSE, caso contrário.
+*/
 gboolean user_exists (int id, User_Manager um);
 
+/**
+ * @brief Devolve o índice do usuário na matriz do gestor de históricos.
+ * 
+ * Dado um id @p id, busca na hash table do gestor de usuários o user com esse identificador, devolvendo o
+ * seu índice na matriz do @b history_manager.
+ * 
+ * @param id Identificador único do usuário cujo índice será devolvido.
+ * @param um Gestor onde o usuário será buscado.
+ * @return Índice do usuário na matriz do @b history_manager.
+*/
 int search_user_index_by_id(int id, User_Manager um);
 
 /**
@@ -30,23 +61,28 @@ int search_user_index_by_id(int id, User_Manager um);
  * Armazena cada usuário na hash table do seu gestor, enquanto contabiliza
  * no array de gêneros do music_manager o número de curtidas que aquele 
  * usuário deu em cada gênero, com base na lista de músicas por ele curtidas.
+ * Caso não seja possível abrir o ficheiro, retorna 1.
  * 
  * @param user_path path do ficheiro dos usuários.
  * @param user_manager gestor cuja hash table receberá os usuários.
  * @param music_manager gestor proprietário do array de gêneros.
+ * @param interativo Indica se o programa está no modo interativo ou não.
+ * 
+ * @return Código de sucesso.
  */
-void store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager);
+int store_Users (char *user_path, User_Manager user_manager, Music_Manager music_manager, int interativo);
 
 /**
  * @brief Devolve os ids de históricos relacionados a um utilizador num dado ano.
  * 
+ * Retorna um array com todos os históricos relacionados ao user com id @p user_id, 
+ * pertencentes ao ano @p year.
+ * 
  * @param user_id Id do utilizador ao qual queremos os ids de históricos.
  * @param year Ano no qual os eventos relacionados a esses históricos aconteceram.
  * @param um Gestor que contém o user cujo id @p user_id é o que procuramos.
- * 
- * @result Array de ids de históricos referente a um dado ano e a um dado utilizador.
+ * @return Array de ids de históricos referente a um dado ano e a um dado utilizador.
 */
-
 const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager um);
 
 /**
@@ -60,7 +96,6 @@ const GArray *get_year_history_from_user_id(int user_id, int year, User_Manager 
  * @param year ano do histórico.
  * @param history_id id do histórico, valor que vai ser guardado no utilizador.
 */
-
 void add_year_history_id_to_user (User_Manager um, int user_id, int year, int history_id);
 
 /**
@@ -75,7 +110,6 @@ void add_year_history_id_to_user (User_Manager um, int user_id, int year, int hi
  */
 void print_user_res_by_id (User_Manager um, int id, Output out);
 
-
 /**
  * @brief Libera a memória ocupada por um gestor de usuários.
  *
@@ -85,8 +119,24 @@ void print_user_res_by_id (User_Manager um, int id, Output out);
  */
 void free_user_manager(User_Manager um);
 
+/**
+ * @brief Devolve o número total de usuários.
+ *
+ * Acessa o campo @b total_users do gestor @p um, e devolve o valor nele presente.
+ * 
+ * @param um Gestor com o campo @b total_users.
+ * @return Número total de usuários.
+ */
 int get_total_users(User_Manager um);
 
+/**
+ * @brief Devolve o id de todos os usuários.
+ *
+ * Retorna o array com os identificadores de todos os usuários. 
+ * 
+ * @param um Gestor portador do array a devolver.
+ * @return Array com todos os identificadores dos usuários.
+ */
 char **get_users_ids (User_Manager um);
 
 #endif
