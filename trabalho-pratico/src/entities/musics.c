@@ -6,7 +6,6 @@
 #include "utils.h"
 
 typedef struct music {
-    int id;
     GArray *artists_ids;
     int duration_s;
     char *genre;
@@ -14,9 +13,8 @@ typedef struct music {
     int album_id;
 } *Music;
 
-Music create_music(int id, GArray *arts_ids, int d_s, int album_id, char *g, short y) {
+Music create_music(GArray *arts_ids, int d_s, int album_id, char *g, short y) {
     Music m = calloc(1, sizeof(struct music));
-    m->id = id;
     m->artists_ids = arts_ids;
     m->duration_s = d_s;
     m->genre = strdup(g);
@@ -28,21 +26,16 @@ Music create_music(int id, GArray *arts_ids, int d_s, int album_id, char *g, sho
 Music create_music_from_tokens (char **tokens) {
     Music m = NULL;
 
-    if (valid_duration(tokens[4]) && valid_list(tokens[2])) {
-        int id = atoi(tokens[0]+1);
+    if (valid_list(tokens[2]) && valid_duration(tokens[4])) {
         GArray *artists_ids = store_list(tokens[2]);
         int duration_s = calc_duration_s(tokens[4]);
         short year = (short)atoi(tokens[6]);
         int album_id = atoi (tokens[3]+2);
 
-        m = create_music(id, artists_ids, duration_s, album_id, tokens[5], year);
+        m = create_music(artists_ids, duration_s, album_id, tokens[5], year);
     }
 
     return m;
-}
-
-int get_music_id(Music m) {
-    return (m->id);
 }
 
 const char* get_genre(Music m) {

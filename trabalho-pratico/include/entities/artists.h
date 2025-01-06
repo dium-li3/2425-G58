@@ -38,16 +38,6 @@ const char *get_art_country(Artist a);
 int get_disc_duration(Artist a);
 
 /**
- * @brief Devolve o nome de um artista.
- *
- * Getter que devolve o nome de @p a. 
- * 
- * @param a Artista cujo nome será devolvido.
- * @return Devolve o nome do artista recebido.
- */
-const char *get_art_name(Artist a);
-
-/**
  * @brief Dada uma string com o tipo do artista, devolve o caracter que o representa.
  *
  * A princípio, o artista tem o tipo @b 'E' (que representa "error"). O seu campo @b type
@@ -76,8 +66,7 @@ double get_art_recipe_stream (Artist a);
  * 
  * @param a Artista.
  * @param week Semana.
- * @return -1 se @p week é fora do array do artista, ou o tempo de reprodução, caso @p week
- * seja menor que o total de semanas em que este artista foi ouvido.
+ * @return -1 se @p week é fora do array do artista ou o tempo de reprodução caso @c week<a->weeks->len.
  */
 int get_week_listening_time(Artist a, int week);
 
@@ -199,7 +188,7 @@ void add_disc_duration(Artist a, int duration);
 void add_list_time(Artist a, int week, int t);
 
 /**
- * @brief Define como melhor classificado(s) o(s) artista(s) numa dada semana.
+ * @brief Define o artista como presente no top 10 numa dada semana.
  * 
  * Coloca a posição @p week do array @b weeks de @p a igual a -1.
  * 
@@ -207,17 +196,6 @@ void add_list_time(Artist a, int week, int t);
  * @param week Semana em que o artista esteve no top 10.
  */
 void mark_top10(Artist a, int week);
-
-/**
- * @brief Insere em max_week+1 um 0.
- * 
- * Esta função é usada para garantir que todos os artistas têm um registo até à semana mais distante.
- * (Erro do valgrind de conditional jump or move depends on uninitialized values por causa dos GArrays...)
- * 
- * @param a Artista.
- * @param max_week Semana mais distante em que ocorreu um histórico.
- */
-void set_art_max_week(Artist a, int max_week);
 
 /**
  * @brief Calcula o array de frequências acumuladas de top 10 de um artista.

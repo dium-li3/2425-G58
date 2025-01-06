@@ -4,7 +4,6 @@
 #include "output.h"
 
 typedef struct user{
-    int id;
     short age;
     GPtrArray *yearly_history_ids;
     int index;
@@ -16,11 +15,10 @@ typedef struct user{
     Cria um User, baseado nos tokens recebidos.
     Devolve NULL caso o user seja sintáticamente inválido.
 */
-User create_user (int id, short age, int index, long fp){
+User create_user (short age, int index, long fp){
 
     GArray *year;
     User u = malloc(sizeof (struct user));
-    u->id = id;
     u->age = age;
     u->index = index;
     u->file_pos = fp;
@@ -32,17 +30,6 @@ User create_user (int id, short age, int index, long fp){
         g_ptr_array_add (u->yearly_history_ids, year);
     }
     return u;
-}
-
-int get_user_id(User u){
-    return u->id;
-}
-
-int *get_user_id_pointer (User u){
-    int *copy = malloc(sizeof(int));
-    *copy = u->id;
-
-    return copy;
 }
 
 short get_user_age (User u){
@@ -153,14 +140,12 @@ int valid_user_sintatic (char *email, char *date, char *sub_type){
 }
 
 User create_user_from_tokens (char **tokens, int index, long file_pos){
-    int valid = valid_user_sintatic (tokens[1], tokens[4], tokens[6]) && valid_list(tokens[7]);
-    int id;
+    int valid = valid_list(tokens[7]) && valid_user_sintatic (tokens[1], tokens[4], tokens[6]);
     int age;
     User u = NULL;
     if (valid){ //store
-        id = atoi (tokens[0]+1);
         age = read_date_to_age (tokens[4]);
-        u = create_user (id, age, index, file_pos);
+        u = create_user (age, index, file_pos);
     }
     return u;
 }

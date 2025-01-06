@@ -29,17 +29,6 @@ Album_Manager create_album_manager ();
  */
 void free_album_manager (Album_Manager am);
 
-/**
- * @brief Insere um álbum no seu gestor.
- * 
- * Dado um álbum, adiciona-o no gestor de álbuns usando o seu identificador único
- * como a chave para a hash table. 
- * 
- * @param al Álbum a ser adicionado na hash table do gestor.
- * @param id Identificador único do álbum a ser adicionado, usado como chave para a tabela.
- * @param album_manager Gestor cuja tabela terá um novo artista a ela adicionado.
- */
-void insert_album_by_id (Album al, int id, Album_Manager album_manager);
 
 /**
  * @brief Verifica se um determinado álbum está presente na hash table do gestor.

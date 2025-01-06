@@ -27,9 +27,7 @@ User_Manager create_user_manager(){
 /*
     Insere um User na posição id da hash table.
 */
-
-void insert_user_by_id(User u, User_Manager user_manager){
-    int id = get_user_id(u);
+void insert_user_by_id(User u, int id, User_Manager user_manager){
     g_hash_table_insert (user_manager->users_by_id, GINT_TO_POINTER(id), u);
 }
 
@@ -58,7 +56,7 @@ int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm, i
     User user = NULL;
     GArray *liked_musics = NULL;
     GArray *array_users_ids = g_array_new(FALSE, TRUE, sizeof(char *));
-    int i;
+    int i, user_id_int;
     long file_pos;
     char **tokens;
     char *user_id;
@@ -69,11 +67,12 @@ int store_Users (char *user_path, User_Manager user_manager, Music_Manager mm, i
         user = create_user_from_tokens(tokens, i, file_pos);
         if (user != NULL){
             user_id = strdup(tokens[0]);
+            user_id_int = atoi(tokens[0]+1);
             g_array_insert_val(array_users_ids, i++, user_id); // armazena o conteúdo do token
             liked_musics = store_list (tokens[7]);
             if (all_musics_exist(liked_musics, mm)){
                 add_like_genres(liked_musics, mm, get_user_age(user));
-                insert_user_by_id (user, user_manager);
+                insert_user_by_id (user, user_id_int, user_manager);
             }
             else {
                 free_user(user);

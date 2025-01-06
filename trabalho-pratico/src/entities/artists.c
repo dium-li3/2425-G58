@@ -47,10 +47,6 @@ int get_disc_duration(Artist a){
     return a->disc_duration;
 }
 
-const char *get_art_name(Artist a){
-    return a->name;
-}
-
 double get_art_recipe_stream (Artist a){
     return a->recipe_per_stream;
 }
@@ -93,7 +89,8 @@ int compare_dur (gconstpointer a, gconstpointer b){
         return -1;
     if ((*aa)->disc_duration < (*bb)->disc_duration)
         return 1;
-    return strcmp ((*aa)->name, (*bb)->name);
+
+    return (*bb)->id - (*aa)->id;
 }
 
 
@@ -186,11 +183,6 @@ void add_list_time(Artist a, int week, int t){
 
 void mark_top10(Artist a, int week){
     g_array_index(a->weeks, int, week) = -1;
-}
-
-void set_art_max_week(Artist a, int max_week){
-    int x = 0;
-    g_array_insert_val(a->weeks, max_week+1, x);
 }
 
 void acc_freq_top10_1art(Artist a) {
