@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "heaps.h"
+
 typedef struct tuplo {
     char *id;
     float valorizacao;
@@ -17,9 +19,18 @@ int atualiza_valorizacao_genero (float valorizacao[], int **matriz, int alvo, in
     return total;
 }
 
+
+int compare_tuplos(void *a, void *b, void *data) {
+    Tuplo_Rec aa = (Tuplo_Rec) a;
+    Tuplo_Rec bb = (Tuplo_Rec) b;
+
+    if(aa->valorizacao < bb->valorizacao) return 1;
+    else return 0;
+}
+
 //Ordena o array de forma a no inicio estarem os primeiros 'top' maiores elementos.
-void top_n_tuplos_ordenados (Tuplo_Rec *valorizacao_user, int N, int top){
-    int i, j;
+Tuplo_Rec* top_n_tuplos_ordenados (Tuplo_Rec *valorizacao_user, int N, int top){
+    /*int i, j;
     Tuplo_Rec t;
     for (i = 0; i < N && top > 0; i++, top--)
         for (j = N - i - 1; j > i; j--)
@@ -27,7 +38,16 @@ void top_n_tuplos_ordenados (Tuplo_Rec *valorizacao_user, int N, int top){
                 t = valorizacao_user[j];
                 valorizacao_user[j] = valorizacao_user[j-1];
                 valorizacao_user[j-1] = t;
-            }
+            }*/
+    
+    int i;
+    Heap h = heap_new(top, compare_tuplos, NULL, NULL);
+
+    for(i = 0; i < top; i++) heap_add(h, valorizacao_user[i]);
+    for(; i < N; i++) heap_swap_fst_elem(h, valorizacao_user[i]);
+
+    Tuplo_Rec *maiores = (Tuplo_Rec*) heap_unwrap_array(h, &top);
+    return maiores;
 }
 
 char **recomendaUtilizadores_xpto(char *idUtilizadorAlvo, int **matrizClassificacaoMusicas, char **idsUtilizadores, char **nomesGeneros, int numUtilizadores, int numGeneros, int numRecomendacoes){
@@ -83,16 +103,17 @@ char **recomendaUtilizadores_xpto(char *idUtilizadorAlvo, int **matrizClassifica
     //Encontra e guarda o 'numRecomendacoes' de recomendações pedidas
     char **recomendacoes = calloc (numRecomendacoes, sizeof (char*));
     //ordenamos o array de forma a termos no inicio em ordem decrescente o 'numRecomendacoes' de users a recomendar
-    top_n_tuplos_ordenados (valorizacao_user, numUtilizadores-1, numRecomendacoes);
+    Tuplo_Rec *maiores = top_n_tuplos_ordenados (valorizacao_user, numUtilizadores-1, numRecomendacoes);
     
     //passamos os 'numRecomendacoes' primeiros elementos do array para a lista de array que vamos devolver
     for (i = 0; i < numRecomendacoes; i++)
-        recomendacoes[i] = valorizacao_user[i]->id;
+        recomendacoes[i] = maiores[i]->id;
 
     free (valorizacao_genero_alvo);
     free (valorizacao_genero_rec);
     for (i = 0; i < numUtilizadores - 1; i++)
         free (valorizacao_user[i]);
     free (valorizacao_user);
+    free(maiores);
     return recomendacoes;
 }
