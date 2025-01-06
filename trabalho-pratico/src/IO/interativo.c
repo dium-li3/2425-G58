@@ -493,9 +493,8 @@ int input_queries(Master_Manager mm, int interativo) {
 
         query_type = input_query_type(); //embora seja um int, o seu valor representa um char
         if(query_type == 'f') {
-            free(query_line);
-            remove(TEMP_FILE_PATH);
-            return print_sair();
+            query_type = -1;
+            break;
         }
 
         out = open_out(TEMP_FILE_PATH, ' ', 0);
@@ -518,7 +517,6 @@ int input_queries(Master_Manager mm, int interativo) {
         wait_for_enter("[Prima ENTER para obter o resultado]");
         clear_to_bot_from_pos(3, 0);
         
-        q = create_query();
         p = open_parser(TEMP_FILE_PATH);
         read_query_line(p, q);
         answer_query(q, mm, n_query, NULL, terminal, recomendador);
@@ -531,5 +529,5 @@ int input_queries(Master_Manager mm, int interativo) {
     free(query_line);
     free_query(q);
     remove(TEMP_FILE_PATH);
-    return 0;
+    return (query_type == -1) ? print_sair() : 0;
 }
