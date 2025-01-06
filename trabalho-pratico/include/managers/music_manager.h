@@ -1,3 +1,9 @@
+/**
+ * @file music_manager.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file do gestor de músicas
+ */
 #ifndef MUSIC_MANAGER_H
 #define MUSIC_MANAGER_H
 

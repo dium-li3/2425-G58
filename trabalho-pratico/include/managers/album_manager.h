@@ -1,3 +1,9 @@
+/**
+ * @file album_manager.h
+ * @author Grupo 58
+ * @date Nov 2024
+ * @brief Header file do gestor de albums
+ */
 #ifndef ALBUM_MANAGER_H
 #define ALBUM_MANAGER_H
 

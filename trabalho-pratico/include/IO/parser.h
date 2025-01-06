@@ -1,3 +1,9 @@
+/**
+ * @file parser.h
+ * @author Lucas
+ * @date Out 2024
+ * @brief Header file das funções de parsing de ficheiros e strings
+ */
 #ifndef PARSER_H
 #define PARSER_H
 #include <stdio.h>

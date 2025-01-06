@@ -1,3 +1,9 @@
+/**
+ * @file artists.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file da entidade Artist
+ */
 #ifndef ARTISTS_H
 #define ARTISTS_H
 

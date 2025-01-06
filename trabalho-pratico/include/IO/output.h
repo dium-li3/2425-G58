@@ -1,3 +1,9 @@
+/**
+ * @file output.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file das funções de output
+ */
 #ifndef OUTPUT_H
 #define OUTPUT_H
 #include <stdio.h>

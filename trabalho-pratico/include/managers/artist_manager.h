@@ -1,3 +1,9 @@
+/**
+ * @file artist_manager.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file do gestor de artistas
+ */
 #ifndef ARTIST_MANAGER_H
 #define ARTIST_MANAGER_H
 

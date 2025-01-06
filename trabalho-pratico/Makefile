@@ -63,3 +63,10 @@ complexity:
 	@echo Only printing when Modified McCabe Cyclomatic Complexity is above 5
 	@echo | pmccabe -v
 	@pmccabe $(SRCS)| sort -nr | awk '{if($$1>5)print}'
+
+# Create/update/open doxygen documentation 
+doxygen:
+	doxygen Doxyfile
+
+open_doxygen:
+	open docs/html/index.html

@@ -1,3 +1,9 @@
+/**
+ * @file recomendador_xpto.h
+ * @author Lucas
+ * @date Nov 2024
+ * @brief Header file do recomendador do grupo 58
+ */
 #ifndef RECOMENDADOR_XPTO_H
 #define RECOMENDADOR_XPTO_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file utils.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file de funções úteis em múltiplos ficheiros mas sem identidade singular
+ */
 #ifndef UTILS_H
 #define UTILS_H
 

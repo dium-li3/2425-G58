@@ -1,3 +1,9 @@
+/**
+ * @file testagem.h
+ * @author Marco
+ * @date Out 2024
+ * @brief Header file do ficheiro relacionado a validação de resultados
+ */
 #ifndef TESTAGEM_H
 #define TESTAGEM_H
 

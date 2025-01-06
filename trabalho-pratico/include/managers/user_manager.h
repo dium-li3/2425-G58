@@ -1,3 +1,9 @@
+/**
+ * @file user_manager.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file do gestor de utilizadores
+ */
 #ifndef USERS_MANAGER_H
 #define USERS_MANAGER_H
 
