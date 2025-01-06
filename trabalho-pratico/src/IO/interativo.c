@@ -484,7 +484,7 @@ int input_queries(Master_Manager mm, int interativo) {
     wait_for_enter("[Prima ENTER para prosseguir para as queries]");
     int query_type = -1, separador = -1, i, n_query = 0, terminal, recomendador;
     char *query_line = malloc(sizeof(char) * BUFSIZ_QUERYLINE);
-    Query q = NULL;
+    Query q = create_query();
     Output out = NULL;
     Parser p = NULL;
 
@@ -526,11 +526,10 @@ int input_queries(Master_Manager mm, int interativo) {
         wait_for_enter("\n[Pressione ENTER para prosseguir]");
 
         close_parser(p);
-        free_query(q);
     }
 
     free(query_line);
+    free_query(q);
     remove(TEMP_FILE_PATH);
     return 0;
 }
-// /home/marco/2ºAno/LI3/Projeto/Dados-fase2-small/dataset/com_erros/
