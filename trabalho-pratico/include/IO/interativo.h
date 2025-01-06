@@ -1,3 +1,9 @@
+/**
+ * @file interativo.h
+ * @author Marco
+ * @date Nov 2024
+ * @brief Header file das funções relacionadas ao interativo
+ */
 #ifndef INTERATIVO_H
 #define INTERATIVO_H
 

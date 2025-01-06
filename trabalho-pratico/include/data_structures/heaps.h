@@ -1,3 +1,9 @@
+/**
+ * @file heaps.h
+ * @author Marco
+ * @date Nov 2024
+ * @brief Header file das heaps
+ */
 #ifndef HEAPS_H
 #define HEAPS_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file musics.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file da entidade Music
+ */
 #ifndef MUSICS_H
 #define MUSICS_H
 

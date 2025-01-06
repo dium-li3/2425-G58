@@ -1,3 +1,9 @@
+/**
+ * @file master_manager.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file do gestor mestre
+ */
 #ifndef MASTER_MANAGER_H
 #define MASTER_MANAGER_H
 #include <stdio.h>

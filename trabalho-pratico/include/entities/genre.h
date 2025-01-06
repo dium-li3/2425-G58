@@ -1,3 +1,9 @@
+/**
+ * @file genre.h
+ * @author Grupo 58
+ * @date Nov 2024
+ * @brief Header file da entidade Genre
+ */
 #ifndef GENRE_H
 #define GENRE_H
 

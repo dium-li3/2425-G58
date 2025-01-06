@@ -1,3 +1,9 @@
+/**
+ * @file users.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file da entidade User
+ */
 #ifndef USERS_H
 #define USERS_H
 

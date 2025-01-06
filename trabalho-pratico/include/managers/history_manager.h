@@ -1,3 +1,9 @@
+/**
+ * @file history_manager.h
+ * @author Grupo 58
+ * @date Nov 2024
+ * @brief Header file do gestor de históricos
+ */
 #ifndef HISTORY_MANAGER_H
 #define HISTORY_MANAGER_H
 

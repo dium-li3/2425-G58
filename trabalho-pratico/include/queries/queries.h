@@ -1,3 +1,9 @@
+/**
+ * @file queries.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file da lógica de resposta a cada query
+ */
 #ifndef QUERIES_H
 #define QUERIES_H
 

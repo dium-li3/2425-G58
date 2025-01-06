@@ -1,3 +1,9 @@
+/**
+ * @file history.h
+ * @author Grupo 58
+ * @date Out 2024
+ * @brief Header file da entidade History
+ */
 #ifndef HISTORY_H
 #define HISTORY_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file albums.h
+ * @author Grupo 58
+ * @date Nov 2024
+ * @brief Header file da entidade Album
+ */
 #ifndef ALBUMS_H
 #define ALBUMS_H
 
