@@ -42,31 +42,6 @@ void free_matrix (History_Manager hm);
  */
 void free_history_manager (History_Manager hm);
 
-/**
- * @brief Insere um histórico no seu gestor.
- * 
- * Dado um histórico, adiciona-o no gestor de históricos usando o seu identificador único
- * como a chave para a hash table. 
- * 
- * @param hi Histórico a ser adicionado na hash table do gestor.
- * @param id Identificador único do histórico a ser adicionado, usado como chave para a tabela.
- * @param history_manager gestor cuja tabela terá um novo histórico a ela adicionado.
- */
-void insert_history_by_id (History hi, int id, History_Manager history_manager);
-
-/**
- * @brief Verifica se um determinado histórico está presente na hash table do seu gestor, devolvendo-o
- * em caso afirmativo.
- * 
- * Dado um @p id e um gestor @p am, devolve o histórico cujo @p id se especifica, caso este esteja presente
- * no gestor, ou @b NULL, caso contrário.
- * 
- * @param id Identificador único do histórico a ser procurado na tabela.
- * @param history_manager Gestor cuja tabela será revistada a procura do @p id.
- * @return Histórico com identificador @p id (ou @b NULL, na ausência dele no gestor).
- */
-History search_history_by_id(int id, History_Manager history_manager);
-
 
 /**
  * @brief Armazena todos os históricos.
@@ -95,7 +70,7 @@ int store_History (char *history_path, History_Manager history_man, Art_Manager 
 /**
  * @brief Devolve a matriz do gestor de históricos.
  *
- * Devolve a matriz de reproduções do @p hm.
+ * Devolve uma cópia da matriz de reproduções do @p hm.
  * 
  * @param hm Gestor detentor da matriz a ser devolvida.
  * @return Matriz do gestor.

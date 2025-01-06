@@ -17,14 +17,6 @@ typedef struct music *Music;
 Music create_music_from_tokens (char **tokens);
 
 /**
- * @brief Devolve o id de uma música.
- *
- * @param m Música cujo id se quer obter.
- * @return Id da música.
- */
-int get_music_id(Music m);
-
-/**
  * @brief Devolve o género de uma música.
  *
  * Em vez de ser feita uma cópia da string, é retornado o apontador com o modificador const, de maneira a não

@@ -81,11 +81,11 @@ int store_History (char *history_path, History_Manager hm, Art_Manager am, Music
         if (history != NULL){
             hist_id = atoi (tokens[0]+1);
             user_id = atoi (tokens[1]+1);
-            music_id = atoi (tokens[2]+1);
+            music_id = get_history_music(history);
             insert_history_by_id (history, hist_id, hm);
             fill_matrix(user_id, music_id, um, mm, hm);
 
-            artist_ids = get_music_artists_from_id (get_history_music(history), mm);
+            artist_ids = get_music_artists_from_id (music_id, mm);
             add_recipe_artists(artist_ids, am);
             add_year_history_id_to_user (um, user_id, year, hist_id); 
                

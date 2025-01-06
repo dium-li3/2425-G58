@@ -58,17 +58,6 @@ void gen_arr_freq_acum(Music_Manager mm);
 void sort_gen(Music_Manager mm, int min_age, int max_age);
 
 /**
- * @brief Insere uma múscia na hash table segundo o seu id.
- *
- * A chave (o int correspondente ao id) é armazenada na forma de int, recorrendo à macro GINT_TO_POINTER(),
- * para evitar fazer uma cópia do id e armazenar o endereço dessa cópia, poupando assim tempo e memória.
- *
- * @param m Música a inserir.
- * @param music_manager Contém a hash table de músicas.
- */
-void insert_music_by_id(Music m, Music_Manager music_manager);
-
-/**
  * @brief Verifica se todas as músicas de um array existem.
  *
  * Verifica se todas as músicas de um array constam no Music Manager, de forma a validar logicamente um utilizador.
@@ -131,19 +120,6 @@ void print_all_genres_info(Music_Manager mm, Output out);
  * @param mm Music Manager a ser libertado.
  */
 void free_music_manager(Music_Manager mm);
-
-/**
- * @brief Verifica se uma determinada música está presente na hash table do seu gestor, devolvendo-a
- * em caso afirmativo.
- * 
- * Dado um @p id e um gestor @p music_manager, devolve a música cujo @p id se especifica, caso esta
- * esteja presente no gestor, ou @b NULL, caso contrário.
- * 
- * @param id Identificador único da música a ser procurada na tabela.
- * @param music_manager Gestor cuja tabela será revistada a procura do @p id.
- * @return Música com identificador @p id (ou @b NULL, na ausência dela no gestor).
-*/
-Music search_music_by_id(int id, Music_Manager music_manager);
 
 /**
  * @brief Devolve o índice de um gênero no array de nome de gêneros do gestor de músicas.

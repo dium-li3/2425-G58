@@ -122,9 +122,8 @@ void sort_gen(Music_Manager mm,int min_age, int max_age)
     g_array_sort(mm->genre_array, cmp_like_gen);
 }
 
-void insert_music_by_id(Music m, Music_Manager music_manager)
+void insert_music_by_id(Music m, int id, Music_Manager music_manager)
 {
-    int id = get_music_id(m);
     g_hash_table_insert(music_manager->musics_by_id, GINT_TO_POINTER(id), m);
 }
 
@@ -197,7 +196,7 @@ int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manag
 
     Output out = open_out("resultados/musics_errors.csv", ';', 0);
     Music music = NULL;
-    int i = 0, album_id;
+    int i = 0, album_id, music_id;
     char *gen_name;
     const GArray *music_artists = NULL;
     GArray *array_genre_names = g_array_new(FALSE, TRUE, sizeof(char *));
@@ -210,11 +209,12 @@ int store_Musics(char *music_path, Music_Manager mm, Art_Manager am, Album_Manag
         //Validação para saber se realmente guarda a entidade ou não
         if (music != NULL){//sintatica
             album_id = get_music_album (music);
+            music_id = atoi(tokens[0]+1);
             music_artists = get_music_artists(music);
             if (album_exists(album_id, alm) && all_artists_exist(music_artists, am))//logica
             {
-                add_disc_dur_artists (music_artists ,get_music_duration(music), am);
-                insert_music_by_id(music, mm);
+                add_disc_dur_artists (music_artists, get_music_duration(music), am);
+                insert_music_by_id(music, music_id, mm);
                 if (insert_gen(music, mm, i))
                 {
                     gen_name = strdup(tokens[5]);

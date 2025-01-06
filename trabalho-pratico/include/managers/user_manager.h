@@ -19,19 +19,6 @@ typedef struct user_manager *User_Manager;
 User_Manager create_user_manager();
 
 /**
- * @brief Verifica se um determinado usuário está presente na hash table do seu gestor, devolvendo-o
- * em caso afirmativo.
- * 
- * Dado um @p id e um gestor @p user_manager, devolve o usuário cujo @p id se especifica, caso este esteja
- * presente no gestor, ou @b NULL, caso contrário.
- * 
- * @param id Identificador único do usuário a ser procurado na tabela.
- * @param user_manager Gestor cuja tabela será revistada a procura do @p id.
- * @return Usuário com identificador @p id (ou @b NULL, na ausência dele no gestor).
-*/
-User search_user_by_id(int id, User_Manager user_manager);
-
-/**
  * @brief Verifica se um determinado usuário está presente na hash table do gestor.
  * 
  * Invoca a @b search_user_by_id, com os parâmetros que esta necessita, e verifica se o retorno da chamada
@@ -51,6 +38,7 @@ gboolean user_exists (int id, User_Manager um);
  * 
  * @param id Identificador único do usuário cujo índice será devolvido.
  * @param um Gestor onde o usuário será buscado.
+ * 
  * @return Índice do usuário na matriz do @b history_manager.
 */
 int search_user_index_by_id(int id, User_Manager um);

@@ -22,17 +22,6 @@ typedef struct art_manager *Art_Manager;
  */
 Art_Manager create_art_manager();
 
-/**
- * @brief Insere um artista na tabela hash do gestor de artistas
- *
- * Recebe o artista e o seu gestor, de forma a obter o id do artista
- * com o @b get_art_id e inserir esse valor (como chave) e o artista
- * em si na tabela hash do gestor. 
- * 
- * @param a Artista que será inserido na tabela.
- * @param art_manager Gestor proprietário da tabela.
- */
-void insert_artists_by_id(Artist a, Art_Manager art_manager); 
 
 /**
  * @brief Ordena o array de artistas do gestor pelo tempo de discografia

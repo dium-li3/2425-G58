@@ -29,16 +29,6 @@ User create_user_from_tokens (char **tokens, int index, long file_pos);
  *
  * Função necessária à componente de encapsulamento. 
  * 
- * @param u Usuário cujo id será devolvido.
- * @return Id do usuário recebido.
- */
-int get_user_id (User u);
-
-/**
- * @brief Função desenvolvida para satisfazer o encapsulamento.
- *
- * Função necessária à componente de encapsulamento. 
- * 
  * @param u Usuário cuja idade será devolvida.
  * @return Idade do usuário recebido.
  */
