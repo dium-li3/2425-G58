@@ -152,10 +152,10 @@ void answer4(Query q, Output out, Query_stats qs, Art_Manager am);
  * @brief Responde a query 5.
  * 
  * Primeiramente verifica se o id do usuário fornecido para a query 5 existe. Em seguida, começa a obter cada
- * parâmetro exigido pelas funções de recomendação a partir de uma cache própria que os contém, se
- * a cache estiver 'fria' então preenchia, posteriormente chamando a função de recomendador escolhia, por default
- * a dos professores. 
- * Além disso, essa answer cronometra o seu tempo de execução.
+ * parâmetro exigido pelas funções de recomendação a partir de uma cache própria que os contém. Se a cache estiver
+ * 'fria' (for um ponteiro nulo), então a mesma será preenchida, posteriormente chamando a função de recomendador
+ * escolhida (convencionou-se a versão da equipa docente como a padrão). Além disso, essa answer cronometra o seu
+ * tempo de execução.
  * 
  * @param q Estrutura que fornece as informações para a resolução da query.
  * @param um Gestor portador dos identificadores dos usuários assim como a sua quantidade total.
