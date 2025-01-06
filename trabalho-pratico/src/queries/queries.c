@@ -455,6 +455,86 @@ void max_in_hash(gpointer id, gpointer dur, gpointer user_data) {
     }
 }
 
+//Dá update à informação guardada na hashtable que contém os albums a que um utilizador ouviu.
+void save_album_from_history (GHashTable *diff_albums, int album_id, int listening_time){
+    int album_dur;
+    gpointer already_exists = g_hash_table_lookup (diff_albums, GINT_TO_POINTER (album_id));
+    if (already_exists == NULL)
+        g_hash_table_insert (diff_albums, GINT_TO_POINTER (album_id), GINT_TO_POINTER (listening_time));
+    else{
+        album_dur = GPOINTER_TO_INT (already_exists);
+        album_dur += listening_time;
+        g_hash_table_replace (diff_albums, GINT_TO_POINTER(album_id), GINT_TO_POINTER (album_dur)); 
+    }
+}
+
+//Atualiza a informação na hashtable que guarda as músicas que um utilizador ouviu.
+void save_music_from_history (GHashTable *diff_musics, int music_id){
+    gpointer already_exists = g_hash_table_lookup (diff_musics, GINT_TO_POINTER (music_id));
+    if (already_exists == NULL)
+        g_hash_table_insert (diff_musics , GINT_TO_POINTER (music_id), GINT_TO_POINTER (music_id));
+}
+
+void save_artist_from_history (GPtrArray *diff_artists, int music_id, int listening_time, const GArray *artists_ids){
+    int i, k, artist_id;
+    gpointer already_exists;
+    Fav_art_info art_info;
+    for (i = 0; i < artists_ids->len; i++){
+        artist_id = g_array_index (artists_ids, int, i);
+        for (already_exists = NULL, k = 0; k < diff_artists->len && diff_artists->pdata[k] != NULL && ((Fav_art_info)g_ptr_array_index (diff_artists, k))->art_id != artist_id; k++);
+        if (k < diff_artists->len)
+            already_exists = g_ptr_array_index (diff_artists, k);
+        if (already_exists == NULL){
+            art_info = create_fav_art_info (music_id, listening_time, artist_id);
+            g_ptr_array_add (diff_artists, art_info);
+        }
+        else{
+            art_info = (Fav_art_info)already_exists;
+            update_fav_art_info (art_info, music_id, art_info->listening_time + listening_time);
+        }
+    }
+}
+
+//Prepara o array de strings para puder armazenar as informações necessárias para a answer6.
+char **tokens_prep(){
+    char **output_tokens = calloc (7, sizeof (char *));
+    output_tokens[1] = calloc (11, sizeof (char));
+    output_tokens[2] = calloc (12, sizeof (char));
+    output_tokens[3] = calloc (33, sizeof (char));
+    output_tokens[5] = calloc (12, sizeof (char));
+    output_tokens[6] = calloc (11, sizeof (char));
+    return output_tokens;
+}
+
+void year_max (int month_and_day_matriz[12][31], int *month, int *day){
+    int i, j;
+    *month = 11; *day = 30;
+    for (i = 11; i >= 0; i --)
+        for (j = 30; j >= 0; j--)
+            if (month_and_day_matriz[i][j] > month_and_day_matriz[*month][*day]){
+                *month = i; //mes favorito
+                *day = j; //dia favorito
+            }
+    (*day)++; (*month)++;
+}
+
+char ***calc_top_artists_through_histories (GPtrArray *diff_artists, int N_artists){
+    int i;
+    g_ptr_array_sort (diff_artists, compare_fav_art_durations);
+    char ***favorite_artists = calloc (N_artists, sizeof (char**));
+    for (i = 0; i < N_artists && i < diff_artists->len && diff_artists->pdata[i] != NULL; i++){
+        Fav_art_info art_info = (Fav_art_info)g_ptr_array_index (diff_artists, i);
+
+        favorite_artists [i] = calloc (3, sizeof (char *));
+        favorite_artists [i][0] = calloc (12, 1);
+        favorite_artists [i][1] = calloc (11, 1);
+        
+        snprintf (favorite_artists [i][0], 12, "A%07d", art_info->art_id);
+        snprintf (favorite_artists [i][1], 11, "%d", g_hash_table_size (art_info->distinct_musics));
+        favorite_artists [i][2] = calc_duration_hms (art_info->listening_time);
+    }
+    return favorite_artists;
+}
 
 void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History_Manager hm, Output out, Query_stats qs){
     struct timespec start, end;
@@ -464,18 +544,14 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
     Query6 q6= q->query6;
 
     //Guardar a informação relativa a um dado ano de um dado utilizador.    
-    int i, j, k, history_id, music_id, album_id, artist_id, month, day, hour, listening_time, genre_ind, num_musics, album_dur;
-    int hour_arr [24] = {0};
-    int month_and_day_matriz [12][31] = {0};
-    int listening_time_total = 0;
+    int i, j, history_id, music_id, album_id, month, day, hour, listening_time, genre_ind, num_musics;
+    int hour_arr [24] = {0}, month_and_day_matriz [12][31] = {0}, listening_time_total = 0;
     int n_genres = get_total_genres (mm);
     int *genres = calloc (n_genres, sizeof(int));
     const char *favorite_genre = NULL;
     char **genres_names = get_genre_names(mm);
     char ***favorite_artists = NULL;
     char **output_tokens = NULL;
-
-    gpointer already_exists;
 
     GHashTable *diff_albums = g_hash_table_new(g_direct_hash, g_direct_equal);
     Max_dur max = base_max();
@@ -500,38 +576,10 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
             genre_ind = search_gen_index_by_id (music_id, mm);
             album_id = get_music_album_by_id (music_id, mm);
 
-            //Guarda albums
-            already_exists = g_hash_table_lookup (diff_albums, GINT_TO_POINTER (album_id));
-            if (already_exists == NULL)
-                g_hash_table_insert (diff_albums, GINT_TO_POINTER (album_id), GINT_TO_POINTER (listening_time));
-            else{
-                album_dur = GPOINTER_TO_INT (already_exists);
-                album_dur += listening_time;
-                g_hash_table_replace (diff_albums, GINT_TO_POINTER(album_id), GINT_TO_POINTER (album_dur)); 
-            }
-
-            //Guarda musicas
-            already_exists = g_hash_table_lookup (diff_musics, GINT_TO_POINTER (music_id));
-            if (already_exists == NULL)
-                g_hash_table_insert (diff_musics , GINT_TO_POINTER (music_id), GINT_TO_POINTER (music_id));
-            
-            //Guarda artistas
-            for (j = 0; j < artists_ids->len; j++){
-                artist_id = g_array_index (artists_ids, int, j);
-                for (already_exists = NULL, k = 0; k < diff_artists->len && diff_artists->pdata[k] != NULL && ((Fav_art_info)g_ptr_array_index (diff_artists, k))->art_id != artist_id; k++);
-                if (k < diff_artists->len)
-                    already_exists = g_ptr_array_index (diff_artists, k);
-                if (already_exists == NULL){
-                    art_info = create_fav_art_info (music_id, listening_time, artist_id);
-                    g_ptr_array_add (diff_artists, art_info);
-                }
-                else{
-                    art_info = (Fav_art_info)already_exists;
-                    update_fav_art_info (art_info, music_id, art_info->listening_time + listening_time);//posso?
-                }
-            }
-            
-            //Parte facil
+            //Update às informações que permitem calcular-se o resumo final
+            save_album_from_history (diff_albums, album_id, listening_time);
+            save_music_from_history (diff_musics, music_id);            
+            save_artist_from_history (diff_artists, music_id, listening_time, artists_ids);
             listening_time_total += listening_time;
             hour_arr[hour]+= listening_time;
             month_and_day_matriz[month-1][day-1]++;
@@ -539,55 +587,24 @@ void answer6(Query q, Art_Manager am, Music_Manager mm, User_Manager um, History
         }
         //Calcular os favoritos
         hour = array_max (hour_arr, 24);
-        month = 11; day = 30;
-        for (i = 11; i >= 0; i --)
-            for (j = 30; j >= 0; j--)
-                if (month_and_day_matriz[i][j] > month_and_day_matriz[month][day]){
-                    month = i; //mes favorito
-                    day = j; //dia favorito
-                }
-        day++; month++;
+        year_max (month_and_day_matriz, &month, &day);
         genre_ind = array_max (genres, n_genres);
         favorite_genre = genres_names[genre_ind];
         num_musics = g_hash_table_size (diff_musics);
 
         g_hash_table_foreach (diff_albums, max_in_hash, max);
 
-        g_ptr_array_sort (diff_artists, compare_fav_art_durations);
-        favorite_artists = calloc (q6->N_artists, sizeof (char**));
-        for (i = 0; i < q6->N_artists && i < diff_artists->len && diff_artists->pdata[i] != NULL; i++){
-            art_info = (Fav_art_info)g_ptr_array_index (diff_artists, i);
-
-            favorite_artists [i] = calloc (3, sizeof (char *));
-            favorite_artists [i][0] = calloc (12, 1);
-            favorite_artists [i][1] = calloc (11, 1);
-            
-            snprintf (favorite_artists [i][0], 12, "A%07d", art_info->art_id);
-            snprintf (favorite_artists [i][1], 11, "%d", g_hash_table_size (art_info->distinct_musics));
-            favorite_artists [i][2] = calc_duration_hms (art_info->listening_time);
-        }
+        favorite_artists = calc_top_artists_through_histories (diff_artists, q6->N_artists);
 
         //Fase de print
-        output_tokens = calloc (7, sizeof (char *));
-
+        output_tokens = tokens_prep ();
         output_tokens[0] = calc_duration_hms (listening_time_total);
-        
-        output_tokens[1] = calloc (11, sizeof (char));
         snprintf (output_tokens[1], 11, "%d", num_musics);
-
-        output_tokens[2] = calloc (12, sizeof (char));
         art_info = (Fav_art_info)g_ptr_array_index (diff_artists, 0);
         snprintf (output_tokens[2], 12, "A%07d", art_info->art_id);
-
-        output_tokens[3] = calloc (33, sizeof (char));
         snprintf (output_tokens[3], 33, "%d/%02d/%02d", q6->year, month, day);
-
         output_tokens[4] = strdup (favorite_genre);
-        
-        output_tokens[5] = calloc (12, sizeof (char));
         snprintf(output_tokens[5], 12, "AL%06d", max->id);
-        
-        output_tokens[6] = calloc (11, sizeof (char));
         snprintf(output_tokens[6], 11, "%02d", hour);
 
         output_geral (output_tokens, 7, out);
