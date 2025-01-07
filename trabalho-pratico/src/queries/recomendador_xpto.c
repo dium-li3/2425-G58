@@ -93,7 +93,7 @@ char **recomendaUtilizadores_xpto(char *idUtilizadorAlvo, int **matrizClassifica
                         valorizacao_genero_rec[j] = valorizacao_genero_alvo[j];
                     valorizacao_user[index]->valorizacao += valorizacao_genero_rec[j];
                 }
-            valorizacao_user[index]->id = idsUtilizadores[index];
+            valorizacao_user[index]->id = idsUtilizadores[i];
             //Se nem o alvo nem o user i têm preferências, têm preferências iguais
             if (N_alvo == 0 && N_rec == 0)
                 valorizacao_user[index]->valorizacao = 1;
